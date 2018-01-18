@@ -1,0 +1,2 @@
+g++ -std=c++11 -O3 neuralnet.cpp movegenerator.cpp playtournement.cpp playgame.cpp playmove.cpp -o playtournement.exe
+

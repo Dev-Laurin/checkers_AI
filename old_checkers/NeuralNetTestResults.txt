@@ -1,0 +1,92 @@
+$ ./a.exe 4 32 40 10 1
+Neural depth: 4
+Layer 1 Size 32
+Layer 2 Size 40
+Layer 3 Size 10
+Layer 4 Size 1
+Dendrite count: 1280
+Dendrite count: 400
+Dendrite count: 10
+Neuralnet Created
+
+It took 0.07 seconds to run 1000 times
+14k evals/second.
+
+Note:  I have some optimization work to do.  ~70 seconds for ~1M runs is too long.
+
+$ ./a.exe 12 32 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1
+Neural depth: 12
+Layer 1 Size 32
+Layer 2 Size 1000
+Layer 3 Size 1000
+Layer 4 Size 1000
+Layer 5 Size 1000
+Layer 6 Size 1000
+Layer 7 Size 1000
+Layer 8 Size 1000
+Layer 9 Size 1000
+Layer 10 Size 1000
+Layer 11 Size 1000
+Layer 12 Size 1
+Dendrite count: 32000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000
+Neuralnet Created
+
+It took 412.923 seconds to run 1000 times
+2.4 evals/second.
+Note:  Even deliberately setting the number of layers quite high, it still took way too long...
+
+-O3 optimization
+$ ./a.exe 4 32 40 10 1
+Neural depth: 4
+Layer 1 Size 32
+Layer 2 Size 40
+Layer 3 Size 10
+Layer 4 Size 1
+Dendrite count: 1280
+Dendrite count: 400
+Dendrite count: 10
+Neuralnet Created
+
+It took 1.562 seconds to run 1000000 times
+640k evals/second - much better
+-It was saying 0 seconds to run 1000 times, so I kicked it up.  Pretty amazing performance difference.
+
+$ ./a.exe 12 32 1000 1000 1000 1000 1000 1000 1000 1000 1000 1000 1
+Neural depth: 12
+Layer 1 Size 32
+Layer 2 Size 1000
+Layer 3 Size 1000
+Layer 4 Size 1000
+Layer 5 Size 1000
+Layer 6 Size 1000
+Layer 7 Size 1000
+Layer 8 Size 1000
+Layer 9 Size 1000
+Layer 10 Size 1000
+Layer 11 Size 1000
+Layer 12 Size 1
+Dendrite count: 32000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000000
+Dendrite count: 1000
+Neuralnet Created
+
+It took 14.469 seconds to run 1000 times
+69 evals/second better - but still too slow.
