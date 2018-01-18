@@ -1,0 +1,22 @@
+Bsearch (B) {
+V<-max(B, -inf,inf)
+return move for value V
+}
+MAX(B, a, B) {
+	if terminal(B) return BEF(B)  //maxdepth or goal state
+	for each move m, from B
+		v<-max.mum(v, min(B(mi), a, B))
+		if v >= B return v; //PRUNE
+		a <- maximum (a,v)
+	}
+	return v
+}
+MIN(B, a, B) {
+	if terminal(B) return BEF(B)
+	for each move m; from B
+		v<-minimum(v, MAX(B(mi), a, B))
+		if v <= a return v; //prune
+		B <- minimum(B,v)
+	}
+	return v
+}
