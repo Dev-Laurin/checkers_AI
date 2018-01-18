@@ -16,9 +16,10 @@ public:
 	void play(); 
 	/*firstPlayersMove*/ void secondPlayersMove(); 
 private: 
-	vector<vector<int> > board; 
-	vector<pon> ourPons; 
-	vector<pon> enemyPons; 
+	int bk; 
+	int red; 
+	int bkKing; 
+	int redKing; 
 }; 
 
 #endif /* RANDOM_CHECKERS_INCLUDED */ 
