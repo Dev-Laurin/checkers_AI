@@ -13,9 +13,42 @@ public:
 	i32 red;  //red pieces - pawns and kings
 	i32 blackK; //black kings
 	i32 redK;  //red kings
-	void stdBoard();  //4,095; 4,293,918,720
-	void stdBoard(string board);
-	void stdBoard(i32 b, i32 r, i32 bK, i32 rK);
+	void stdBoard() { //Initial regular board
+		black = 4095; // last 12 numbers 1
+		red = 4293918720; // first 12 numbers 1
+		blackK = 0; 
+		redK = 0;
+	}
+	void stdBoard(string board) {
+		black = 0;
+		red = 0;
+		blackK = 0;
+		redK = 0;
+		for (int i = 0; i < 32; ++i) {
+			if (board[i] == 'r') {
+				//using bitshifting rather than power.
+				red += 1 << (31 - i);
+			}
+			if (board[i] == 'R') {
+				red += 1 << (31 - i);
+				redK += 1 << (31 - i);
+			}
+			if (board[i] == 'b') {
+				//using bitshifting rather than power.
+				black += 1 << (31 - i);
+			}
+			if (board[i] == 'B') {
+				black += 1 << (31 - i);
+				blackK += 1 << (31 - i);
+			}
+		}
+	}
+	void stdBoard(i32 b, i32 r, i32 bK, i32 rK) {
+		black = b;
+		red = r;
+		blackK = bK;
+		redK = rK;
+	}
 	string strBoard();  //returns string representation of a board.
 	//generateMoves - fills an array/vector with the valid moves possible on the board.
 	//Returns false if no valid moves found.
