@@ -4,6 +4,9 @@
 #include <stdint.h>
 #include <string>
 using std::string;
+#include <iostream>
+using std::cout; 
+using std::endl; 
 
 typedef int32_t i32;
 
@@ -13,13 +16,13 @@ public:
 	i32 red;  //red pieces - pawns and kings
 	i32 blackK; //black kings
 	i32 redK;  //red kings
-	void stdBoard() { //Initial regular board
+	stdBoard() { //Initial regular board
 		black = 4095; // last 12 numbers 1
 		red = 4293918720; // first 12 numbers 1
 		blackK = 0; 
 		redK = 0;
 	}
-	void stdBoard(string board) {
+	stdBoard(string board) {
 		black = 0;
 		red = 0;
 		blackK = 0;
@@ -43,17 +46,34 @@ public:
 			}
 		}
 	}
-	void stdBoard(i32 b, i32 r, i32 bK, i32 rK) {
+	stdBoard(i32 b, i32 r, i32 bK, i32 rK) {
 		black = b;
 		red = r;
 		blackK = bK;
 		redK = rK;
 	}
-	string strBoard();  //returns string representation of a board.
+
+	//returns string representation of a board.
+	string strBoard(){
+		return " b b b bb b b b"; 
+	}  
 	//generateMoves - fills an array/vector with the valid moves possible on the board.
 	//Returns false if no valid moves found.
 	bool generateMoves(stdBoard boardList[]);  //boardlist is previously allocated vector/array for boards to be stored in.  Return is false if no moves
-	strdBoard flipBoard();  //returns view of board from other side.
+	stdBoard flipBoard();  //returns view of board from other side.
+	
+//->	//draws board on gui *for now is console----TODO
+	void draw(){
+		string boardString = strBoard();
+
+		for(int i=0; i<boardString.size(); ++i){
+			if(i%8==0)
+				cout << endl; 
+			
+			cout << boardString[i]; 
+		} 
+		
+	}
 };
 
 #endif /* RANDOM_CHECKERS_INCLUDED */ 

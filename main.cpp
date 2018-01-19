@@ -5,5 +5,7 @@ using std::endl;
 
 int main(){
 
+	stdBoard b; 
+	b.draw(); 
 	return 0; 
 }
