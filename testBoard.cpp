@@ -17,5 +17,10 @@ if (test01.str() != "RrRrRrBbBbBb        BrBrBrRbRbRb") {
 } else {
 	cout << "Default string constructor passed, board is " << test01.str() << endl;
 }
-
+stdBoard test02 ("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
+if (test02.str() != "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB") {
+	cout << "Default string constructor returned unexpected value: " << test02.str() << endl;
+} else {
+	cout << "Default string constructor passed, board is " << test02.str() << endl;
+}
 }
