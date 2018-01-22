@@ -17,8 +17,8 @@ public:
 	i32 blackK; //black kings
 	i32 redK;  //red kings
 	stdBoard() { //Initial regular board
-		black = 4095; // last 12 numbers 1
-		red = 4293918720; // first 12 numbers 1
+		black = 4293918720; // last 12 numbers 1
+		red = 4095; // first 12 numbers 1
 		blackK = 0; 
 		redK = 0;
 	}
@@ -30,19 +30,19 @@ public:
 		for (int i = 0; i < 32; ++i) {
 			if (board[i] == 'r') {
 				//using bitshifting rather than power.
-				red += 1 << (31 - i);
+				red += 1 << i;
 			}
 			if (board[i] == 'R') {
-				red += 1 << (31 - i);
-				redK += 1 << (31 - i);
+				red += 1 << i;
+				redK += 1 << i;
 			}
 			if (board[i] == 'b') {
 				//using bitshifting rather than power.
-				black += 1 << (31 - i);
+				black += 1 << i;
 			}
 			if (board[i] == 'B') {
-				black += 1 << (31 - i);
-				blackK += 1 << (31 - i);
+				black += 1 << i;
+				blackK += 1 << i;
 			}
 		}
 	}
@@ -54,8 +54,23 @@ public:
 	}
 
 	//returns string representation of a board.
-	string strBoard(){
-		return " b b b bb b b b"; 
+	string str(){
+		string board;
+		for (int i = 0;i<32;++i) {
+			if (redK & (1 << i )) {
+				board.append("R");
+			} else if (blackK & ( 1 << i )) {
+				board.append("B");
+			} else if (red & ( 1 << i )) {
+				board.append("r");
+			} else if (black & ( 1 << i )) {
+				board.append("b");
+			} else {
+				board.append(" ");
+			}
+		}
+		return board;
+		//return " b b b bb b b b"; 
 	}  
 	//generateMoves - fills an array/vector with the valid moves possible on the board.
 	//Returns false if no valid moves found.
@@ -64,7 +79,7 @@ public:
 	
 //->	//draws board on gui *for now is console----TODO
 	void draw(){
-		string boardString = strBoard();
+		string boardString = str();
 
 		for(int i=0; i<boardString.size(); ++i){
 			if(i%8==0)
