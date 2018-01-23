@@ -74,7 +74,12 @@ public:
 	}  
 	//generateMoves - fills an array/vector with the valid moves possible on the board.
 	//Returns false if no valid moves found.
-	bool generateMoves(stdBoard boardList[]);  //boardlist is previously allocated vector/array for boards to be stored in.  Return is false if no moves
+	int generateMoves(stdBoard boardList[],side = 0) {
+		int moveCount = 0;
+		
+		
+
+	}  //boardlist is previously allocated vector/array for boards to be stored in.  Return is number of moves found.
 	stdBoard flipBoard();  //returns view of board from other side.
 	
 //->	//draws board on gui *for now is console----TODO

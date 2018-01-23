@@ -1,4 +1,5 @@
 #include <iostream>
+
 using std::cout; 
 using std::endl; 
 #include "random_checkers.h"
@@ -24,3 +25,11 @@ if (test02.str() != "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB") {
 	cout << "Default string constructor passed, board is " << test02.str() << endl;
 }
 }
+
+//Start testing move generator
+
+stdBoard moveChoices[32]  //try a vector version later.
+int numMoves;
+numMoves = test00.genMoves(moveChoices);
+
+
