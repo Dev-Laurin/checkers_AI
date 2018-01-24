@@ -8,7 +8,7 @@ using std::string;
 using std::cout; 
 using std::endl; 
 
-typedef int32_t i32;
+typedef uint32_t i32; //unsigned 32bit int.  Used to store checkers board.
 
 class stdBoard {
 public:
@@ -74,25 +74,29 @@ public:
 	}  
 	//generateMoves - fills an array/vector with the valid moves possible on the board.
 	//Returns false if no valid moves found.
-	int generateMoves(stdBoard boardList[],side = 0) {
+	//todo: Add jump flag. (int * jump)?
+	int genMoves(stdBoard boardList[], int side = 0) {//boardlist is previously allocated vector/array for boards to be stored in.  Return is number of moves found.
+		//magic numbers.  Mask of which places have a valid move, up 4, up 3, up 5 positions.
+		i32 const mask4U = 0xFFFFFFF0;
+		i32 const mask3U = 0x00E0E0E0; //needs to be recalced.
+		i32 const mask5U = 0x07070707; //needs to be recalced.
 		int moveCount = 0;
-		
-		
+		i32 mOpen = ~(red | black);  //bitwise OR, then compliment.  Shows valid open positions.
+		// move by displacement 4, up
+		i32 c4 = cBoard & mask4U;
 
-	}  //boardlist is previously allocated vector/array for boards to be stored in.  Return is number of moves found.
+		
+		return 0;
+	}  
 	stdBoard flipBoard();  //returns view of board from other side.
 	
 //->	//draws board on gui *for now is console----TODO
-	void draw(){
+	void draw() {
 		string boardString = str();
-
-		for(int i=0; i<boardString.size(); ++i){
-			if(i%8==0)
-				cout << endl; 
-			
-			cout << boardString[i]; 
-		} 
-		
+		for (int i = 0; i < 32; i+=8) {
+			cout << " " << boardString[i] << " " << boardString[i + 1] << " " << boardString[i + 2] << " " << boardString[i + 3] << endl;
+			cout << boardString[i + 4] << " " << boardString[i + 5] << " " << boardString[i + 6] << " " << boardString[i + 7] << " " << endl;
+		}
 	}
 };
 
