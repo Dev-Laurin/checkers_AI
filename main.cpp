@@ -1,7 +1,7 @@
 #include <iostream>
 using std::cout; 
 using std::endl; 
-#include "random_checkers.h"
+#include "board.h"
 #include <SFML/Graphics.hpp>
 
 int main(){

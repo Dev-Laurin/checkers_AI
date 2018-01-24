@@ -1,4 +1,4 @@
-#include "random_checkers.h"
+#include "board.h"
 /*
 stdBoard::stdBoard() {
 	black = 4095; // last 12 numbers 1
