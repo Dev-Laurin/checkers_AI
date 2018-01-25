@@ -2,7 +2,7 @@
 
 using std::cout; 
 using std::endl; 
-#include "random_checkers.h"
+#include "board.h"
 
 int main() {
 	cout << "testing functions" << endl;
@@ -39,6 +39,9 @@ int main() {
 	stdBoard moveChoices[32];  //try a vector version later.
 	int numMoves;
 	numMoves = test00.genMoves(moveChoices);
-
+	for (; numMoves > 0; --numMoves) {
+		moveChoices[numMoves].draw();
+		cout << endl;
+	}
 
 }

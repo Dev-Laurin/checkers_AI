@@ -82,9 +82,18 @@ public:
 		i32 const mask5U = 0x07070707; //needs to be recalced.
 		int moveCount = 0;
 		i32 mOpen = ~(red | black);  //bitwise OR, then compliment.  Shows valid open positions.
+		//testing
 		// move by displacement 4, up
-		i32 c4 = cBoard & mask4U;
-
+		i32 c4 = mOpen & mask4U;
+		cout << "open spots" << endl;
+		stdBoard(c4, 0, 0, 0).draw();
+		cout << "c4: " << c4 << endl;
+		stdBoard((black >> 4) & c4, 0, 0, 0).draw();
+		i32 move4 = (black >> 4) & c4;
+		cout << "move4: " << move4 << endl;
+		while (move4 > 0) {
+			move4 = move4 << 1;
+		}
 		
 		return 0;
 	}  
@@ -94,8 +103,8 @@ public:
 	void draw() {
 		string boardString = str();
 		for (int i = 0; i < 32; i+=8) {
-			cout << " " << boardString[i] << " " << boardString[i + 1] << " " << boardString[i + 2] << " " << boardString[i + 3] << endl;
-			cout << boardString[i + 4] << " " << boardString[i + 5] << " " << boardString[i + 6] << " " << boardString[i + 7] << " " << endl;
+			cout << "." << boardString[i] << "." << boardString[i + 1] << "." << boardString[i + 2] << "." << boardString[i + 3] << endl;
+			cout << boardString[i + 4] << "." << boardString[i + 5] << "." << boardString[i + 6] << "." << boardString[i + 7] << "." << endl;
 		}
 	}
 };
