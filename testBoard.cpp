@@ -4,6 +4,30 @@ using std::cout;
 using std::endl; 
 #include "board.h"
 
+//print boards horizontally
+void printBoardArray(stdBoard boardList[], int numBoards) {
+	int BoardsPerRow = 7;
+	string boards[numBoards];
+	for (int i = 0; i < numBoards; ++i) {
+		boards[i] = boardList[i].str();
+	}
+	for (int i = 0; i < numBoards; i += BoardsPerRow) {
+		int boardsLeft = numBoards - i;
+		cout << endl;
+		for (int j = 0; j < 32; j += 8) {
+			for (int k = 0; (i + k < numBoards) && (k < BoardsPerRow); ++k) {
+				cout << "  ." << boards[i+k][j] << "." << boards[i+k][j + 1] << "." << boards[i+k][j + 2] << "." << boards[i+k][j + 3];
+			}
+			cout << endl;
+			for (int k = 0; (i + k < numBoards) && (k < BoardsPerRow); ++k) {
+				cout << "  " << boards[i+k][j + 4] << "." << boards[i+k][j + 5] << "." << boards[i+k][j + 6] << "." << boards[i+k][j + 7] << ".";
+			}
+			cout << endl;
+		}
+		cout << endl << endl;
+	}
+}
+
 int main() {
 	cout << "testing functions" << endl;
 	stdBoard test00;
@@ -46,38 +70,24 @@ int main() {
 		cout << "Unexpected number of moves found!" << endl;
 	}
 	test.draw();
-	cout << moveChoices[0].str();
 	numMoves = test.genMoves(moveChoices);
-	for (int i = 0; i < numMoves; ++i) {
-		cout << endl;
-		moveChoices[i].draw();
-	}
+	printBoardArray(moveChoices, numMoves);
 
-	test.black = 0xFF000000; //Bottom 2 rows all filled.
-	numMoves = test.genMoves(moveChoices);
-	if (numMoves != 7) {
-		cout << "Unexpected number of moves found!" << endl;
-	}
+	test.black = 0xFF000000; //Bottom 2 rows all filled..
 	test.draw();
-	cout << moveChoices[0].str();
 	numMoves = test.genMoves(moveChoices);
-	for (int i = 0; i < numMoves; ++i) {
-		cout << endl;
-		moveChoices[i].draw();
-	}
+	printBoardArray(moveChoices, numMoves);
+
 	test.black = 0xFF000000; //Bottom 2 rows all filled.
 	test.blackK = 0xFF000000; //Bottom 2 rows all kings.
-	numMoves = test.genMoves(moveChoices);
-	if (numMoves != 7) {
-		cout << "Unexpected number of moves found!" << endl;
-	}
 	test.draw();
-	cout << moveChoices[0].str();
 	numMoves = test.genMoves(moveChoices);
-	for (int i = 0; i < numMoves; ++i) {
-		cout << endl;
-		moveChoices[i].draw();
-	}
+	printBoardArray(moveChoices, numMoves);
 
+	test.black = 0x000000FF; //top all filled.
+	test.blackK = 0x000000FF; //kings
+	test.draw();
+	numMoves = test.genMoves(moveChoices);
+	printBoardArray(moveChoices, numMoves);
 
 }

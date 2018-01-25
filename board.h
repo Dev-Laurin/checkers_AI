@@ -76,25 +76,60 @@ public:
 	//todo: Add jump flag. (int * jump)?
 	int genMoves(stdBoard boardList[], int side = 0) {//boardlist is previously allocated vector/array for boards to be stored in.  Return is number of moves found.
 		//magic numbers.  Mask of which places have a valid move, up 4, up 3, up 5 positions.
-		i32 const maskU[3] = { 0x00E0E0E0,0xFFFFFFF0,0x07070707};
-		i32 maskM[3] = { 9,17,33 };
+		i32 const maskU[2][3] = { { 0x00E0E0E0,0xFFFFFFF0,0x07070707},{ 0x07070700,0x0FFFFFFF,0xE0E0E0E0 } };
+		/*
+		cout << endl;
+		stdBoard(maskU[0][0], 0, 0, 0).draw();
+		cout << endl;
+		stdBoard(maskU[0][1], 0, 0, 0).draw();
+		cout << endl;
+		stdBoard(maskU[0][2], 0, 0, 0).draw();
+		cout << endl;
+		cout << endl;
+		stdBoard(maskU[1][0], 0, 0, 0).draw();
+		cout << endl;
+		stdBoard(maskU[1][1], 0, 0, 0).draw();
+		cout << endl;
+		stdBoard(maskU[1][2], 0, 0, 0).draw();
+		cout << endl;
+		*/
+		i32 const maskM[3] = { 9,17,33 };
 		int moveCount = 0;
 		i32 mOpen = ~(red | black);  //bitwise OR, then compliment.  Shows valid open positions.
+		//Black King Moves
 		for (int i = 0; i < 3; ++i) {
-			i32 moves = (black >> (i+3)) & (mOpen & maskU[i]);
+			i32 moves = (blackK) & ((mOpen & maskU[1][i]) >> (i + 3));
+			i32 mask = maskM[i];
 			while (moves > 0) {
 				if (moves & 1) {
-					boardList[moveCount] = stdBoard(black ^ maskM[i], red, blackK, redK);
+					boardList[moveCount] = stdBoard(black, red, blackK ^ mask, redK);
+					//Need to move the pawn notation as well.
+					//XOR old board and new board -1 and 1 on moved pieces.
+					//XOR on pawn.
+					boardList[moveCount].black = boardList[moveCount].black ^ (boardList[moveCount].blackK ^ blackK);
+					++moveCount;
+				}
+				moves = moves >> 1;
+				mask = mask << 1;
+			}
+		}
+		//Black Pawn Moves.
+		for (int i = 0; i < 3; ++i) {
+			i32 moves = (black >> (i+3)) & (mOpen & maskU[0][i]);
+			i32 mask = maskM[i];
+			while (moves > 0) {
+				if (moves & 1) {
+					boardList[moveCount] = stdBoard(black ^ mask, red, blackK, redK);
 					//Need to move the king as well, if it is one.
 					//Take the complement of the black list and 'AND' with king list.
 					//should be all zero.  Otherwise, king to move.
 					i32 king = boardList[moveCount].blackK & (~boardList[moveCount].black);
-					//remove the excess king.
+					//move the king.  Note: No if statements!
 					boardList[moveCount].blackK = (boardList[moveCount].blackK ^ king) ^ (king >> (i+3));
 					++moveCount;
 				}
 				moves = moves >> 1;
-				maskM[i] = maskM[i] << 1;
+				mask = mask << 1;
 			}
 		}
 		return moveCount;
