@@ -35,13 +35,36 @@ int main() {
 	
 
 	//Start testing move generator
-
+	stdBoard test(0,0,0,0);
 	stdBoard moveChoices[32];  //try a vector version later.
 	int numMoves;
-	numMoves = test00.genMoves(moveChoices);
-	for (; numMoves > 0; --numMoves) {
-		moveChoices[numMoves].draw();
-		cout << endl;
+
+	cout << "Testing Move Generator" << endl;
+	test.black = 0xF0000000; //Bottom row all filled.
+	numMoves = test.genMoves(moveChoices);
+	if (numMoves != 7) {
+		cout << "Unexpected number of moves found!" << endl;
 	}
+	test.draw();
+	cout << moveChoices[0].str();
+	numMoves = test.genMoves(moveChoices);
+	for (int i = 0; i < numMoves; ++i) {
+		cout << endl;
+		moveChoices[i].draw();
+	}
+
+	test.black = 0xFF000000; //Bottom row all filled.
+	numMoves = test.genMoves(moveChoices);
+	if (numMoves != 7) {
+		cout << "Unexpected number of moves found!" << endl;
+	}
+	test.draw();
+	cout << moveChoices[0].str();
+	numMoves = test.genMoves(moveChoices);
+	for (int i = 0; i < numMoves; ++i) {
+		cout << endl;
+		moveChoices[i].draw();
+	}
+
 
 }

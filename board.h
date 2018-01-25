@@ -78,24 +78,51 @@ public:
 	int genMoves(stdBoard boardList[], int side = 0) {//boardlist is previously allocated vector/array for boards to be stored in.  Return is number of moves found.
 		//magic numbers.  Mask of which places have a valid move, up 4, up 3, up 5 positions.
 		i32 const mask4U = 0xFFFFFFF0;
-		i32 const mask3U = 0x00E0E0E0; //needs to be recalced.
-		i32 const mask5U = 0x07070707; //needs to be recalced.
+		i32 const mask5U = 0x07070707; //Should be correct now.
+		i32 const mask3U = 0x00E0E0E0; //dyslexia sucks. (beware of getting this backwards)
+		cout << endl;
 		int moveCount = 0;
 		i32 mOpen = ~(red | black);  //bitwise OR, then compliment.  Shows valid open positions.
-		//testing
 		// move by displacement 4, up
 		i32 c4 = mOpen & mask4U;
-		cout << "open spots" << endl;
-		stdBoard(c4, 0, 0, 0).draw();
-		cout << "c4: " << c4 << endl;
-		stdBoard((black >> 4) & c4, 0, 0, 0).draw();
 		i32 move4 = (black >> 4) & c4;
-		cout << "move4: " << move4 << endl;
+		i32 mask4M = 17; // binary: 10001
 		while (move4 > 0) {
-			move4 = move4 << 1;
+			if (move4 & 1) {
+				boardList[moveCount] = stdBoard(black ^ mask4M, red, blackK, redK);
+				++moveCount;
+			}
+			move4 = move4 >> 1;
+			mask4M = mask4M << 1;
 		}
-		
-		return 0;
+		// move by displacement 3, up
+		i32 c3 = mOpen & mask3U;
+		//stdBoard(c3, 0, 0, 0).draw();
+		i32 move3 = (black >> 3) & c3;
+		i32 mask3M = 9; // binary: 1001
+		while (move3 > 0) {
+			if (move3 & 1) {
+				boardList[moveCount] = stdBoard(black ^ mask3M, red, blackK, redK);
+				++moveCount;
+			}
+			move3 = move3 >> 1;
+			mask3M = mask3M << 1;
+		}
+		// move by displacement 5, up
+		i32 c5 = mOpen & mask5U;
+		//stdBoard(c3, 0, 0, 0).draw();
+		i32 move5 = (black >> 5) & c5;
+		i32 mask5M = 33; // binary: 100001
+		while (move5 > 0) {
+			if (move5 & 1) {
+				boardList[moveCount] = stdBoard(black ^ mask5M, red, blackK, redK);
+				++moveCount;
+			}
+			move5 = move5 >> 1;
+			mask5M = mask5M << 1;
+		}
+
+		return moveCount;
 	}  
 	stdBoard flipBoard();  //returns view of board from other side.
 	
