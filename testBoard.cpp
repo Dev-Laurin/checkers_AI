@@ -53,7 +53,20 @@ int main() {
 		moveChoices[i].draw();
 	}
 
-	test.black = 0xFF000000; //Bottom row all filled.
+	test.black = 0xFF000000; //Bottom 2 rows all filled.
+	numMoves = test.genMoves(moveChoices);
+	if (numMoves != 7) {
+		cout << "Unexpected number of moves found!" << endl;
+	}
+	test.draw();
+	cout << moveChoices[0].str();
+	numMoves = test.genMoves(moveChoices);
+	for (int i = 0; i < numMoves; ++i) {
+		cout << endl;
+		moveChoices[i].draw();
+	}
+	test.black = 0xFF000000; //Bottom 2 rows all filled.
+	test.blackK = 0xFF000000; //Bottom 2 rows all kings.
 	numMoves = test.genMoves(moveChoices);
 	if (numMoves != 7) {
 		cout << "Unexpected number of moves found!" << endl;
