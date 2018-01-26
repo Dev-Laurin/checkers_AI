@@ -74,7 +74,7 @@ int main(){
 		}
 		for(int x=0; x<4; ++x){
 			sf::CircleShape piece(22.f); 
-			piece.setFillColor(sf::Color::White); 
+			piece.setFillColor(sf::Color(139,0,0,255)); 
 			piece.setPosition( x_pos + (tile_width-piece.getRadius())/4, 
 		y_pos + (tile_width-piece.getRadius())/4);
 			pieces.push_back(piece);
@@ -85,7 +85,17 @@ int main(){
 	}
 			  
 	//Debug Window font 
-	
+	sf::Font ubuntuFont; 
+	if(!ubuntuFont.loadFromFile("NotoSansCJK-Medium.ttc"))
+		cout << "Error loading font file." << endl;
+
+	//debug text
+	sf::Text debugText; 
+	debugText.setFont(ubuntuFont); 
+	debugText.setString("Welcome to Checkers!"); 
+	debugText.setCharacterSize(10); 
+	debugText.setColor(sf::Color::Black); 
+	debugText.setPosition(520,20); 
 
 	//Draw 
 	while(window.isOpen())
@@ -99,7 +109,9 @@ int main(){
 		window.clear(); 
 
 		//draw background (black)
-		window.draw(board); 
+		//window.draw(board); 
+
+		
 		//draw red tile spaces 
 		for(int i=0; i<red_tiles.size(); ++i){
 			window.draw(red_tiles[i]); 
@@ -108,7 +120,8 @@ int main(){
 		for(int i=0; i<pieces.size(); ++i){
 			window.draw(pieces[i]); 
 		}
-		window.draw(debugWindow);  
+		window.draw(debugWindow); 
+		window.draw(debugText);
 		window.display(); 
 	}
 	
