@@ -62,13 +62,13 @@ public:
 	string str(){
 		string board;
 		for (int i = 0;i<32;++i) {
-			if (redK & (1 << i )) {
+			if (pieces[3] & (1 << i )) {
 				board.append("R");
-			} else if (blackK & ( 1 << i )) {
+			} else if (pieces[2] & ( 1 << i )) {
 				board.append("B");
-			} else if (red & ( 1 << i )) {
+			} else if (pieces[1] & ( 1 << i )) {
 				board.append("r");
-			} else if (black & ( 1 << i )) {
+			} else if (pieces[0] & ( 1 << i )) {
 				board.append("b");
 			} else {
 				board.append(" ");
@@ -82,10 +82,11 @@ public:
 		i32 mOpen = ~(red | black); //open board spots marked with a 1
 		int moveCount = 0;
 		//Up&left
-		i32 moves = maskM[0] & mOpen & (pieces[1 - side] >> 5) & (pieces[side] >> 9);
+		i32 moves[4];
+		moves[0] = maskM[0] & mOpen & (pieces[1 - side] >> 5) & (pieces[side] >> 9); //up left1
 		
-		for(int i = 0; moves > 0; ++i) {
-			if (moves & 1) {
+		for(int i = 0; moves[0] > 0; ++i) {
+			if ((1 & moves[0])==0) {
 				stdBoard jmp = *this;
 				jmp.draw();
 				jmp.pieces[1 - side] = pieces[1 - side] ^ (1 << (5 + i));
@@ -93,7 +94,7 @@ public:
 				jmp.draw();
 				
 			}
-			moves = moves >> 1;
+			moves[0] = moves[0] >> 1;
 		}
 
 		return 0;
@@ -103,22 +104,36 @@ public:
 	//todo: Add jump flag. (int * jump)?
 	int genMoves(stdBoard boardList[], int side = 0) {//boardlist is previously allocated vector/array for boards to be stored in.  Return is number of moves found.
 		//magic numbers.  Mask of which places have a valid move, up 4, up 3, up 5 positions.
-		i32 const maskU[2][3] = { { 0x00E0E0E0,0xFFFFFFF0,0x07070707},{ 0x07070700,0x0FFFFFFF,0xE0E0E0E0 } };
+		int mUp;
+		int mDown;
+		if (side) {
+			mUp = 3; // redKing
+			mDown = 1; // redPawn
+
+		}
+		else {
+			mUp = 0; // blackPawn
+			mDown = 2; // blackKing
+		}
+		i32 const maskU[2][3] = { { 0x00E0E0E0,0xFFFFFFFF,0x07070707},{ 0x07070700,0xFFFFFFFF,0xE0E0E0E0 } };
 		i32 const maskM[3] = { 9,17,33 };
 		int moveCount = 0;
-		i32 mOpen = ~(red | black);  //bitwise OR, then compliment.  Shows valid open positions.
+		i32 mOpen = ~(pieces[0] | pieces[1]);  //bitwise OR, then compliment.  Shows valid open positions.
 		//Black King Moves
 		//Red Pawn Moves
 		for (int i = 0; i < 3; ++i) {
-			i32 moves = (blackK) & ((mOpen & maskU[1][i]) >> (i + 3));
+			i32 moves = (pieces[mDown]) & ((mOpen & maskU[1][i]) >> (i + 3));
 			i32 mask = maskM[i];
 			while (moves > 0) {
 				if (moves & 1) {
-					boardList[moveCount] = stdBoard(black ^ mask, red, blackK, redK);
+					boardList[moveCount] = *this; //copy the existing board.
+					boardList[moveCount].pieces[mUp & 1] = pieces[mUp & 1] ^ mask; //apply the move. 
+					//bitwise and with 1 makes it always move the pawn.
+
 					//Move is noted on pawn board, need to move king as well.
 					//change is to allow use for red pawns.
-					i32 king = boardList[moveCount].blackK & (~boardList[moveCount].black);
-					boardList[moveCount].blackK = (boardList[moveCount].blackK ^ king) ^ (king << (i + 3));
+					i32 king = boardList[moveCount].pieces[mUp | 2] & (~boardList[moveCount].pieces[mUp & 1]);
+					boardList[moveCount].pieces[mUp | 2] = (boardList[moveCount].pieces[mUp | 2] ^ king) ^ (king << (i + 3));
 					++moveCount;
 				}
 				moves = moves >> 1;
@@ -128,17 +143,21 @@ public:
 		//Black Pawn Moves.
 		//Red King Moves
 		for (int i = 0; i < 3; ++i) {
-			i32 moves = (black >> (i+3)) & (mOpen & maskU[0][i]);
+			i32 moves = (pieces[mUp] >> (i+3)) & (mOpen & maskU[0][i]);
 			i32 mask = maskM[i];
 			while (moves > 0) {
 				if (moves & 1) {
-					boardList[moveCount] = stdBoard(black ^ mask, red, blackK, redK);
+					boardList[moveCount] = *this;
+					boardList[moveCount].pieces[mUp & 1] = pieces[mUp & 1] ^ mask;
 					//Need to move the king as well, if it is one.
 					//Take the complement of the black list and 'AND' with king list.
 					//should be all zero.  Otherwise, king to move.
-					i32 king = boardList[moveCount].blackK & (~boardList[moveCount].black);
+					i32 king = boardList[moveCount].pieces[mUp | 2] & (~boardList[moveCount].pieces[mUp & 1]);
+					boardList[moveCount].pieces[mUp | 2] = (boardList[moveCount].pieces[mUp | 2] ^ king) ^ (king >> (i + 3));
+
+					//i32 king = boardList[moveCount].blackK & (~boardList[moveCount].black);
 					//move the king.  Note: No if statements!
-					boardList[moveCount].blackK = (boardList[moveCount].blackK ^ king) ^ (king >> (i+3));
+					//boardList[moveCount].blackK = (boardList[moveCount].blackK ^ king) ^ (king >> (i+3));
 					++moveCount;
 				}
 				moves = moves >> 1;
