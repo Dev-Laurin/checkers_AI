@@ -102,15 +102,22 @@ int main() {
 	printBoardArray(moveChoices, numMoves);
 
 	test.black = 0xF0000300;
-	test.blackK = 0;
+	test.blackK = 0x30000100;
 	test.red = 0x0F0000F0;
 	test.redK = 0x0F000030;
 	test.draw();
 	cout << endl;
 	numMoves = test.genMoves(moveChoices,1);
 	printBoardArray(moveChoices, numMoves);
-
+	cout << endl;
+	test.draw();
+	cout << "Black jumps" << endl;
 	numMoves = test.genJumps(moveChoices,0);
+	cout << "numMoves = " << numMoves << endl;
+	printBoardArray(moveChoices, numMoves);
+
+	cout << "Red jumps" << endl;
+	numMoves = test.genJumps(moveChoices, 1);
 	cout << "numMoves = " << numMoves << endl;
 	printBoardArray(moveChoices, numMoves);
 

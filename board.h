@@ -125,16 +125,16 @@ public:
 			mDown = 2; // blackKing
 		}
 		//up left 1, up right 1, up left 2, down right 2
-		i32 const maskM[4] = { 0x00707070,0x00070707,0x00E0E0E0,0x000E0E0E };
+		i32 const maskM[2][4] = { { 0x00707070,0x00070707,0x00E0E0E0,0x000E0E0E },
+			{ 0x0E0E0E00,0xE0E0E000,0x07070700,0x70707000 } };
+
 		i32 mOpen = ~(pieces[0] |pieces[1]); //open board spots marked with a 1
 		int moveCount = 0;
 		//Up&left,Up%right
-		i32 moves[4];
-		cout << "moves " << moves[0] << " " << moves[1] << endl;
-		cout << "masktest " << (maskM[0] & mOpen & (pieces[1 - side] >> 5)) << endl;
-		
+		i32 moves[4];		
+		//Jumping UP
 		for (int j = 0; j < 2; ++j) {
-			moves[j] = maskM[j] & mOpen & (pieces[1 - side] >> (j+4)) & (pieces[side] >> 9); //up left
+			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j+4)) & (pieces[side] >> 9); //up left
 			for (int i = 0; moves[j] > 0; ++i) {
 				if (1 & moves[j]) {
 					stdBoard jmp = *this;
@@ -142,7 +142,11 @@ public:
 					jmp.pieces[1 - side] = pieces[1 - side] ^ (1 << (j + 4 + i));
 					//remove the king if necessary:
 					jmp.pieces[(1 - side) | 2] = jmp.pieces[(1 - side) | 2] & jmp.pieces[1 - side];
+					//Move the jump piece
 					jmp.pieces[side] = pieces[side] ^ (1 << (9 + i) | 1 << i);
+					//move the king symbol.
+					i32 king = jmp.pieces[side | 2] & (~jmp.pieces[side & 1]);
+					jmp.pieces[side | 2] = (jmp.pieces[side | 2] ^ king) ^ (king >> 9);
 					//Insert recursion here.
 					boardList[moveCount] = jmp;
 					boardList[moveCount].kingMaker();
@@ -152,7 +156,7 @@ public:
 			}
 		}
 		for (int j = 2; j < 4; ++j) {
-			moves[j] = maskM[j] & mOpen & (pieces[1 - side] >> (j + 1)) & (pieces[side] >> 7); //up right
+			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j + 1)) & (pieces[side] >> 7); //up right
 			for (int i = 0; moves[j] > 0; ++i) {
 				if (1 & moves[j]) {
 					stdBoard jmp = *this;
@@ -160,7 +164,58 @@ public:
 					jmp.pieces[1 - side] = pieces[1 - side] ^ (1 << (j + 1 + i));
 					//remove the king if necessary:
 					jmp.pieces[(1 - side) | 2] = jmp.pieces[(1 - side) | 2] & jmp.pieces[1 - side];
+					//Move the piece
 					jmp.pieces[side] = pieces[side] ^ (1 << (7 + i) | 1 << i);
+					//move the king symbol.
+					i32 king = jmp.pieces[side | 2] & (~jmp.pieces[side & 1]);
+					jmp.pieces[side | 2] = (jmp.pieces[side | 2] ^ king) ^ (king >> 7);
+
+
+					//Insert recursion here.
+					boardList[moveCount] = jmp;
+					boardList[moveCount].kingMaker();
+					++moveCount;
+				}
+				moves[j] = moves[j] >> 1;
+			}
+		}
+		//Jumping DOWN
+		for (int j = 0; j < 2; ++j) {
+			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 4)) & (pieces[side] << 9); //down right
+			for (int i = 0; moves[j] > 0; ++i) {
+				if (1 & moves[j]) {
+					stdBoard jmp = *this;
+					//remove the jumped piece.
+					jmp.pieces[1 - side] = pieces[1 - side] ^ (1 << (i - 4 - j));
+					//remove the king if necessary:
+					jmp.pieces[(1 - side) | 2] = jmp.pieces[(1 - side) | 2] & jmp.pieces[1 - side];
+					//move the jump piece
+					jmp.pieces[side] = pieces[side] ^ (1 << (i - 9) | 1 << i);
+					//move the king symbol.
+					i32 king = jmp.pieces[side | 2] & (~jmp.pieces[side & 1]);
+					jmp.pieces[side | 2] = (jmp.pieces[side | 2] ^ king) ^ (king << 9);
+					//Insert recursion here.
+					boardList[moveCount] = jmp;
+					boardList[moveCount].kingMaker();
+					++moveCount;
+				}
+				moves[j] = moves[j] >> 1;
+			}
+		}
+		for (int j = 2; j < 4; ++j) {
+			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 1)) & (pieces[side] << 7); //down left
+			for (int i = 0; moves[j] > 0; ++i) {
+				if (1 & moves[j]) {
+					stdBoard jmp = *this;
+					//remove the jumped piece.
+					jmp.pieces[1 - side] = pieces[1 - side] ^ (1 << (i - j - 1));
+					//remove the king if necessary:
+					jmp.pieces[(1 - side) | 2] = jmp.pieces[(1 - side) | 2] & jmp.pieces[1 - side];
+					//move the jump piece
+					jmp.pieces[side] = pieces[side] ^ (1 << (i - 7) | 1 << i);
+					//move the king symbol.
+					i32 king = jmp.pieces[side | 2] & (~jmp.pieces[side & 1]);
+					jmp.pieces[side | 2] = (jmp.pieces[side | 2] ^ king) ^ (king << 7);
 					//Insert recursion here.
 					boardList[moveCount] = jmp;
 					boardList[moveCount].kingMaker();
