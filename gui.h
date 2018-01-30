@@ -7,4 +7,14 @@ void getBoardFromString(vector<sf::CircleShape> black,
 	
 } 
 
+int findCheckerMove(string newBoard, string oldBoard){
+	for(int i=0; i<newBoard.size(); ++i){
+		if(newBoard[i]!=oldBoard[i] and
+			newBoard[i]!=' '){
+			//index of where checker jumped/moved to
+			return i; 
+		}
+	}
+}
+
 #endif /* GUI_INCLUDED_H */ 

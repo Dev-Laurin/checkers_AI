@@ -103,8 +103,15 @@ int main(){
 	turnNotificationText.setFont(ubuntuFont); 
 	turnNotificationText.setString("Turn: player.");
 	turnNotificationText.setCharacterSize(15); 
-	turnNotificationText.setColor(sf::Color::Red); 
+	turnNotificationText.setColor(sf::Color::Green); 
 	turnNotificationText.setPosition(520, 50); 
+
+	sf::Text error; 
+	error.setFont(ubuntuFont); 
+	error.setString(""); 
+	error.setCharacterSize(15);
+	error.setColor(sf::Color::Red); 
+	error.setPosition(520, 100); 
 
 	//Mouse
 	sf::Mouse user_mouse; 
@@ -126,6 +133,7 @@ int main(){
 			if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 				//left mouse was clicked
 				sf::Vector2i position = sf::Mouse::getPosition(window);
+				error.setString(""); //reset error message
 
 				//if mouse was clicked and piece was selected, move piece?
 				if(piece_selected){
@@ -137,6 +145,8 @@ int main(){
 					int thisTileYPos = selected_piece->getPosition().y - 
 					(tile_width - selected_piece->getRadius())/4;
 
+					int index = 0; 
+
 					//find this position in regards to board string
 					for(int i=0; i<red_tiles.size(); ++i){
 						if(red_tiles[i].getPosition().x >= thisTileXPos and
@@ -144,14 +154,64 @@ int main(){
 							red_tiles[i].getPosition().y >= thisTileYPos and
 							red_tiles[i].getPosition().y <= thisTileYPos + tile_width ){
 							//tile is found, multicolor it
-							red_tiles[i].setFillColor(sf::Color::Blue);
+							index = i; 
+							break; 
+						}
+					}
+
+					//find tile that user clicked
+					int clickedIndex = 0; 
+					for(int i=0; i<red_tiles.size(); ++i){
+						if(red_tiles[i].getPosition().x <= position.x and
+							position.x <= red_tiles[i].getPosition().x + tile_width and 
+							red_tiles[i].getPosition().y <= position.y and
+							position.y <= red_tiles[i].getPosition().y + tile_width ){
+							//tile is found, multicolor it
+							clickedIndex = i; 
+							break; 
 						}
 					}
 
 					//get valid moves from this board
 						//turn this board into string 
-					//stdBoard possibleBoards[]; 
-					//board.genMovesForChecker(possibleBoards, 1);
+					cout << "Current board: " << b.str() << endl; 
+					stdBoard possibleBoards[30]; 
+					int movesFound = b.genMoves(possibleBoards, 0);
+
+					vector<int> validPositions; 
+					//loop through boards to find valid moves
+					for(int i=0; i<movesFound; ++i){
+					//	"rrrrrrrrrrrr        bbbbbbbbbbbb"
+						if(possibleBoards[i].str().at(index) == ' '){
+							//this board has our checker involved
+							validPositions.push_back(findCheckerMove(possibleBoards[i].str(),
+								b.str()));
+							cout << "Found the checker" << endl; 
+						}
+						cout << "Possible boards: " << endl; 
+						cout << possibleBoards[i].str() << endl; 
+					} 
+
+					bool valid = false; 
+					//see if user clicked a valid position
+					for(int i=0; i<validPositions.size(); ++i){
+						if(clickedIndex == validPositions[i]){
+							//is a valid position, move the piece
+							selected_piece->setPosition(red_tiles[clickedIndex].getPosition().x + (tile_width-selected_piece->getRadius())/4,
+								red_tiles[clickedIndex].getPosition().y + (tile_width-selected_piece->getRadius())/4);
+							valid=true; 
+							//update board
+							b.updateBoard(possibleBoards[i].str()); 
+							cout << "Updating board to: " << possibleBoards[i].str() << endl;
+							break; 
+						}
+						cout << "Clicked Index: " << clickedIndex << endl; 
+						cout << "Valid position at " << i; 
+						cout << " = " << validPositions[i] << endl; 
+					}
+					if(!valid) //print out to user
+						error.setString("Error: Invalid Move.");
+
 				} 
 
 				//turn last selected piece back to normal color
@@ -199,6 +259,7 @@ int main(){
 		window.draw(debugWindow); 
 		window.draw(debugText);
 		window.draw(turnNotificationText); 
+		window.draw(error); 
 		window.display(); 
 	}
 	
