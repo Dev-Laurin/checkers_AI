@@ -7,6 +7,7 @@ using std::string;
 #include <iostream>
 using std::cout; 
 using std::endl; 
+#include <array>
 
 typedef uint32_t i32; //unsigned 32bit int.  Used to store checkers board.
 
@@ -76,6 +77,30 @@ public:
 		}
 		return board;
 	}  
+
+	void updateBoard(string board) {
+		for (int i = 0;i<4;++i) {
+			pieces[i] = 0;
+		}
+		for (int i = 0; i < 32; ++i) {
+			if (board[i] == 'r') {
+				//using bitshifting rather than power.
+				pieces[1] += 1 << i;
+			}
+			if (board[i] == 'R') {
+				pieces[1] += 1 << i;
+				pieces[3] += 1 << i;
+			}
+			if (board[i] == 'b') {
+				//using bitshifting rather than power.
+				pieces[0] += 1 << i;
+			}
+			if (board[i] == 'B') {
+				pieces[0] += 1 << i;
+				pieces[2] += 1 << i;
+			}
+		}
+	}
 
 	//KingMaker ensures kings are in place.  Simply call function.
 	void kingMaker() {
