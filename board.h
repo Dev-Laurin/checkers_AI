@@ -111,21 +111,25 @@ public:
 		return;
 	}
 
+
 	//genJumps - generate any boards with jumps.
 	//currently not fully functional.
-	int genJumps(stdBoard boardList[], int side = 0) {
+	//The last 2 variables are to enable recursion on the jump by restricting valid moves.
+	//maskP is either all F, indicating all positions valid, or the location of the piece just moved.
+	//consideration:  keep maskP out of this version, create copy.
+	//test later in optimization.
+	int genJumps(stdBoard boardList[], int side = 0, int moveCount = 0, i32 maskP = 0xFFFFFFFF) {
 		//up left 1, up right 1, up left 2, down right 2
 		i32 const maskM[2][4] = { { 0x00707070,0x00070707,0x00E0E0E0,0x000E0E0E },
 			{ 0x0E0E0E00,0xE0E0E000,0x07070700,0x70707000 } };
 
 		i32 mOpen = ~(pieces[0] |pieces[1]); //open board spots marked with a 1
-		int moveCount = 0;
 		//Up&left,Up%right
 		i32 moves[4];		
 		//Jumping UP
 		for (int j = 0; j < 2; ++j) {
 			// side | side << 1 leaves the value at 0 if zero, if 1 changes it to 11(king pieces)
-			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j+4)) & (pieces[side | side << 1] >> 9); //up left			
+			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j + 4)) & ((maskP & pieces[side | side << 1]) >> 9); //up left			
 			for (int i = 0; moves[j] > 0; ++i) {
 				if (1 & moves[j]) {
 					stdBoard jmp = *this;
@@ -138,16 +142,25 @@ public:
 					//move the king symbol.
 					i32 king = jmp.pieces[side | 2] & (~jmp.pieces[side & 1]);
 					jmp.pieces[side | 2] = (jmp.pieces[side | 2] ^ king) ^ (king >> 9);
-					//Insert recursion here.
-					boardList[moveCount] = jmp;
-					boardList[moveCount].kingMaker();
-					++moveCount;
+
+					//Check for new move.  If it returns additional moves, it means further jumps were possible.
+					//don't add this board in that case.
+					int newMoves;
+					newMoves = jmp.genJumps(boardList, side, moveCount, (1 << i));
+					if (newMoves > moveCount) {
+						moveCount = newMoves;
+					}
+					else {  //No additional boards returned, 
+						boardList[moveCount] = jmp;
+						boardList[moveCount].kingMaker();
+						++moveCount;
+					}
 				}
 				moves[j] = moves[j] >> 1;
 			}
 		}
 		for (int j = 2; j < 4; ++j) {	
-			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j + 1)) & (pieces[side | side << 1] >> 7); //up right
+			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j + 1)) & ((maskP & pieces[side | side << 1]) >> 7);  //up right
 			for (int i = 0; moves[j] > 0; ++i) {
 				if (1 & moves[j]) {
 					stdBoard jmp = *this;
@@ -161,11 +174,18 @@ public:
 					i32 king = jmp.pieces[side | 2] & (~jmp.pieces[side & 1]);
 					jmp.pieces[side | 2] = (jmp.pieces[side | 2] ^ king) ^ (king >> 7);
 
+					//Check for more jumps.
+					int newMoves;
+					newMoves = jmp.genJumps(boardList, side, moveCount, (1 << i));
+					if (newMoves > moveCount) {
+						moveCount = newMoves;
+					}
+					else {  //No additional boards returned, 
+						boardList[moveCount] = jmp;
+						boardList[moveCount].kingMaker();
+						++moveCount;
+					}
 
-					//Insert recursion here.
-					boardList[moveCount] = jmp;
-					boardList[moveCount].kingMaker();
-					++moveCount;
 				}
 				moves[j] = moves[j] >> 1;
 			}
@@ -173,7 +193,7 @@ public:
 		//Jumping DOWN
 		for (int j = 0; j < 2; ++j) {
 			// 2 >> side is to specificy king 
-			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 4)) & (pieces[2 >> side] << 9); //down right
+			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 4)) & ((maskP & pieces[2 >> side]) << 9); //down right
 			for (int i = 0; moves[j] > 0; ++i) {
 				if (1 & moves[j]) {
 					stdBoard jmp = *this;
@@ -186,16 +206,24 @@ public:
 					//move the king symbol.
 					i32 king = jmp.pieces[side | 2] & (~jmp.pieces[side & 1]);
 					jmp.pieces[side | 2] = (jmp.pieces[side | 2] ^ king) ^ (king << 9);
-					//Insert recursion here.
-					boardList[moveCount] = jmp;
-					boardList[moveCount].kingMaker();
-					++moveCount;
+					//Check for more jumps.
+					int newMoves;
+					newMoves = jmp.genJumps(boardList, side, moveCount, (1 << i));
+					if (newMoves > moveCount) {
+						moveCount = newMoves;
+					}
+					else {  //No additional boards returned, 
+						boardList[moveCount] = jmp;
+						boardList[moveCount].kingMaker();
+						++moveCount;
+					}
+
 				}
 				moves[j] = moves[j] >> 1;
 			}
 		}
 		for (int j = 2; j < 4; ++j) {
-			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 1)) & (pieces[2 >> side] << 7); //down left
+			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 1)) & ((maskP & pieces[2 >> side]) << 7); //down left
 			for (int i = 0; moves[j] > 0; ++i) {
 				if (1 & moves[j]) {
 					stdBoard jmp = *this;
@@ -208,10 +236,18 @@ public:
 					//move the king symbol.
 					i32 king = jmp.pieces[side | 2] & (~jmp.pieces[side & 1]);
 					jmp.pieces[side | 2] = (jmp.pieces[side | 2] ^ king) ^ (king << 7);
-					//Insert recursion here.
-					boardList[moveCount] = jmp;
-					boardList[moveCount].kingMaker();
-					++moveCount;
+					//Check for more jumps.
+					int newMoves;
+					newMoves = jmp.genJumps(boardList, side, moveCount, (1 << i));
+					if (newMoves > moveCount) {
+						moveCount = newMoves;
+					}
+					else {  //No additional boards returned, 
+						boardList[moveCount] = jmp;
+						boardList[moveCount].kingMaker();
+						++moveCount;
+					}
+
 				}
 				moves[j] = moves[j] >> 1;
 			}

@@ -121,8 +121,8 @@ int main() {
 	cout << "numMoves = " << numMoves << endl;
 	printBoardArray(moveChoices, numMoves);
 
-	test.pieces[0] = 0x00060600;
-	test.pieces[1] = 0x00404040;
+	test.pieces[0] = 0x01040400;
+	test.pieces[1] = 0x00204040;
 	test.pieces[2] = 0x0;
 	test.pieces[3] = 0x0;
 
