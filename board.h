@@ -15,32 +15,32 @@ typedef uint32_t i32; //unsigned 32bit int.  Used to store checkers board.
 //to an array. By using defines, I maintain compatibility
 
 #define black pieces[0] //black pieces - pawns and kings
-#define red pieces[1] //red pieces - pawns and kings
+#define red_p pieces[1] //red_p pieces - pawns and kings
 #define blackK pieces[2] //black kings
-#define redK pieces[3] //red kings
+#define red_pK pieces[3] //red_p kings
 
 class stdBoard {
 public:
 	i32 pieces[4];
 	stdBoard() { //Initial regular board
 		black = 4293918720; // last 12 numbers 1
-		red = 4095; // first 12 numbers 1
+		red_p = 4095; // first 12 numbers 1
 		blackK = 0; 
-		redK = 0;
+		red_pK = 0;
 	}
 	stdBoard(string board) {
 		black = 0;
-		red = 0;
+		red_p = 0;
 		blackK = 0;
-		redK = 0;
+		red_pK = 0;
 		for (int i = 0; i < 32; ++i) {
 			if (board[i] == 'r') {
 				//using bitshifting rather than power.
-				red += 1 << i;
+				red_p += 1 << i;
 			}
 			if (board[i] == 'R') {
-				red += 1 << i;
-				redK += 1 << i;
+				red_p += 1 << i;
+				red_pK += 1 << i;
 			}
 			if (board[i] == 'b') {
 				//using bitshifting rather than power.
@@ -54,9 +54,9 @@ public:
 	}
 	stdBoard(i32 b, i32 r, i32 bK, i32 rK) {
 		black = b;
-		red = r;
+		red_p = r;
 		blackK = bK;
-		redK = rK;
+		red_pK = rK;
 	}
 
 	//returns string representation of a board.
@@ -105,9 +105,9 @@ public:
 	//KingMaker ensures kings are in place.  Simply call function.
 	void kingMaker() {
 		i32 rowBlack = 0x0000000F;
-		i32 rowRed = 0xF0000000;
+		i32 rowred_p = 0xF0000000;
 		pieces[2] = pieces[2] | (pieces[0] & rowBlack);
-		pieces[3] = pieces[3] | (pieces[1] & rowRed);
+		pieces[3] = pieces[3] | (pieces[1] & rowred_p);
 		return;
 	}
 
@@ -257,7 +257,7 @@ public:
 	//generateMoves - fills an array/vector with the valid moves possible on the board.
 	//Returns false if no valid moves found.
 	//todo: Add jump flag. (int * jump)?
-	int genMoves(stdBoard boardList[], int side = 0) {//boardlist is previously allocated vector/array for boards to be stored in.  Return is number of moves found.
+	int genMoves(stdBoard boardList[], int side = 0) {//boardlist is previously allocated vector/array for boards to be stored_p in.  Return is number of moves found.
 		//magic numbers.  Mask of which places have a valid move, up 4, up 3, up 5 positions.
 
 		i32 const maskU[2][3] = { { 0x00E0E0E0,0xFFFFFFFF,0x07070707},{ 0x07070700,0xFFFFFFFF,0xE0E0E0E0 } };
@@ -269,7 +269,7 @@ public:
 		}
 		i32 mOpen = ~(pieces[0] | pieces[1]);  //bitwise OR, then compliment.  Shows valid open positions.
 		//Black King Moves
-		//Red Pawn Moves
+		//red_p Pawn Moves
 		for (int i = 0; i < 3; ++i) {
 			i32 moves = (pieces[2 >> side]) & ((mOpen & maskU[1][i]) >> (i + 3));
 			i32 mask = maskM[i];
@@ -280,7 +280,7 @@ public:
 					//bitwise and with 1 makes it always move the pawn.
 
 					//Move is noted on pawn board, need to move king as well.
-					//change is to allow use for red pawns.
+					//change is to allow use for red_p pawns.
 					i32 king = boardList[moveCount].pieces[side | 2] & (~boardList[moveCount].pieces[side]);
 					boardList[moveCount].pieces[side | 2] = (boardList[moveCount].pieces[side | 2] ^ king) ^ (king << (i + 3));
 					boardList[moveCount].kingMaker();
@@ -291,7 +291,7 @@ public:
 			}
 		}
 		//Black Pawn Moves.
-		//Red King Moves
+		//red_p King Moves
 		for (int i = 0; i < 3; ++i) {
 			i32 moves = (pieces[side | side << 1] >> (i+3)) & (mOpen & maskU[0][i]);
 			i32 mask = maskM[i];
@@ -317,7 +317,15 @@ public:
 		}
 		return moveCount;
 	}  
-	stdBoard flipBoard();  //returns view of board from other side.
+	string flipBoard()
+	{
+		string oldBoard = str(); 
+		string newBoard = ""; 
+		for(int i=oldBoard.length()-1; i>=0; i--){
+			newBoard+=oldBoard[i]; 
+		}
+		return newBoard; 
+	}  //returns view of board from other side.
 	
 	void draw() {
 		string boardString = str();

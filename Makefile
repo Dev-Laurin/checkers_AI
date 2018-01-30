@@ -1,3 +1,6 @@
 all: main.cpp
-	g++ -std=c++14 main.cpp random_checkers.cpp -lsfml-graphics -lsfml-window -lsfml-system
+	g++ -std=c++14 main.cpp -lsfml-graphics -lsfml-window -lsfml-system
 	./a.out 
+test: testBoard.cpp
+	g++ -std=c++14 testBoard.cpp
+	./a.out

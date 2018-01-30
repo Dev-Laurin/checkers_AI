@@ -6,6 +6,7 @@ using std::endl;
 #include <vector>
 using std::vector; 
 #include "gui.h"
+#include <random> 
 
 int main(){
 
@@ -121,13 +122,57 @@ int main(){
 	bool piece_selected = 0; 
 
 	//make starting board
-	stdBoard b; 
+	stdBoard b;
+
+	bool waitForOpponent = false; //player goes first  
 
 	//Draw 
 	while(window.isOpen())
 	{
 		sf::Event event; 
 		while (window.pollEvent(event)){
+			if(waitForOpponent){
+				//opponent's move
+				
+				//get random number
+				stdBoard possibleBoards[30]; 
+				int moves = b.genMoves(possibleBoards,0); //black
+				std::mt19937 gen(33); //seed
+				std::uniform_int_distribution<int> dis(0,moves); 
+				int randMove = dis(gen); 
+
+				//choose move
+				string move = possibleBoards[randMove].str(); 
+
+				//move checker in gui
+				//find the old blank space 
+				int oldIndex = findOldCheckerSpace(move, b.flipBoard());
+				//find that checker 
+				int checkerIndex = 0; 
+				for(int i=0; i<black_pieces.size(); ++i){
+					if(black_pieces[i].getPosition().x >= red_tiles[oldIndex].getPosition().x and
+					black_pieces[i].getPosition().x <= red_tiles[oldIndex].getPosition().x + tile_width and 
+					black_pieces[i].getPosition().y >= red_tiles[oldIndex].getPosition().y and
+					black_pieces[i].getPosition().y <= red_tiles[oldIndex].getPosition().y + tile_width){
+						checkerIndex = i; 
+					}
+				}
+				//find the new space to jump to  
+				int newIndex = findCheckerMove(move, b.flipBoard());
+
+				//move the checker 
+				black_pieces[checkerIndex].setPosition(red_tiles[newIndex].getPosition().x + black_pieces[checkerIndex].getRadius()/4, 
+				red_tiles[newIndex].getPosition().y + black_pieces[checkerIndex].getRadius()/4); 
+
+				//update board 
+				b.updateBoard(move); 
+				
+				waitForOpponent = false; //player's turn 
+				cout.flush(); 
+				sf::sleep(sf::milliseconds(1000)); 
+				turnNotificationText.setString("Turn: Player's turn.");
+
+			}
 			if(event.type == sf::Event::Closed)
 				window.close(); 
 			if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
@@ -174,22 +219,24 @@ int main(){
 
 					//get valid moves from this board
 						//turn this board into string 
-					cout << "Current board: " << b.str() << endl; 
 					stdBoard possibleBoards[30]; 
-					int movesFound = b.genMoves(possibleBoards, 0);
+					int movesFound = b.genMoves(possibleBoards, 1);
 
 					vector<int> validPositions; 
+					vector<int> indices; 
 					//loop through boards to find valid moves
 					for(int i=0; i<movesFound; ++i){
 					//	"rrrrrrrrrrrr        bbbbbbbbbbbb"
-						if(possibleBoards[i].str().at(index) == ' '){
+						if(possibleBoards[i].flipBoard().at(index) == ' '){
 							//this board has our checker involved
-							validPositions.push_back(findCheckerMove(possibleBoards[i].str(),
-								b.str()));
-							cout << "Found the checker" << endl; 
+							//cout << "Finding valid positions" << endl; 
+							//cout << "PossibleBoard[i] = " << possibleBoards[i].flipBoard() << endl;
+							//cout << "Our board flipped: " << b.flipBoard() << endl; 
+							validPositions.push_back(findCheckerMove(possibleBoards[i].flipBoard(),
+								b.flipBoard()));
+							indices.push_back(i); //keep track of position in possible boards for updating later
+							//cout << "Found the checker" << endl; 
 						}
-						cout << "Possible boards: " << endl; 
-						cout << possibleBoards[i].str() << endl; 
 					} 
 
 					bool valid = false; 
@@ -201,13 +248,13 @@ int main(){
 								red_tiles[clickedIndex].getPosition().y + (tile_width-selected_piece->getRadius())/4);
 							valid=true; 
 							//update board
-							b.updateBoard(possibleBoards[i].str()); 
-							cout << "Updating board to: " << possibleBoards[i].str() << endl;
+							b.updateBoard(possibleBoards[indices[i]].str()); 
+							//we need to wait for our opponent now
+							waitForOpponent = true; 
+							turnNotificationText.setString("Turn: Opponent");
 							break; 
 						}
-						cout << "Clicked Index: " << clickedIndex << endl; 
-						cout << "Valid position at " << i; 
-						cout << " = " << validPositions[i] << endl; 
+						
 					}
 					if(!valid) //print out to user
 						error.setString("Error: Invalid Move.");

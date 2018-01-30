@@ -3,6 +3,7 @@
 using std::cout; 
 using std::endl; 
 #include "board.h"
+#include "gui.h"
 
 //print boards horizontally
 void printBoardArray(stdBoard boardList[], int numBoards) {
@@ -29,6 +30,7 @@ void printBoardArray(stdBoard boardList[], int numBoards) {
 }
 
 int main() {
+	 
 	cout << "testing functions" << endl;
 	stdBoard test00;
 	if (test00.str() != "rrrrrrrrrrrr        bbbbbbbbbbbb") {
@@ -136,5 +138,40 @@ int main() {
 	numMoves = test.genJumps(moveChoices, 1);
 	cout << "numMoves = " << numMoves << endl;
 	printBoardArray(moveChoices, numMoves);
+
+ /* 
+	//Test Move Generator
+	stdBoard bb; 
+	cout << "Beginning Board: " << bb.str() << endl; 
+	cout << "Flipped Board: " << bb.flipBoard() << endl;
+	stdBoard possbileMoves[30]; 
+	int moves = bb.genMoves(possbileMoves, 1); //red   
+	for(int i=0; i<moves; ++i){
+		if(possbileMoves[i].flipBoard().at(20)==' '){
+			cout << "Possible moves at location 20 checker" << endl;
+				cout << possbileMoves[i].flipBoard() << endl;	
+	cout << "New index: "; 
+	cout << findCheckerMove(possbileMoves[i].flipBoard(), bb.flipBoard());
+	cout << endl;  
+		}
+		
+	}
+
+	bb.updateBoard(possbileMoves[3].str()); 
+	cout << "New board: " << bb.str() << endl; 
+	cout << "Flipped: " << bb.flipBoard() << endl; 
+
+
+	stdBoard pMoves[30]; 
+	moves = bb.genMoves(pMoves, 1); 
+	for(int i=0; i<moves; ++i){
+				if(pMoves[i].flipBoard().at(16)==' '){
+			cout << "Possible moves at location 16 checker" << endl;
+				cout << pMoves[i].flipBoard() << endl;	
+	cout << "New index: "; 
+	cout << findCheckerMove(pMoves[i].flipBoard(), bb.flipBoard());
+	cout << endl;  
+		} 
+	} */ 
 
 }
