@@ -136,7 +136,6 @@ public:
 	}  
 	stdBoard flipBoard();  //returns view of board from other side.
 	
-//->	//draws board on gui *for now is console----TODO
 	void draw() {
 		string boardString = str();
 		for (int i = 0; i < 32; i+=8) {

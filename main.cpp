@@ -5,6 +5,7 @@ using std::endl;
 #include <SFML/Graphics.hpp>
 #include <vector>
 using std::vector; 
+#include "gui.h"
 
 int main(){
 
@@ -27,7 +28,8 @@ int main(){
 	float x_pos = 0;  
 	float y_pos = 0;  
 	vector<sf::RectangleShape> red_tiles; 
-	std::vector<sf::CircleShape> pieces;
+	std::vector<sf::CircleShape> black_pieces;
+	std::vector<sf::CircleShape> red_pieces;
 
 	for(int y=0; y<8; ++y){
 		x_pos=0; 
@@ -58,7 +60,7 @@ int main(){
 			piece.setFillColor(sf::Color::Black); 
 			piece.setPosition( x_pos + (tile_width-piece.getRadius())/4, 
 		y_pos + (tile_width-piece.getRadius())/4);
-			pieces.push_back(piece);
+			black_pieces.push_back(piece);
 			x_pos+=(tile_width*2); 
 		}
 		y_pos+=tile_width; 
@@ -77,7 +79,7 @@ int main(){
 			piece.setFillColor(sf::Color(139,0,0,255)); 
 			piece.setPosition( x_pos + (tile_width-piece.getRadius())/4, 
 		y_pos + (tile_width-piece.getRadius())/4);
-			pieces.push_back(piece);
+			red_pieces.push_back(piece);
 			x_pos+=(tile_width*2); 
 		}
 		y_pos+=tile_width; 
@@ -93,9 +95,26 @@ int main(){
 	sf::Text debugText; 
 	debugText.setFont(ubuntuFont); 
 	debugText.setString("Welcome to Checkers!"); 
-	debugText.setCharacterSize(10); 
+	debugText.setCharacterSize(15); 
 	debugText.setColor(sf::Color::Black); 
 	debugText.setPosition(520,20); 
+
+	sf::Text turnNotificationText; 
+	turnNotificationText.setFont(ubuntuFont); 
+	turnNotificationText.setString("Turn: player.");
+	turnNotificationText.setCharacterSize(15); 
+	turnNotificationText.setColor(sf::Color::Red); 
+	turnNotificationText.setPosition(520, 50); 
+
+	//Mouse
+	sf::Mouse user_mouse; 
+
+	sf::CircleShape * selected_piece; 
+	bool clickedBefore; 
+	bool piece_selected = 0; 
+
+	//make starting board
+	stdBoard b; 
 
 	//Draw 
 	while(window.isOpen())
@@ -104,24 +123,82 @@ int main(){
 		while (window.pollEvent(event)){
 			if(event.type == sf::Event::Closed)
 				window.close(); 
+			if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+				//left mouse was clicked
+				sf::Vector2i position = sf::Mouse::getPosition(window);
+
+				//if mouse was clicked and piece was selected, move piece?
+				if(piece_selected){
+					//find if valid tile was selected
+
+					//tile piece is sitting on for reference
+					int thisTileXPos = selected_piece->getPosition().x - 
+					(tile_width - selected_piece->getRadius())/4;
+					int thisTileYPos = selected_piece->getPosition().y - 
+					(tile_width - selected_piece->getRadius())/4;
+
+					//find this position in regards to board string
+					for(int i=0; i<red_tiles.size(); ++i){
+						if(red_tiles[i].getPosition().x >= thisTileXPos and
+							red_tiles[i].getPosition().x <= thisTileXPos + tile_width and 
+							red_tiles[i].getPosition().y >= thisTileYPos and
+							red_tiles[i].getPosition().y <= thisTileYPos + tile_width ){
+							//tile is found, multicolor it
+							red_tiles[i].setFillColor(sf::Color::Blue);
+						}
+					}
+
+					//get valid moves from this board
+						//turn this board into string 
+					//stdBoard possibleBoards[]; 
+					//board.genMovesForChecker(possibleBoards, 1);
+				} 
+
+				//turn last selected piece back to normal color
+				if(clickedBefore and piece_selected) 
+					selected_piece->setFillColor(sf::Color(139,0,0,255));
+
+				//Look to see which red piece was selected
+				for(int i=0; i<red_pieces.size(); ++i){
+					
+					int yArea = red_pieces[i].getPosition().y + 
+					red_pieces[i].getRadius()*2;
+					int xArea = red_pieces[i].getPosition().x + 
+					red_pieces[i].getRadius()*2; 
+
+					if(red_pieces[i].getPosition().y < position.y and 
+						position.y < yArea and 
+						red_pieces[i].getPosition().x < position.x and
+						position.x < xArea){
+							//this piece was clicked change its color
+						selected_piece = &red_pieces[i]; 
+						red_pieces[i].setFillColor(sf::Color::White); 
+						piece_selected = true; 
+						clickedBefore = true; 
+						break; 
+					}
+					piece_selected = false; 
+				}
+			}
 		}
 
 		window.clear(); 
 
 		//draw background (black)
-		//window.draw(board); 
+		window.draw(board); 
 
-		
 		//draw red tile spaces 
 		for(int i=0; i<red_tiles.size(); ++i){
 			window.draw(red_tiles[i]); 
 		}
-		//draw black pieces
-		for(int i=0; i<pieces.size(); ++i){
-			window.draw(pieces[i]); 
+		//draw pieces
+		for(int i=0; i<black_pieces.size(); ++i){
+			window.draw(black_pieces[i]); 
+			window.draw(red_pieces[i]); 
 		}
 		window.draw(debugWindow); 
 		window.draw(debugText);
+		window.draw(turnNotificationText); 
 		window.display(); 
 	}
 	
