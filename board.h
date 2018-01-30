@@ -134,7 +134,8 @@ public:
 		i32 moves[4];		
 		//Jumping UP
 		for (int j = 0; j < 2; ++j) {
-			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j+4)) & (pieces[side] >> 9); //up left
+			// side | side << 1 leaves the value at 0 if zero, if 1 changes it to 11(king pieces)
+			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j+4)) & (pieces[side | side << 1] >> 9); //up left			
 			for (int i = 0; moves[j] > 0; ++i) {
 				if (1 & moves[j]) {
 					stdBoard jmp = *this;
@@ -155,8 +156,8 @@ public:
 				moves[j] = moves[j] >> 1;
 			}
 		}
-		for (int j = 2; j < 4; ++j) {
-			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j + 1)) & (pieces[side] >> 7); //up right
+		for (int j = 2; j < 4; ++j) {	
+			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j + 1)) & (pieces[side | side << 1] >> 7); //up right
 			for (int i = 0; moves[j] > 0; ++i) {
 				if (1 & moves[j]) {
 					stdBoard jmp = *this;
@@ -181,7 +182,8 @@ public:
 		}
 		//Jumping DOWN
 		for (int j = 0; j < 2; ++j) {
-			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 4)) & (pieces[side] << 9); //down right
+			// 2 >> side is to specificy king 
+			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 4)) & (pieces[2 >> side] << 9); //down right
 			for (int i = 0; moves[j] > 0; ++i) {
 				if (1 & moves[j]) {
 					stdBoard jmp = *this;
@@ -203,7 +205,7 @@ public:
 			}
 		}
 		for (int j = 2; j < 4; ++j) {
-			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 1)) & (pieces[side] << 7); //down left
+			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 1)) & (pieces[2 >> side] << 7); //down left
 			for (int i = 0; moves[j] > 0; ++i) {
 				if (1 & moves[j]) {
 					stdBoard jmp = *this;
