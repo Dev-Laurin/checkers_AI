@@ -114,9 +114,6 @@ int main(){
 	error.setColor(sf::Color::Red); 
 	error.setPosition(520, 100); 
 
-	//Mouse
-	sf::Mouse user_mouse; 
-
 	sf::CircleShape * selected_piece; 
 	bool clickedBefore; 
 	bool piece_selected = 0; 
@@ -133,20 +130,24 @@ int main(){
 		while (window.pollEvent(event)){
 			if(waitForOpponent){
 				//opponent's move
-				
+				 
+				cout << "Opponent's Turn" << endl; 
+				cout << "Current Board" << endl; 
+				cout << b.str() << endl; 
 				//get random number
 				stdBoard possibleBoards[30]; 
 				int moves = b.genMoves(possibleBoards,0); //black
-				std::mt19937 gen(33); //seed
+				std::mt19937 gen(time(0)); //seed
 				std::uniform_int_distribution<int> dis(0,moves); 
 				int randMove = dis(gen); 
 
 				//choose move
-				string move = possibleBoards[randMove].str(); 
+				string move = possibleBoards[randMove].flipBoard(); 
 
 				//move checker in gui
 				//find the old blank space 
 				int oldIndex = findOldCheckerSpace(move, b.flipBoard());
+				//cout << "Old Checker space: " << oldIndex << endl; 
 				//find that checker 
 				int checkerIndex = 0; 
 				for(int i=0; i<black_pieces.size(); ++i){
@@ -155,17 +156,21 @@ int main(){
 					black_pieces[i].getPosition().y >= red_tiles[oldIndex].getPosition().y and
 					black_pieces[i].getPosition().y <= red_tiles[oldIndex].getPosition().y + tile_width){
 						checkerIndex = i; 
+						//cout << "Found checker at index: " << i << endl;
 					}
 				}
 				//find the new space to jump to  
 				int newIndex = findCheckerMove(move, b.flipBoard());
+				//cout << "New checker space to jump to: " << newIndex << endl;
 
 				//move the checker 
 				black_pieces[checkerIndex].setPosition(red_tiles[newIndex].getPosition().x + black_pieces[checkerIndex].getRadius()/4, 
 				red_tiles[newIndex].getPosition().y + black_pieces[checkerIndex].getRadius()/4); 
 
 				//update board 
-				b.updateBoard(move); 
+				//cout << "Update board to : " << move << endl; 
+				//cout << possibleBoards[randMove].str() << endl; 
+				b.updateBoard(possibleBoards[randMove].str()); 
 				
 				waitForOpponent = false; //player's turn 
 				cout.flush(); 
@@ -183,6 +188,9 @@ int main(){
 				//if mouse was clicked and piece was selected, move piece?
 				if(piece_selected){
 					//find if valid tile was selected
+					cout << "Player" << endl; 
+					cout << "Current Board: " << endl; 
+					cout << b.str() << endl; 
 
 					//tile piece is sitting on for reference
 					int thisTileXPos = selected_piece->getPosition().x - 
@@ -244,8 +252,10 @@ int main(){
 					for(int i=0; i<validPositions.size(); ++i){
 						if(clickedIndex == validPositions[i]){
 							//is a valid position, move the piece
-							selected_piece->setPosition(red_tiles[clickedIndex].getPosition().x + (tile_width-selected_piece->getRadius())/4,
-								red_tiles[clickedIndex].getPosition().y + (tile_width-selected_piece->getRadius())/4);
+							//selected_piece->setPosition(red_tiles[clickedIndex].getPosition().x + (tile_width-selected_piece->getRadius())/4,
+							//	red_tiles[clickedIndex].getPosition().y + (tile_width-selected_piece->getRadius())/4);
+							//Redraw board
+							
 							valid=true; 
 							//update board
 							b.updateBoard(possibleBoards[indices[i]].str()); 
