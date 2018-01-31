@@ -5,6 +5,7 @@ using std::endl;
 #include "board.h"
 #include "gui.h"
 
+
 //print boards horizontally
 void printBoardArray(stdBoard boardList[], int numBoards) {
 	int BoardsPerRow = 7;
@@ -27,6 +28,11 @@ void printBoardArray(stdBoard boardList[], int numBoards) {
 		}
 		cout << endl << endl;
 	}
+}
+
+//Not going to be very efficient, but for testing boards is fine.
+bool testBoard(stdBoard board) {
+	return false;
 }
 
 int main() {
@@ -94,10 +100,10 @@ int main() {
 
 	cout << endl << "red moves" << endl;
 
-	test.black = 0x00000300;
-	test.blackK = 0;
-	test.red = 0xF000000F;
-	test.redK = 0xF0000000;
+	test.pieces[0] = 0x00000300;
+	test.pieces[2] = 0;
+	test.pieces[1] = 0xF000000F;
+	test.pieces[3] = 0xF0000000;
 	test.draw();
 	cout << endl;
 	numMoves = test.genMoves(moveChoices, 1);
@@ -105,8 +111,8 @@ int main() {
 
 	test.black = 0xF0000300;
 	test.blackK = 0x30000100;
-	test.red = 0x0F0000F0;
-	test.redK = 0x0F000030;
+	test.pieces[1] = 0x0F0000F0;
+	test.pieces[3] = 0x0F000030;
 	test.draw();
 	cout << endl;
 	numMoves = test.genMoves(moveChoices,1);
