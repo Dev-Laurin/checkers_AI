@@ -11,15 +11,6 @@ int findCheckerMove(string newBoard, string oldBoard){
 	}
 }
 
-int findOldCheckerSpace(string newBoard, string oldBoard){
-	for(int i=0; i<newBoard.size(); ++i){
-		if(newBoard[i]!=oldBoard[i] and newBoard[i]==' '){
-			//index of where checker jumped from 
-			return i; 
-		}
-	}
-}
-
 //used alot
 float tile_width = 62.5; 
 
@@ -175,7 +166,7 @@ public:
 						//get random number
 						stdBoard possibleBoards[30]; 
 						int moves = b.genMoves(possibleBoards,0); //black
-						if(moves==0){
+						if(moves<=0){
 							string results; 
 							//there are no moves, count pieces to see who won
 							if(black_pieces.size()<red_pieces.size()){
@@ -192,9 +183,16 @@ public:
 							}
 							return results;
 						}
-						std::mt19937 gen(time(0)); //seed
-						std::uniform_int_distribution<int> dis(0,moves-1); 
-						int randMove = dis(gen); 
+
+						int randMove; 
+						if(moves==1){
+							randMove = 0; 
+						}
+						else{
+							std::mt19937 gen(time(0)); //seed
+							std::uniform_int_distribution<int> dis(0,moves-1); 
+							randMove = dis(gen); 
+						}
 
 						//choose move
 						string move = possibleBoards[randMove].str(); 
@@ -218,7 +216,7 @@ public:
 								position.x <= red_tiles[i].getPosition().x + tile_width and 
 								red_tiles[i].getPosition().y <= position.y and
 								position.y <= red_tiles[i].getPosition().y + tile_width ){
-								//tile is found, multicolor it
+								//tile is found
 								clickedIndex = i; 
 								break; 
 							}
@@ -263,8 +261,7 @@ public:
 						//see if user clicked a valid position
 						for(int i=0; i<validPositions.size(); ++i){
 							if(clickedIndex == validPositions[i]){
-								//is a valid position, move the piece
-								//selected_piece->updateBoardPosition(clickedIndex);
+								//is a valid position
 								valid=true; 
 								//update board
 								b.updateBoard(possibleBoards[indices[i]].str()); 
@@ -287,6 +284,7 @@ public:
 						selected_piece->piece.setFillColor(sf::Color::Green);
 					else if(piece_selected)
 						selected_piece->piece.setFillColor(sf::Color(139,0,0,255));
+					
 					//See which red piece was selected
 					for(int i=0; i<red_pieces.size(); ++i){
 						int yArea = red_pieces[i].y + 
@@ -322,7 +320,6 @@ public:
 			
 			//draw pieces
 			for(int i=0; i<red_pieces.size(); ++i){
-				//window.draw(black_pieces[i]); 
 				red_pieces[i].draw(); 
 			}  
 
