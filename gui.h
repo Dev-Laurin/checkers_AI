@@ -26,11 +26,12 @@ float tile_width = 62.5;
 class Checker{
 public: 
 	Checker(const float R, const int pos, const sf::Color col,
-		sf::RenderWindow * win){
+		sf::RenderWindow * win, bool king){
 		radius = R; 
 		positionOnBoard = pos; 
 		color = col; 
 		window = win; 
+		isKing = king; 
 
         //make the checker for drawing
         piece.setRadius(radius);
@@ -47,36 +48,24 @@ public:
 	}
 
 	void convertBoardIndexIntoXYPositions(const int positionOnBoard){
-		cout << "CONVERTING FROM I TO X Y " << endl; 
-		cout << "Board Index given: " << positionOnBoard << endl;
 		int tileCount = 0; 
         for(int row=0; row<8; ++row){
         	for(int col=0; col<4; ++col){
         		if(tileCount==positionOnBoard){
         			y = row * tile_width;
-        			cout << "Row" << endl; 
-        			cout << row << endl; 
         			if(row%2==0){ //if even row
         				x = col*tile_width*2 + tile_width; 
-        				cout << "Even x = " << x << endl; 
         			} 
         			else{
         				x = col*tile_width*2;
-        				cout << "Odd x = " << x << endl; 
         			}
         		}
         		tileCount++; 
         	}
         }
-
-        cout << "X before = " << x << endl; 
-        cout << "Y before = " << y << endl; 
-        cout << "Tile width = " << tile_width << endl; 
-        cout << "Radius = " << radius << endl; 
+ 
 		x+=((tile_width-radius)/4); 
-		y+=((tile_width-radius)/4); 
-		cout << "X = " << x << endl; 
-		cout << "Y = " << y << endl; 
+		y+=((tile_width-radius)/4);  
 	}
 
 	void draw()const{
@@ -90,6 +79,8 @@ public:
 	int y; 
 	float radius; 
 	int positionOnBoard;
+
+	bool isKing; 
 }; 
 
 class checkerBoardGUI{
@@ -133,9 +124,9 @@ public:
 
 		//Create pawns
 		for(int i=20; i<b.str().size(); ++i){
-			Checker r(22.f, i, sf::Color(139,0,0,255), &window);
+			Checker r(22.f, i, sf::Color(139,0,0,255), &window, false);
 			red_pieces.push_back(r);
-			Checker bl(22.f, i-20, sf::Color::Black, &window);
+			Checker bl(22.f, i-20, sf::Color::Black, &window, false);
 			black_pieces.push_back(bl); 
 		}
 				  
@@ -166,7 +157,7 @@ public:
 		waitForOpponent = false; //player goes first  
 	}
 
-	void run(){
+	string run(){
 		
 			//Draw 
 		while(window.isOpen())
@@ -179,11 +170,49 @@ public:
 					sf::Vector2i position = sf::Mouse::getPosition(window);
 					error.setString(""); //reset error message
 
+					//Random opponent turn
+					if(waitForOpponent){
+						//get random number
+						stdBoard possibleBoards[30]; 
+						int moves = b.genMoves(possibleBoards,0); //black
+						if(moves==0){
+							string results; 
+							//there are no moves, count pieces to see who won
+							if(black_pieces.size()<red_pieces.size()){
+								//red won
+								results = "GG you won!"; 
+							}
+							else if(black_pieces.size()>red_pieces.size()){
+								results = "You lost, GG."; 
+							}
+							else{
+								//same amount of pieces
+								results = "We tied."; 
+								 
+							}
+							return results;
+						}
+						std::mt19937 gen(time(0)); //seed
+						std::uniform_int_distribution<int> dis(0,moves-1); 
+						int randMove = dis(gen); 
+
+						//choose move
+						string move = possibleBoards[randMove].str(); 
+
+						b.updateBoard(move); 
+						reDrawBoard(b.flipBoard()); 
+
+						waitForOpponent=false; 
+						cout.flush(); 
+						sf::sleep(sf::milliseconds(1000));
+						turnNotificationText.setString("Turn: Player"); 
+					}
+
 					//move checker?
 					if(piece_selected){
 
 						//find tile that user clicked
-						int clickedIndex = 0; 
+						int clickedIndex = 9000; 
 						for(int i=0; i<red_tiles.size(); ++i){
 							if(red_tiles[i].getPosition().x <= position.x and
 								position.x <= red_tiles[i].getPosition().x + tile_width and 
@@ -199,22 +228,34 @@ public:
 						//turn this board into string 
 						stdBoard possibleBoards[30]; 
 						int movesFound = b.genMoves(possibleBoards, 1);
-
+						if(movesFound==0){
+							string results; 
+							//there are no moves, count pieces to see who won
+							if(black_pieces.size()<red_pieces.size()){
+								//red won
+								results = "GG you won!"; 
+							}
+							else if(black_pieces.size()>red_pieces.size()){
+								results = "You lost, GG."; 
+							}
+							else{
+								//same amount of pieces
+								results = "We tied."; 
+								 
+							}
+							return results;
+						}
 						vector<int> validPositions; 
 						vector<int> indices; 
 						//loop through boards to find valid moves
 						for(int i=0; i<movesFound; ++i){
 						//	"rrrrrrrrrrrr        bbbbbbbbbbbb"
-							//cout << "Pos on board: " << selected_piece->positionOnBoard << endl;
 							if(possibleBoards[i].flipBoard().at(selected_piece->positionOnBoard) == ' '){
 								//this board has our checker involved
-								//cout << "Finding valid positions" << endl; 
-								//cout << "PossibleBoard[i] = " << possibleBoards[i].flipBoard() << endl;
-								//cout << "Our board flipped: " << b.flipBoard() << endl; 
 								validPositions.push_back(findCheckerMove(possibleBoards[i].flipBoard(),
 									b.flipBoard()));
+
 								indices.push_back(i); //keep track of position in possible boards for updating later
-								//cout << "Found the checker" << endl; 
 							}
 						} 
 
@@ -222,15 +263,12 @@ public:
 						//see if user clicked a valid position
 						for(int i=0; i<validPositions.size(); ++i){
 							if(clickedIndex == validPositions[i]){
-								//cout << "Clicked Index: " << clickedIndex << endl;
-								//cout << "ValidPosition[i]" << validPositions[i] << endl;
 								//is a valid position, move the piece
-								selected_piece->updateBoardPosition(clickedIndex);
+								//selected_piece->updateBoardPosition(clickedIndex);
 								valid=true; 
 								//update board
 								b.updateBoard(possibleBoards[indices[i]].str()); 
-								reDrawBoard(b.flipBoard()); 
-								cout << "after redraw " << endl; 
+								reDrawBoard(b.flipBoard());
 								//we need to wait for our opponent now
 								waitForOpponent = true; 
 								turnNotificationText.setString("Turn: Opponent");
@@ -245,9 +283,10 @@ public:
 					}
 
 					//turn last selected piece back to normal color
-					if(piece_selected) 
+					if(piece_selected and selected_piece->isKing) 
+						selected_piece->piece.setFillColor(sf::Color::Green);
+					else if(piece_selected)
 						selected_piece->piece.setFillColor(sf::Color(139,0,0,255));
-
 					//See which red piece was selected
 					for(int i=0; i<red_pieces.size(); ++i){
 						int yArea = red_pieces[i].y + 
@@ -285,8 +324,11 @@ public:
 			for(int i=0; i<red_pieces.size(); ++i){
 				//window.draw(black_pieces[i]); 
 				red_pieces[i].draw(); 
-				black_pieces[i].draw(); 
 			}  
+
+			for(int i=0; i<black_pieces.size(); ++i){
+				black_pieces[i].draw(); 
+			}
 			
 			window.draw(debugWindow); 
 			
@@ -299,38 +341,27 @@ public:
 
 	//redraw checkers board based on string
 	void reDrawBoard(string newBoard){
-		cout << "Updating pieces" << endl; 
-		cout << newBoard << endl; 
 		//start over 
 		black_pieces.clear(); 
 		red_pieces.clear(); 
 		for(int i=0; i<newBoard.size(); ++i){
 			if(newBoard[i]=='b'){
 				//draw a black checker there
-				Checker n(22.f, i, sf::Color::Black, &window);
+				Checker n(22.f, i, sf::Color::Black, &window, false);
 				black_pieces.push_back(n); 
-
-				//black_pieces[i].updateBoardPosition(i);
-
 			}
 			else if(newBoard[i]=='r'){
-				Checker n(22.f, i, sf::Color(139,0,0,255), &window);
+				Checker n(22.f, i, sf::Color(139,0,0,255), &window, false);
 				red_pieces.push_back(n); 
-				//red_pieces[i].radius = 22.f;
-				//red_pieces[i].updateBoardPosition(i); 
-				
 
 			}
 			else if(newBoard[i]=='B'){
-				//Checker n(22.f, i, sf::Color::Blue, &window);
-				//black_pieces[i] = n;
+				Checker n(22.f, i, sf::Color::Blue, &window, true);
+				black_pieces.push_back(n);
 			}
 			else if(newBoard[i]=='R'){
-				//Checker n(22.f, i, sf::Color::Green, &window);
-				//red_pieces[i] = n;				
-			}
-			else{
-				//blank space
+				Checker n(22.f, i, sf::Color::Green, &window, true);
+				red_pieces.push_back(n);				
 			}
 		}
 	}
