@@ -16,3 +16,20 @@
 1517469819 c:\cygwin64\home\firethorn\checkers_ai\gui.h
 	<random>
 
+1517521227 source:c:\cygwin64\home\jason\checkers_ai\guimain.cpp
+	<iostream>
+	"board.h"
+	<SFML/Graphics.hpp>
+	<vector>
+	"gui.h"
+	<random>
+
+1517359935 c:\cygwin64\home\jason\checkers_ai\board.h
+	<stdint.h>
+	<string>
+	<iostream>
+	<array>
+
+1517521449 c:\cygwin64\home\jason\checkers_ai\gui.h
+	<random>
+

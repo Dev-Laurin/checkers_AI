@@ -3,7 +3,7 @@
 #include <random>
 
 int findCheckerMove(string newBoard, string oldBoard){
-	for(int i=0; i<newBoard.size(); ++i){
+	for(unsigned int i=0; i<newBoard.size(); ++i){
 		if(newBoard[i]!=oldBoard[i] and
 			newBoard[i]!=' '){
 			//index of where checker jumped/moved to
@@ -115,7 +115,7 @@ public:
 		}
 
 		//Create pawns
-		for(int i=20; i<b.str().size(); ++i){
+		for(unsigned int i=20; i<b.str().size(); ++i){
 			Checker r(22.f, i-20, sf::Color(139,0,0,255), &window, false);
 			red_pieces.push_back(r);
 			Checker bl(22.f, i, sf::Color::Black, &window, false);
@@ -158,7 +158,7 @@ public:
 			while (window.pollEvent(event)){
 				if(event.type == sf::Event::Closed){
 					window.close();
-					return "Exited game."; 
+					return "Exited game.";
 				}
 
 				if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
@@ -185,7 +185,7 @@ public:
 								results = "We tied.";
 
 							}
-							window.close(); 
+							window.close();
 							return results;
 						}
 
@@ -216,7 +216,7 @@ public:
 
 						//find tile that user clicked
 						int clickedIndex = 9000;
-						for(int i=0; i<red_tiles.size(); ++i){
+						for(unsigned int i=0; i<red_tiles.size(); ++i){
 							if(red_tiles[i].getPosition().x <= position.x and
 								position.x <= red_tiles[i].getPosition().x + tile_width and
 								red_tiles[i].getPosition().y <= position.y and
@@ -246,7 +246,7 @@ public:
 								results = "We tied.";
 
 							}
-							window.close(); 
+							window.close();
 							return results;
 						}
 						vector<int> validPositions;
@@ -265,7 +265,7 @@ public:
 
 						bool valid = false;
 						//see if user clicked a valid position
-						for(int i=0; i<validPositions.size(); ++i){
+						for(unsigned int i=0; i<validPositions.size(); ++i){
 							if(clickedIndex == validPositions[i]){
 								//is a valid position
 								valid=true;
@@ -290,7 +290,7 @@ public:
 						selected_piece->piece.setFillColor(sf::Color::Black);
 
 					//See which piece was selected
-					for(int i=0; i<black_pieces.size(); ++i){
+					for(unsigned int i=0; i<black_pieces.size(); ++i){
 						int yArea = black_pieces[i].y +
 						black_pieces[i].radius*2;
 						int xArea = black_pieces[i].x +
@@ -318,16 +318,16 @@ public:
 
 
 			//draw red tile spaces
-			for(int i=0; i<red_tiles.size(); ++i){
+			for(unsigned int i=0; i<red_tiles.size(); ++i){
 				window.draw(red_tiles[i]);
 			}
 
 			//draw pieces
-			for(int i=0; i<red_pieces.size(); ++i){
+			for(unsigned int i=0; i<red_pieces.size(); ++i){
 				red_pieces[i].draw();
 			}
 
-			for(int i=0; i<black_pieces.size(); ++i){
+			for(unsigned int i=0; i<black_pieces.size(); ++i){
 				black_pieces[i].draw();
 			}
 
@@ -345,7 +345,7 @@ public:
 		//start over
 		black_pieces.clear();
 		red_pieces.clear();
-		for(int i=0; i<newBoard.size(); ++i){
+		for(unsigned int i=0; i<newBoard.size(); ++i){
 			if(newBoard[i]=='b'){
 				//draw a black checker there
 				Checker n(22.f, i, sf::Color::Black, &window, false);
