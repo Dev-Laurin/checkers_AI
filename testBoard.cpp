@@ -3,8 +3,6 @@
 using std::cout; 
 using std::endl; 
 #include "board.h"
-#include "gui.h"
-
 
 //print boards horizontally
 void printBoardArray(stdBoard boardList[], int numBoards) {
@@ -37,55 +35,86 @@ bool testBoard(stdBoard board) {
 
 int main() {
 	 
-	cout << "testing functions" << endl;
+	 int testsCorrect = 0; 
+	 int numOfTests = 0; 
+
+	cout << "Constructor Testing functions" << endl;
+	
+	//Test 0 
 	stdBoard test00;
+	numOfTests++; 
 	if (test00.str() != "rrrrrrrrrrrr        bbbbbbbbbbbb") {
-		cout << "Default constructor returned unexpected value: " << test00.str() << endl;
+		cout << "Default constructor returned unexpected value: " << test00.str() << endl; 
 	}
 	else {
-		cout << "Default constructor passed, board is " << test00.str() << endl;
+		//cout << "Default constructor passed, board is " << test00.str() << endl;
+		testsCorrect++;
 	}
+
+	//Test 1 
+	numOfTests++; 
 	stdBoard test01("RrRrRrBbBbBb        BrBrBrRbRbRb");
 	if (test01.str() != "RrRrRrBbBbBb        BrBrBrRbRbRb") {
 		cout << "Default string constructor returned unexpected value: " << test01.str() << endl;
 	}
 	else {
-		cout << "Default string constructor passed, board is " << test01.str() << endl;
+		//cout << "Default string constructor passed, board is " << test01.str() << endl;
+		testsCorrect++; 
 	}
+
+	//Test 2 
+	numOfTests++; 
 	stdBoard test02("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB");
 	if (test02.str() != "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB") {
 		cout << "Default string constructor returned unexpected value: " << test02.str() << endl;
 	}
 	else {
-		cout << "Default string constructor passed, board is " << test02.str() << endl;
+		//cout << "Default string constructor passed, board is " << test02.str() << endl;
+		testsCorrect++; 
 	}
 
+	cout << "	Tests Correct: " << testsCorrect << "/";
+	cout << numOfTests << endl;
 
+
+/*
 	//Test Draw function.
 	cout << "Printing test board, should be starting board." << endl;
-	test00.draw();
+	test00.draw();  
 	
 
-	//Start testing move generator
+
+
 	stdBoard test(0,0,0,0);
 	stdBoard moveChoices[32];  //try a vector version later.
 	int numMoves;
-
+*/ 
 	cout << "Testing Move Generator" << endl;
+	//Start testing move generator
+	numOfTests = 0; 
+	testsCorrect = 0;
+
+
+	/*
+	//Test 0 
+	numOfTests++; 
 	test.black = 0xF0000000; //Bottom row all filled.
 	numMoves = test.genMoves(moveChoices);
 	if (numMoves != 7) {
 		cout << "Unexpected number of moves found!" << endl;
 	}
+	else{
+		testsCorrect++; 
+	}
 	test.draw();
 	numMoves = test.genMoves(moveChoices);
 	printBoardArray(moveChoices, numMoves);
-
+  
 	test.black = 0xFF000000; //Bottom 2 rows all filled..
 	test.draw();
 	numMoves = test.genMoves(moveChoices);
 	printBoardArray(moveChoices, numMoves);
-
+ 
 	test.black = 0xFF000000; //Bottom 2 rows all filled.
 	test.blackK = 0xFF000000; //Bottom 2 rows all kings.
 	test.draw();
@@ -145,7 +174,9 @@ int main() {
 	cout << "numMoves = " << numMoves << endl;
 	printBoardArray(moveChoices, numMoves);
 
- /* 
+	cout << "Tests Successful: " << testsCorrect; 
+	cout << "/" << numOfTests << endl;
+ /
 	//Test Move Generator
 	stdBoard bb; 
 	cout << "Beginning Board: " << bb.str() << endl; 
@@ -179,5 +210,37 @@ int main() {
 	cout << endl;  
 		} 
 	} */ 
+
+	//Jump Test 0 
+	numOfTests++; 
+	cout << "If there are jumps available, return jumps moves only (priority).";
+	cout << endl; 
+	stdBoard jumpPriority("rrrrrrrrrr r  r  b  bb bbbbbbbbb");
+	stdBoard posssibleMoves[30];
+	int moves = jumpPriority.genMoves(posssibleMoves, 0); 
+	if(posssibleMoves[0].str()=="rrrrrrrrrrbr        bb bbbbbbbbb"){
+		testsCorrect++;
+		cout << "	Successful" << endl; 
+	}
+	else{
+		cout << "	Error Test 0. More than 1 move when there is 1 jump." << endl;
+	}
+
+	//Jump Test 1 
+	numOfTests++; 
+	cout << "Check if there is a multi-jump among other jumps." << endl;
+	jumpPriority.updateBoard("rrrrr    r       r    b bbbbbbbb"); 
+	stdBoard posssibleMoves2[30];
+	moves = jumpPriority.genMoves(posssibleMoves2, 0);
+	for(int i=0; i<moves; ++i){
+		if(posssibleMoves2[i].str()=="rrrrr b                 bbbbbbbb"){
+			testsCorrect++; 
+			cout << "	Successful" << endl; 
+			break; 
+		}
+	}
+
+
+	//Jump Test 2 
 
 }
