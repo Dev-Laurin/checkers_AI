@@ -156,8 +156,11 @@ public:
 		{
 			sf::Event event;
 			while (window.pollEvent(event)){
-				if(event.type == sf::Event::Closed)
+				if(event.type == sf::Event::Closed){
 					window.close();
+					return "Exited game."; 
+				}
+
 				if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 					sf::Vector2i position = sf::Mouse::getPosition(window);
 					error.setString(""); //reset error message
@@ -182,6 +185,7 @@ public:
 								results = "We tied.";
 
 							}
+							window.close(); 
 							return results;
 						}
 
@@ -242,6 +246,7 @@ public:
 								results = "We tied.";
 
 							}
+							window.close(); 
 							return results;
 						}
 						vector<int> validPositions;

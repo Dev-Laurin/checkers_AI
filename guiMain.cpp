@@ -14,15 +14,19 @@ int main(){
 	bool firstTime = true; 
 	while(true){
 		checkerBoardGUI gui;
+		string results; 
+
 		if(firstTime){
-			cout << "Game ended. Results: " << gui.run() << endl;
+			results = gui.run(); 
+			cout << "Game ended. Results: " << results << endl;
 			firstTime = false; 
 		}
 		else{
 			std::cin >> input;
 			switch(input){
 				case 'p': { //Play another game
-					cout << "Game ended. Results: " << gui.run() << endl;
+					results = gui.run(); 
+					cout << "Game ended. Results: " << results << endl;
 				}
 				break; 
 				case 'e': { //Exit
@@ -33,6 +37,10 @@ int main(){
 					cout << "Enter 'p' to play, 'e' to exit." << endl;
 				}
 			} 
+		}
+
+		if(results=="Exited game."){
+			return 0; 
 		}
 
 		 
