@@ -1,5 +1,7 @@
 SFML/
+bin/
 *.exe
 *.NN
 *.out
 *.stackdump
+*.o
