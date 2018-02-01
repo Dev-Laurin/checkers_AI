@@ -1,0 +1,18 @@
+# depslib dependency file v1.0
+1517468904 source:c:\cygwin64\home\firethorn\checkers_ai\guimain.cpp
+	<iostream>
+	"board.h"
+	<SFML/Graphics.hpp>
+	<vector>
+	"gui.h"
+	<random>
+
+1517468904 c:\cygwin64\home\firethorn\checkers_ai\board.h
+	<stdint.h>
+	<string>
+	<iostream>
+	<array>
+
+1517469819 c:\cygwin64\home\firethorn\checkers_ai\gui.h
+	<random>
+
