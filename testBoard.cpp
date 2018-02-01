@@ -213,14 +213,14 @@ int main() {
 
 	//Jump Test 0 
 	numOfTests++; 
-	cout << "If there are jumps available, return jumps moves only (priority).";
+	cout << "	If there are jumps available, return jumps moves only (priority).";
 	cout << endl; 
 	stdBoard jumpPriority("rrrrrrrrrr r  r  b  bb bbbbbbbbb");
 	stdBoard posssibleMoves[30];
 	int moves = jumpPriority.genMoves(posssibleMoves, 0); 
 	if(posssibleMoves[0].str()=="rrrrrrrrrrbr        bb bbbbbbbbb"){
 		testsCorrect++;
-		cout << "	Successful" << endl; 
+		cout << "		Successful" << endl; 
 	}
 	else{
 		cout << "	Error Test 0. More than 1 move when there is 1 jump." << endl;
@@ -228,19 +228,76 @@ int main() {
 
 	//Jump Test 1 
 	numOfTests++; 
-	cout << "Check if there is a multi-jump among other jumps." << endl;
+	cout << "	Check if there is a 2-jump." << endl;
 	jumpPriority.updateBoard("rrrrr    r       r    b bbbbbbbb"); 
 	stdBoard posssibleMoves2[30];
 	moves = jumpPriority.genMoves(posssibleMoves2, 0);
 	for(int i=0; i<moves; ++i){
 		if(posssibleMoves2[i].str()=="rrrrr b                 bbbbbbbb"){
 			testsCorrect++; 
-			cout << "	Successful" << endl; 
+			cout << "		Successful" << endl; 
 			break; 
 		}
 	}
 
-
 	//Jump Test 2 
+	numOfTests++; 
+	cout << "	Check if there is a 3-jump." << endl; 
+	jumpPriority.updateBoard("     r        r       r  b      "); 
+	stdBoard possibleMoves[30]; 
+	moves = jumpPriority.genMoves(possibleMoves, 0); 
+	if(possibleMoves[0].str()=="B                               "){
+		testsCorrect++; 
+		cout << "		Successful" << endl; 
+	}
+	else{
+		cout << "Failed 3-jump Test 2. " << endl; 
+		cout << possibleMoves[0].str() << " vs "; 
+		cout <<  "B                               " << endl;
+	}
+
+	//Jump Test 3 
+	numOfTests++; 
+	cout << "	Check jumping off right edge." << endl;
+	jumpPriority.updateBoard("           r   b                ");
+	moves = jumpPriority.genMoves(possibleMoves, 0); 
+	if(moves==1 and possibleMoves[0].str()=="          br                    "){
+		testsCorrect++; 
+		cout << "		Successful" << endl; 
+	}
+	else{
+		cout << "Failed Jump Test 3. Jumping off right edge." << endl;
+	}
+
+	//Jump Test 4 
+	numOfTests++; 
+	cout << "	Check jumping off top edge." << endl;
+	jumpPriority.updateBoard("   r   b                        ");
+	moves = jumpPriority.genMoves(possibleMoves, 0); 
+	if(moves==1 and possibleMoves[0].str()=="  Br                            "){
+		testsCorrect++; 
+		cout << "		Successful" << endl; 
+	}
+	else{
+		cout << "Failed Jump Test 4. Jumping off top edge." << endl;
+		cout << possibleMoves[0].str() << endl;
+		cout << "Moves: " << moves << endl; 
+	}
+
+	//Jump Test 5 
+	numOfTests++; 
+	cout << "	Check jumping off right edge." << endl;
+	jumpPriority.updateBoard("           r   b                ");
+	moves = jumpPriority.genMoves(possibleMoves, 0); 
+	if(moves==1 and possibleMoves[0].str()=="          br                    "){
+		testsCorrect++; 
+		cout << "		Successful" << endl; 
+	}
+	else{
+		cout << "Failed Jump Test 3. Jumping off right edge." << endl;
+	}
+
+	cout << "	Tests Correct: " << testsCorrect << "/" << numOfTests;
+	cout << endl; 
 
 }
