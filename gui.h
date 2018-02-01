@@ -116,9 +116,9 @@ public:
 
 		//Create pawns
 		for(int i=20; i<b.str().size(); ++i){
-			Checker r(22.f, i, sf::Color(139,0,0,255), &window, false);
+			Checker r(22.f, i-20, sf::Color(139,0,0,255), &window, false);
 			red_pieces.push_back(r);
-			Checker bl(22.f, i-20, sf::Color::Black, &window, false);
+			Checker bl(22.f, i, sf::Color::Black, &window, false);
 			black_pieces.push_back(bl);
 		}
 
@@ -166,15 +166,15 @@ public:
 					if(waitForOpponent){
 						//get random number
 						stdBoard possibleBoards[30];
-						int moves = b.genMoves(possibleBoards,0); //black
+						int moves = b.genMoves(possibleBoards,1); //red
 						if(moves<=0){
 							string results;
 							//there are no moves, count pieces to see who won
-							if(black_pieces.size()<red_pieces.size()){
+							if(black_pieces.size()>red_pieces.size()){
 								//red won
 								results = "GG you won!";
 							}
-							else if(black_pieces.size()>red_pieces.size()){
+							else if(black_pieces.size()<red_pieces.size()){
 								results = "You lost, GG.";
 							}
 							else{
@@ -199,7 +199,7 @@ public:
 						string move = possibleBoards[randMove].str();
 
 						b.updateBoard(move);
-						reDrawBoard(b.flipBoard());
+						reDrawBoard(move);
 
 						waitForOpponent=false;
 						cout.flush();
@@ -226,15 +226,15 @@ public:
 						//get valid moves from this board
 						//turn this board into string
 						stdBoard possibleBoards[30];
-						int movesFound = b.genMoves(possibleBoards, 1);
+						int movesFound = b.genMoves(possibleBoards, 0);//black
 						if(movesFound==0){
 							string results;
 							//there are no moves, count pieces to see who won
-							if(black_pieces.size()<red_pieces.size()){
+							if(black_pieces.size()>red_pieces.size()){
 								//red won
 								results = "GG you won!";
 							}
-							else if(black_pieces.size()>red_pieces.size()){
+							else if(black_pieces.size()<red_pieces.size()){
 								results = "You lost, GG.";
 							}
 							else{
@@ -249,10 +249,10 @@ public:
 						//loop through boards to find valid moves
 						for(int i=0; i<movesFound; ++i){
 						//	"rrrrrrrrrrrr        bbbbbbbbbbbb"
-							if(possibleBoards[i].flipBoard().at(selected_piece->positionOnBoard) == ' '){
+							if(possibleBoards[i].str().at(selected_piece->positionOnBoard) == ' '){
 								//this board has our checker involved
-								validPositions.push_back(findCheckerMove(possibleBoards[i].flipBoard(),
-									b.flipBoard()));
+								validPositions.push_back(findCheckerMove(possibleBoards[i].str(),
+									b.str()));
 
 								indices.push_back(i); //keep track of position in possible boards for updating later
 							}
@@ -266,7 +266,7 @@ public:
 								valid=true;
 								//update board
 								b.updateBoard(possibleBoards[indices[i]].str());
-								reDrawBoard(b.flipBoard());
+								reDrawBoard(b.str());
 								//we need to wait for our opponent now
 								waitForOpponent = true;
 								turnNotificationText.setString("Turn: Opponent");
@@ -276,30 +276,28 @@ public:
 						}
 						if(!valid) //print out to user
 							error.setString("Error: Invalid Move.");
-
-
 					}
 
 					//turn last selected piece back to normal color
 					if(piece_selected and selected_piece->isKing)
-						selected_piece->piece.setFillColor(sf::Color::Green);
+						selected_piece->piece.setFillColor(sf::Color::Blue);
 					else if(piece_selected)
-						selected_piece->piece.setFillColor(sf::Color(139,0,0,255));
+						selected_piece->piece.setFillColor(sf::Color::Black);
 
-					//See which red piece was selected
-					for(int i=0; i<red_pieces.size(); ++i){
-						int yArea = red_pieces[i].y +
-						red_pieces[i].radius*2;
-						int xArea = red_pieces[i].x +
-						red_pieces[i].radius*2;
+					//See which piece was selected
+					for(int i=0; i<black_pieces.size(); ++i){
+						int yArea = black_pieces[i].y +
+						black_pieces[i].radius*2;
+						int xArea = black_pieces[i].x +
+						black_pieces[i].radius*2;
 
-						if(red_pieces[i].y < position.y and
+						if(black_pieces[i].y < position.y and
 							position.y < yArea and
-							red_pieces[i].x < position.x and
+							black_pieces[i].x < position.x and
 							position.x < xArea){
 								//this piece was clicked change its color
-							selected_piece = &red_pieces[i];
-							red_pieces[i].piece.setFillColor(sf::Color::White);
+							selected_piece = &black_pieces[i];
+							black_pieces[i].piece.setFillColor(sf::Color::White);
 							piece_selected = true;
 							clickedBefore = true;
 							break;
