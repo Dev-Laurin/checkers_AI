@@ -33,3 +33,13 @@
 1517521449 c:\cygwin64\home\jason\checkers_ai\gui.h
 	<random>
 
+1517361630 source:c:\cygwin64\home\jason\checkers_ai\old_movegenerator.cpp
+	"old_movegenerator.h"
+
+1517529654 c:\cygwin64\home\jason\checkers_ai\old_movegenerator.h
+	<string>
+	<vector>
+	<iostream>
+	<cstring>
+	<algorithm>
+

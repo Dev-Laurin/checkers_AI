@@ -9,7 +9,7 @@
 
 namespace altCheckers
 {
-	const unsigned int MAXBOARDS = 20;
+	const unsigned int MAXBOARDS = 32;
 	const unsigned int BOARDSIZE = 32;
 	const unsigned int VALIDMOVEWIDTH = 8;
 	const unsigned char REDPAWN = 'r';
