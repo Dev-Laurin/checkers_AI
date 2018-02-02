@@ -4,6 +4,7 @@ using std::cout;
 using std::endl;
 #include "board.h"
 #include "old_movegenerator.h"
+#include "testboard.h"
 
 //print boards horizontally
 void printBoardArray(stdBoard boardList[], int numBoards) {
@@ -29,7 +30,7 @@ void printBoardArray(stdBoard boardList[], int numBoards) {
 }
 
 //Not going to be very efficient, but for testing boards is fine.
-bool testBoard(stdBoard board) {
+bool testBoard(stdBoard &board, int side) {
     //declare the data structures for the different generators to move things into
     stdBoard moves1[32];
     int numMoves1 = 0;
@@ -42,9 +43,9 @@ bool testBoard(stdBoard board) {
         bd[i] = bstr[i];
     }
 
-    numMoves1 = board.genMoves(moves1,0);
-    numMoves2 = altCheckers::MoveGenerator(bd, moves2, true);
-    cout << numMoves1 << " " << numMoves2 << endl;
+    numMoves1 = board.genMoves(moves1,side);
+    numMoves2 = altCheckers::MoveGenerator(bd, moves2, side);
+
     //Check that move counts match.  If not, failure.
     if (numMoves1 != numMoves2) {
         cout << "Test failed; Number of moves do not match" << endl;
@@ -72,10 +73,32 @@ bool testBoard(stdBoard board) {
         }
         if (matchTest==false) {
             cout << "No Match Found" << endl;
+            cout << m2string[i] << endl;
             return false;
         }
     }
 	return true;
+}
+
+//overloaded function to remove having to keep typing an if statement
+bool testBoard(stdBoard &tBoard, int &numTests, int &numPassed) {
+        ++numTests;
+        bool testResult = testBoard(tBoard, 0);
+        if (testResult) {
+            //cout << "Board passed test: " << tBoard.str() << endl;
+        } else {
+            cout << "Board failed test: " << tBoard.str() << endl;
+            return false;
+        }
+        testResult = testBoard(tBoard, 1);
+        if (testResult) {
+            //cout << "Board passed test: " << tBoard.str() << endl;
+            ++numPassed;
+        } else {
+            cout << "Board failed test: " << tBoard.str() << endl;
+            return false;
+        }
+        return testResult;
 }
 
 int main() {
@@ -140,11 +163,18 @@ int main() {
 	testsCorrect = 0;
 
     stdBoard tBoard;
-    if (testBoard(tBoard)) {
-        cout << "Board passed test: " << tBoard.str() << endl;
-        ++testsCorrect;
-    } else {
-        cout << "Board failed test: " << tBoard.str() << endl;
+    testBoard(tBoard, numOfTests, testsCorrect);
+
+    for(int j = 0; j < 4;++j) {
+        tBoard.pieces[0] = 0;
+        tBoard.pieces[1] = 0;
+        tBoard.pieces[2] = 0;
+        tBoard.pieces[3] = 0;
+        for(int i = 0; i < 8;++i) {
+            testBoard(tBoard, numOfTests, testsCorrect);
+            tBoard.pieces[j] = 0xF << 4*i;
+            tBoard.pieces[j & 1] = tBoard.pieces[j];
+        }
     }
 
 	/*
@@ -262,6 +292,17 @@ int main() {
 	cout << endl;
 		}
 	} */
+
+    // Tests finished, print results
+    cout << "Move Generator tests done" << endl;
+    cout << testsCorrect << "/" << numOfTests << " Correct" <<endl;
+    if (testsCorrect == numOfTests) {
+        cout << "All tests passed" << endl;
+    } else {
+        cout << "Not all tests passed!" << endl;
+    }
+    numOfTests = 0;
+    testsCorrect = 0;
 
 	//Jump Test 0
 	numOfTests++;
