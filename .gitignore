@@ -5,3 +5,6 @@ bin/
 *.out
 *.stackdump
 *.o
+*.depend
+*.cbp
+README-gcc-tdm64.txt

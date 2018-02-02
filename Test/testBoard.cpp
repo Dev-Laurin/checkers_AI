@@ -2,9 +2,9 @@
 
 using std::cout;
 using std::endl;
-#include "board.h"
-#include "old_movegenerator.h"
-#include "testboard.h"
+#include "../board.h"
+#include "../old_checkers/old_movegenerator.h"
+#include "testBoard.h"
 
 //print boards horizontally
 void printBoardArray(stdBoard boardList[], int numBoards) {
@@ -378,15 +378,15 @@ int main() {
 
 	//Jump Test 5
 	numOfTests++;
-	cout << "	Check jumping off right edge." << endl;
-	jumpPriority.updateBoard("           r   b                ");
+	cout << "	Check jumping off left edge." << endl;
+	jumpPriority.updateBoard("                    r   b       ");
 	moves = jumpPriority.genMoves(possibleMoves, 0);
-	if(moves==1 and possibleMoves[0].str()=="          br                    "){
+	if(moves==1 and possibleMoves[0].str()=="                    rb          "){
 		testsCorrect++;
 		cout << "		Successful" << endl;
 	}
 	else{
-		cout << "Failed Jump Test 3. Jumping off right edge." << endl;
+		cout << "Failed Jump Test 5. Jumping off left edge." << endl;
 	}
 
 	cout << "	Tests Correct: " << testsCorrect << "/" << numOfTests;
