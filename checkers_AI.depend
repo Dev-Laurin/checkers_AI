@@ -7,7 +7,7 @@
 	"gui.h"
 	<random>
 
-1517822557 c:\cygwin64\home\firethorn\checkers_ai\board.h
+1517825044 c:\cygwin64\home\firethorn\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -49,9 +49,10 @@
 	"board.h"
 	"old_movegenerator.h"
 
-1517822458 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
+1517825437 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
 	<iostream>
 	"board.h"
+	"alphabeta.h"
 	"old_movegenerator.h"
 	"testboard.h"
 
@@ -71,4 +72,10 @@
 
 1517814236 source:c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.cpp
 	"old_movegenerator.h"
+
+1517830085 c:\cygwin64\home\firethorn\checkers_ai\alphabeta.h
+	<bitset>
+	<random>
+	<algorithm>
+	"board.h"
 

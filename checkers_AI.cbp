@@ -36,6 +36,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="alphabeta.h" />
 		<Unit filename="board.h" />
 		<Unit filename="gui.h">
 			<Option target="Debug" />

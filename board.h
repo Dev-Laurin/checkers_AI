@@ -18,11 +18,6 @@ typedef bitset<32> i32;
 //changed the defining of individual board sections as indepedent ints
 //to an array. By using defines, I maintain compatibility
 
-#define black pieces[0] //black pieces - pawns and kings
-#define red_p pieces[1] //red_p pieces - pawns and kings
-#define blackK pieces[2] //black kings
-#define red_pK pieces[3] //red_p kings
-
 class stdBoard {
 public:
 	i32 pieces[4];

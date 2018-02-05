@@ -3,6 +3,7 @@
 using std::cout;
 using std::endl;
 #include "board.h"
+#include "alphabeta.h"
 #include "old_movegenerator.h"
 #include "testboard.h"
 
@@ -240,7 +241,7 @@ int main() {
   }
 
   //Test a specific board.
-
+/*
   {
     stdBoard tBoard("                rrrrBBBBrrrr    ");
     tBoard.draw();
@@ -250,7 +251,7 @@ int main() {
     printBoardArray(moveList,mvCount);
     testBoard(tBoard, numOfTests, testsCorrect);
   }
-
+*/
 /*
 	//Test Move Generator
 	stdBoard bb;
