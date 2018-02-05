@@ -12,6 +12,24 @@ int findCheckerMove(string newBoard, string oldBoard){
 	}
 }
 
+void highlightMoves(vector<sf::RectangleShape>&tiles, stdBoard boards[], 
+	int moves, stdBoard oldBoard){
+	
+	int newBoardPos; 
+	for(int i=0; i<moves; ++i){
+		newBoardPos = findCheckerMove(boards[i].str(), oldBoard.str());
+		tiles[newBoardPos].setFillColor(sf::Color::Magenta); 
+	}
+}
+
+void unhighlightMoves(vector<sf::RectangleShape>&tiles){
+
+	for(int i=0; i<tiles.size(); ++i){
+		tiles[i].setFillColor(sf::Color::Red); 
+	}
+}
+
+
 //used alot
 float tile_width = 62.5;
 
@@ -175,6 +193,9 @@ public:
 					//move checker?
 					if(piece_selected){
 
+						//unhighlight enemy postions
+						unhighlightMoves(red_tiles); 
+
 						//find tile that user clicked
 						int clickedIndex = 9000;
 						for(unsigned int i=0; i<red_tiles.size(); ++i){
@@ -240,12 +261,47 @@ public:
 							}
 
 						}
-						if(!valid) //print out to user
+						if(!valid){ //print out to user
 							error.setString("Error: Invalid Move.");
+
+							highlightMoves(red_tiles, possibleBoards, movesFound, b); 
+
+							if(piece_selected and selected_piece->isKing)
+								selected_piece->piece.setFillColor(sf::Color::Blue);
+							else if(piece_selected)
+								selected_piece->piece.setFillColor(sf::Color::Black);
+							piece_selected = false; 
+
+							//check if it was another piece that was selected instead
+							//See which piece was selected
+							for(unsigned int i=0; i<black_pieces.size(); ++i){
+								int yArea = black_pieces[i].y +
+								black_pieces[i].radius*2;
+								int xArea = black_pieces[i].x +
+								black_pieces[i].radius*2;
+
+								if(black_pieces[i].y < position.y and
+									position.y < yArea and
+									black_pieces[i].x < position.x and
+									position.x < xArea){
+										//this piece was clicked change its color
+									selected_piece = &black_pieces[i];
+									black_pieces[i].piece.setFillColor(sf::Color::White);
+									piece_selected = true;
+									clickedBefore = true;
+									break;
+								}
+								piece_selected = false;
+							}
+						}
 
 						//Random opponent turn
 						if(waitForOpponent){
+							//unhighlight player moves
+							unhighlightMoves(red_tiles); 
+
 							//turn last selected piece back to normal color
+							piece_selected = true; 
 							if(piece_selected and selected_piece->isKing)
 								selected_piece->piece.setFillColor(sf::Color::Blue);
 							else if(piece_selected)
@@ -283,6 +339,10 @@ public:
 								randMove = dis(gen);
 							}
 
+							//Show possible moves from gui
+							highlightMoves(red_tiles, possibleBoards, moves,
+								b); 
+
 							//choose move
 							string move = possibleBoards[randMove].str();
 
@@ -293,35 +353,50 @@ public:
 							cout.flush();
 							sf::sleep(sf::milliseconds(1000));
 							turnNotificationText.setString("Turn: Player");
+						
+							piece_selected = false; 
 						}
 					}
+					else{
+						//unhighlight enemy moves
+						unhighlightMoves(red_tiles); 
 
-					//turn last selected piece back to normal color
-					if(piece_selected and selected_piece->isKing)
-						selected_piece->piece.setFillColor(sf::Color::Blue);
-					else if(piece_selected)
-						selected_piece->piece.setFillColor(sf::Color::Black);
+						//turn last selected piece back to normal color
+						if(piece_selected and selected_piece->isKing)
+							selected_piece->piece.setFillColor(sf::Color::Blue);
+						else if(piece_selected)
+							selected_piece->piece.setFillColor(sf::Color::Black);
 
-					//See which piece was selected
-					for(unsigned int i=0; i<black_pieces.size(); ++i){
-						int yArea = black_pieces[i].y +
-						black_pieces[i].radius*2;
-						int xArea = black_pieces[i].x +
-						black_pieces[i].radius*2;
+						//See which piece was selected
+						for(unsigned int i=0; i<black_pieces.size(); ++i){
+							int yArea = black_pieces[i].y +
+							black_pieces[i].radius*2;
+							int xArea = black_pieces[i].x +
+							black_pieces[i].radius*2;
 
-						if(black_pieces[i].y < position.y and
-							position.y < yArea and
-							black_pieces[i].x < position.x and
-							position.x < xArea){
-								//this piece was clicked change its color
-							selected_piece = &black_pieces[i];
-							black_pieces[i].piece.setFillColor(sf::Color::White);
-							piece_selected = true;
-							clickedBefore = true;
-							break;
+							if(black_pieces[i].y < position.y and
+								position.y < yArea and
+								black_pieces[i].x < position.x and
+								position.x < xArea){
+									//this piece was clicked change its color
+								selected_piece = &black_pieces[i];
+								black_pieces[i].piece.setFillColor(sf::Color::White);
+								piece_selected = true;
+								clickedBefore = true;
+								break;
+							}
+							piece_selected = false;
 						}
-						piece_selected = false;
+
+							stdBoard possibleBoards[30];
+							int moves = b.genMoves(possibleBoards,0);
+
+							//highlight possible player moves
+							highlightMoves(red_tiles, possibleBoards, moves, b); 
+
 					}
+
+
 				}
 			}
 

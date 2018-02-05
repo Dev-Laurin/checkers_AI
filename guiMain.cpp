@@ -16,6 +16,7 @@ int main(){
 		string results; 
 
 		if(firstTime){
+			cout << "Press p to play again or e to exit." << endl;
 			checkerBoardGUI gui;
 			results = gui.run(); 
 			cout << "Game ended. Results: " << results << endl;
