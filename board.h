@@ -5,11 +5,15 @@
 #include <string>
 using std::string;
 #include <iostream>
-using std::cout; 
-using std::endl; 
+using std::cout;
+using std::endl;
 #include <array>
+#include <bitset>
+using std::bitset;
 
-typedef uint32_t i32; //unsigned 32bit int.  Used to store checkers board.
+//typedef uint32_t i32; //unsigned 32bit int.  Used to store checkers board.
+typedef bitset<32> i32;
+
 
 //changed the defining of individual board sections as indepedent ints
 //to an array. By using defines, I maintain compatibility
@@ -22,61 +26,61 @@ typedef uint32_t i32; //unsigned 32bit int.  Used to store checkers board.
 class stdBoard {
 public:
 	i32 pieces[4];
-	stdBoard() { //Initial regular board
-		black = 4293918720; // last 12 numbers 1
-		red_p = 4095; // first 12 numbers 1
-		blackK = 0; 
-		red_pK = 0;
+	stdBoard() {
+	  pieces[0] = 0xFFF00000;//Initial regular board
+		pieces[1] = 0x00000FFF;
+		pieces[2] = 0x00000000;
+		pieces[3] = 0x00000000;
 	}
 	stdBoard(string board) {
-		black = 0;
-		red_p = 0;
-		blackK = 0;
-		red_pK = 0;
+	  pieces[0] = 0x00000000;//Initial regular board
+		pieces[1] = 0x00000000;
+		pieces[2] = 0x00000000;
+		pieces[3] = 0x00000000;
 		for (int i = 0; i < 32; ++i) {
 			if (board[i] == 'r') {
 				//using bitshifting rather than power.
-				red_p += 1 << i;
+				pieces[1][i] = 1;
 			}
 			if (board[i] == 'R') {
-				red_p += 1 << i;
-				red_pK += 1 << i;
+				pieces[1][i] = 1;
+				pieces[3][i] = 1;
 			}
 			if (board[i] == 'b') {
 				//using bitshifting rather than power.
-				black += 1 << i;
+				pieces[0][i] = 1;
 			}
 			if (board[i] == 'B') {
-				black += 1 << i;
-				blackK += 1 << i;
+				pieces[0][i] = 1;
+				pieces[2][i] = 1;
 			}
 		}
 	}
 	stdBoard(i32 b, i32 r, i32 bK, i32 rK) {
-		black = b;
-		red_p = r;
-		blackK = bK;
-		red_pK = rK;
+		pieces[0] = b;
+		pieces[1] = r;
+		pieces[2] = bK;
+		pieces[3] = rK;
 	}
 
 	//returns string representation of a board.
 	string str(){
 		string board;
 		for (int i = 0;i<32;++i) {
-			if (pieces[3] & (1 << i )) {
+			if (pieces[3][i]) {
 				board.append("R");
-			} else if (pieces[2] & ( 1 << i )) {
+			} else if (pieces[2][i]) {
 				board.append("B");
-			} else if (pieces[1] & ( 1 << i )) {
+			} else if (pieces[1][i]) {
 				board.append("r");
-			} else if (pieces[0] & ( 1 << i )) {
+			} else if (pieces[0][i]) {
 				board.append("b");
 			} else {
 				board.append(" ");
 			}
 		}
 		return board;
-	}  
+	}
 
 	void updateBoard(string board) {
 		for (int i = 0;i<4;++i) {
@@ -85,19 +89,19 @@ public:
 		for (int i = 0; i < 32; ++i) {
 			if (board[i] == 'r') {
 				//using bitshifting rather than power.
-				pieces[1] += 1 << i;
+				pieces[1][i] = 1;
 			}
 			if (board[i] == 'R') {
-				pieces[1] += 1 << i;
-				pieces[3] += 1 << i;
+        pieces[1][i] = 1;
+        pieces[3][i] = 1;
 			}
 			if (board[i] == 'b') {
 				//using bitshifting rather than power.
-				pieces[0] += 1 << i;
+				pieces[0][i] = 1;
 			}
 			if (board[i] == 'B') {
-				pieces[0] += 1 << i;
-				pieces[2] += 1 << i;
+        pieces[0][i] = 1;
+        pieces[2][i] = 1;
 			}
 		}
 	}
@@ -125,23 +129,24 @@ public:
 
 		i32 mOpen = ~(pieces[0] |pieces[1]); //open board spots marked with a 1
 		//Up&left,Up%right
-		i32 moves[4];		
+		i32 moves[4];
 		//Jumping UP
 		for (int j = 0; j < 2; ++j) {
 			// side | side << 1 leaves the value at 0 if zero, if 1 changes it to 11(king pieces)
-			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j + 4)) & ((maskP & pieces[side | side << 1]) >> 9); //up left			
-			for (int i = 0; moves[j] > 0; ++i) {
-				if (1 & moves[j]) {
+			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j + 4)) & ((maskP & pieces[side | side << 1]) >> 9); //up left
+			for (int i = 0; moves[j] != 0; ++i) {
+				if (moves[j][0]) {
 					stdBoard jmp = *this;
 					//remove the jumped piece.
-					jmp.pieces[1 - side] = pieces[1 - side] ^ (1 << (j + 4 + i));
+					jmp.pieces[1 - side][j+i+4] = 0;
 					//remove the king if necessary:
-					jmp.pieces[(1 - side) | 2] = jmp.pieces[(1 - side) | 2] & jmp.pieces[1 - side];
+					jmp.pieces[(1-side) | 2][j+i+4] = 0;
 					//Move the jump piece
-					jmp.pieces[side] = pieces[side] ^ (1 << (9 + i) | 1 << i);
-					//move the king symbol.
-					i32 king = jmp.pieces[side | 2] & (~jmp.pieces[side & 1]);
-					jmp.pieces[side | 2] = (jmp.pieces[side | 2] ^ king) ^ (king >> 9);
+					//move the king symbol first
+					jmp.pieces[side|2][i] = jmp.pieces[side|2][i+9];
+					jmp.pieces[side|2][i+9] = 0;
+					jmp.pieces[side][i+9] = 0;
+					jmp.pieces[side][i] = 1;
 
 					//Check for new move.  If it returns additional moves, it means further jumps were possible.
 					//don't add this board in that case.
@@ -150,7 +155,7 @@ public:
 					if (newMoves > moveCount) {
 						moveCount = newMoves;
 					}
-					else {  //No additional boards returned, 
+					else {  //No additional boards returned,
 						boardList[moveCount] = jmp;
 						boardList[moveCount].kingMaker();
 						++moveCount;
@@ -159,28 +164,28 @@ public:
 				moves[j] = moves[j] >> 1;
 			}
 		}
-		for (int j = 2; j < 4; ++j) {	
+		for (int j = 2; j < 4; ++j) {
 			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j + 1)) & ((maskP & pieces[side | side << 1]) >> 7);  //up right
-			for (int i = 0; moves[j] > 0; ++i) {
-				if (1 & moves[j]) {
+			for (int i = 0; moves[j] != 0; ++i) {
+				if (moves[j][0]) {
 					stdBoard jmp = *this;
 					//remove the jumped piece.
-					jmp.pieces[1 - side] = pieces[1 - side] ^ (1 << (j + 1 + i));
-					//remove the king if necessary:
-					jmp.pieces[(1 - side) | 2] = jmp.pieces[(1 - side) | 2] & jmp.pieces[1 - side];
+					jmp.pieces[1 - side][j+i+1] = 0;
+					jmp.pieces[(1-side)|2][j+i+1] = 0;
 					//Move the piece
-					jmp.pieces[side] = pieces[side] ^ (1 << (7 + i) | 1 << i);
-					//move the king symbol.
-					i32 king = jmp.pieces[side | 2] & (~jmp.pieces[side & 1]);
-					jmp.pieces[side | 2] = (jmp.pieces[side | 2] ^ king) ^ (king >> 7);
+          jmp.pieces[side|2][i] = jmp.pieces[side|2][i+7];
+					jmp.pieces[side|2][i+7] = 0;
+					jmp.pieces[side][i+7] = 0;
+					jmp.pieces[side][i] = 1;
 
+					//move the king symbol.
 					//Check for more jumps.
 					int newMoves;
 					newMoves = jmp.genJumps(boardList, side, moveCount, (1 << i));
 					if (newMoves > moveCount) {
 						moveCount = newMoves;
 					}
-					else {  //No additional boards returned, 
+					else {  //No additional boards returned,
 						boardList[moveCount] = jmp;
 						boardList[moveCount].kingMaker();
 						++moveCount;
@@ -192,27 +197,28 @@ public:
 		}
 		//Jumping DOWN
 		for (int j = 0; j < 2; ++j) {
-			// 2 >> side is to specificy king 
+			// 2 >> side is to specificy king
 			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 4)) & ((maskP & pieces[2 >> side]) << 9); //down right
-			for (int i = 0; moves[j] > 0; ++i) {
-				if (1 & moves[j]) {
+			for (int i = 0; moves[j] != 0; ++i) {
+				if (moves[j][0]) {
 					stdBoard jmp = *this;
 					//remove the jumped piece.
-					jmp.pieces[1 - side] = pieces[1 - side] ^ (1 << (i - 4 - j));
-					//remove the king if necessary:
-					jmp.pieces[(1 - side) | 2] = jmp.pieces[(1 - side) | 2] & jmp.pieces[1 - side];
+					jmp.pieces[1 - side][i-j-4] = 0;
+					jmp.pieces[(1-side) | 2][i-j-4] = 0;
+
 					//move the jump piece
-					jmp.pieces[side] = pieces[side] ^ (1 << (i - 9) | 1 << i);
-					//move the king symbol.
-					i32 king = jmp.pieces[side | 2] & (~jmp.pieces[side & 1]);
-					jmp.pieces[side | 2] = (jmp.pieces[side | 2] ^ king) ^ (king << 9);
+          jmp.pieces[side|2][i] = jmp.pieces[side|2][i-9];
+					jmp.pieces[side|2][i-9] = 0;
+					jmp.pieces[side][i-9] = 0;
+					jmp.pieces[side][i] = 1;
+
 					//Check for more jumps.
 					int newMoves;
 					newMoves = jmp.genJumps(boardList, side, moveCount, (1 << i));
 					if (newMoves > moveCount) {
 						moveCount = newMoves;
 					}
-					else {  //No additional boards returned, 
+					else {  //No additional boards returned,
 						boardList[moveCount] = jmp;
 						boardList[moveCount].kingMaker();
 						++moveCount;
@@ -224,25 +230,25 @@ public:
 		}
 		for (int j = 2; j < 4; ++j) {
 			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 1)) & ((maskP & pieces[2 >> side]) << 7); //down left
-			for (int i = 0; moves[j] > 0; ++i) {
-				if (1 & moves[j]) {
+			for (int i = 0; moves[j] != 0; ++i) {
+				if (moves[j][0]) {
 					stdBoard jmp = *this;
 					//remove the jumped piece.
-					jmp.pieces[1 - side] = pieces[1 - side] ^ (1 << (i - j - 1));
-					//remove the king if necessary:
-					jmp.pieces[(1 - side) | 2] = jmp.pieces[(1 - side) | 2] & jmp.pieces[1 - side];
+					jmp.pieces[1 - side][i-j-1] = 0;
+					jmp.pieces[(1 - side) | 2] = 0;
 					//move the jump piece
-					jmp.pieces[side] = pieces[side] ^ (1 << (i - 7) | 1 << i);
-					//move the king symbol.
-					i32 king = jmp.pieces[side | 2] & (~jmp.pieces[side & 1]);
-					jmp.pieces[side | 2] = (jmp.pieces[side | 2] ^ king) ^ (king << 7);
+          jmp.pieces[side|2][i] = jmp.pieces[side|2][i-7];
+					jmp.pieces[side|2][i-7] = 0;
+					jmp.pieces[side][i-7] = 0;
+					jmp.pieces[side][i] = 1;
+
 					//Check for more jumps.
 					int newMoves;
 					newMoves = jmp.genJumps(boardList, side, moveCount, (1 << i));
 					if (newMoves > moveCount) {
 						moveCount = newMoves;
 					}
-					else {  //No additional boards returned, 
+					else {  //No additional boards returned,
 						boardList[moveCount] = jmp;
 						boardList[moveCount].kingMaker();
 						++moveCount;
@@ -273,10 +279,10 @@ public:
 		for (int i = 0; i < 3; ++i) {
 			i32 moves = (pieces[2 >> side]) & ((mOpen & maskU[1][i]) >> (i + 3));
 			i32 mask = maskM[i];
-			while (moves > 0) {
-				if (moves & 1) {
+			while (moves != 0) {
+				if (moves[0]) {
 					boardList[moveCount] = *this; //copy the existing board.
-					boardList[moveCount].pieces[side] = pieces[side] ^ mask; //apply the move. 
+					boardList[moveCount].pieces[side] = pieces[side] ^ mask; //apply the move.
 					//bitwise and with 1 makes it always move the pawn.
 
 					//Move is noted on pawn board, need to move king as well.
@@ -295,8 +301,8 @@ public:
 		for (int i = 0; i < 3; ++i) {
 			i32 moves = (pieces[side | side << 1] >> (i+3)) & (mOpen & maskU[0][i]);
 			i32 mask = maskM[i];
-			while (moves > 0) {
-				if (moves & 1) {
+			while (moves != 0) {
+				if (moves[0]) {
 					boardList[moveCount] = *this;
 					boardList[moveCount].pieces[side] = pieces[side] ^ mask;
 					//Need to move the king as well, if it is one.
@@ -316,17 +322,17 @@ public:
 			}
 		}
 		return moveCount;
-	}  
+	}
 	string flipBoard()
 	{
-		string oldBoard = str(); 
-		string newBoard = ""; 
+		string oldBoard = str();
+		string newBoard = "";
 		for(int i=oldBoard.length()-1; i>=0; i--){
-			newBoard+=oldBoard[i]; 
+			newBoard+=oldBoard[i];
 		}
-		return newBoard; 
+		return newBoard;
 	}  //returns view of board from other side.
-	
+
 	void draw() {
 		string boardString = str();
 		for (int i = 0; i < 32; i+=8) {
@@ -336,4 +342,4 @@ public:
 	}
 };
 
-#endif /* RANDOM_CHECKERS_INCLUDED */ 
+#endif /* RANDOM_CHECKERS_INCLUDED */

@@ -240,9 +240,9 @@ int main() {
   }
 
   //Test a specific board.
-  /*
+
   {
-    stdBoard tBoard("                    rrrrbbbbrrrr");
+    stdBoard tBoard("                rrrrBBBBrrrr    ");
     tBoard.draw();
     cout << endl;
     stdBoard moveList[32];
@@ -250,7 +250,7 @@ int main() {
     printBoardArray(moveList,mvCount);
     testBoard(tBoard, numOfTests, testsCorrect);
   }
-  */
+
 /*
 	//Test Move Generator
 	stdBoard bb;
