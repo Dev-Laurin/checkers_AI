@@ -1,0 +1,81 @@
+# depslib dependency file v1.0
+1517551661 source:c:\cygwin64\home\firethorn\checkers_ai\guimain.cpp
+	<iostream>
+	"board.h"
+	<SFML/Graphics.hpp>
+	<vector>
+	"gui.h"
+	<random>
+
+1517825044 c:\cygwin64\home\firethorn\checkers_ai\board.h
+	<stdint.h>
+	<string>
+	<iostream>
+	<array>
+	<bitset>
+
+1517551661 c:\cygwin64\home\firethorn\checkers_ai\gui.h
+	<random>
+
+1517521227 source:c:\cygwin64\home\jason\checkers_ai\guimain.cpp
+	<iostream>
+	"board.h"
+	<SFML/Graphics.hpp>
+	<vector>
+	"gui.h"
+	<random>
+
+1517359935 c:\cygwin64\home\jason\checkers_ai\board.h
+	<stdint.h>
+	<string>
+	<iostream>
+	<array>
+
+1517521449 c:\cygwin64\home\jason\checkers_ai\gui.h
+	<random>
+
+1517533956 source:c:\cygwin64\home\jason\checkers_ai\old_movegenerator.cpp
+	"old_movegenerator.h"
+
+1517533737 c:\cygwin64\home\jason\checkers_ai\old_movegenerator.h
+	<string>
+	<vector>
+	<iostream>
+	<cstring>
+	<algorithm>
+
+1517533812 source:c:\cygwin64\home\jason\checkers_ai\testboard.cpp
+	<iostream>
+	"board.h"
+	"old_movegenerator.h"
+
+1517825437 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
+	<iostream>
+	"board.h"
+	"alphabeta.h"
+	"old_movegenerator.h"
+	"testboard.h"
+
+1517802896 c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.h
+	<string>
+	<vector>
+	<iostream>
+	<cstring>
+	<algorithm>
+
+1517816973 c:\cygwin64\home\firethorn\checkers_ai\testboard.h
+	<string>
+	<vector>
+	<iostream>
+	<cstring>
+	<algorithm>
+
+1517814236 source:c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.cpp
+	"old_movegenerator.h"
+
+1517830085 c:\cygwin64\home\firethorn\checkers_ai\alphabeta.h
+	<bitset>
+	<random>
+	<algorithm>
+	"board.h"
+

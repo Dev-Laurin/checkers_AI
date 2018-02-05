@@ -2,9 +2,10 @@
 
 using std::cout;
 using std::endl;
-#include "../board.h"
-#include "../old_movegenerator.h"
-#include "testBoard.h"
+#include "board.h"
+#include "alphabeta.h"
+#include "old_movegenerator.h"
+#include "testboard.h"
 
 //print boards horizontally
 void printBoardArray(stdBoard boardList[], int numBoards) {
@@ -158,107 +159,100 @@ int main() {
 	int numMoves;
 */
 	cout << "Testing Move Generator" << endl;
-	//Start testing move generator
+	//Testing regular moves.
 	numOfTests = 0;
 	testsCorrect = 0;
 
-    stdBoard tBoard;
+  //Test individual moves.
+  {
+      stdBoard tBoard;
+      stdBoard tTracker[4] = stdBoard(0,0,0,0);
+      for(int j = 0; j < 4;++j) {
+          tBoard.pieces[0] = 0;
+          tBoard.pieces[1] = 0;
+          tBoard.pieces[2] = 0;
+          tBoard.pieces[3] = 0;
+          for(int i = 0; i < 8;++i) {
+              tBoard.pieces[j] = 0xF << 4*i;
+              tBoard.pieces[j & 1] = tBoard.pieces[j];
+              testBoard(tBoard, numOfTests, testsCorrect);
+              tTracker[j].pieces[j] = tTracker[j].pieces[j] | tBoard.pieces[j];
+          }
+      }
+      cout << "Showing individual moves tested piece locations" << endl;
+      printBoardArray(tTracker,4);
+  }
+
+
+
+
+  //Test jumps.
+  {
+      stdBoard tBoard;
+      stdBoard tTracker[4] = stdBoard(0,0,0,0);
+      for(int j = 0; j < 4;++j) {
+          tBoard.pieces[0] = 0;
+          tBoard.pieces[1] = 0;
+          tBoard.pieces[2] = 0;
+          tBoard.pieces[3] = 0;
+          for(int i = 0; i < 8;++i) {
+
+              //Set up row.
+              tBoard.pieces[j] = 0xF << 4*i;
+              tBoard.pieces[j & 1] = tBoard.pieces[j];
+              tTracker[j].pieces[j] = tTracker[j].pieces[j] | tBoard.pieces[j];
+
+              //Set up opposite rows.
+              tBoard.pieces[(j^1) & 1] = tBoard.pieces[j] >> 4 | tBoard.pieces[j] << 4;
+
+              //Test
+              testBoard(tBoard, numOfTests, testsCorrect);
+          }
+      }
+      cout << "Showing individual moves jump piece locations" << endl;
+      printBoardArray(tTracker,4);
+  }
+
+  //Test Blocking.
+  {
+      stdBoard tBoard;
+      stdBoard tTracker[4] = stdBoard(0,0,0,0);
+      for(int j = 0; j < 4;++j) {
+          tBoard.pieces[0] = 0;
+          tBoard.pieces[1] = 0;
+          tBoard.pieces[2] = 0;
+          tBoard.pieces[3] = 0;
+          for(int i = 0; i < 8;++i) {
+
+              //Set up row.
+              tBoard.pieces[j] = 0xFF << 4*i;
+              tBoard.pieces[j & 1] = tBoard.pieces[j];
+              tTracker[j].pieces[j] = tTracker[j].pieces[j] | tBoard.pieces[j];
+
+              //Set up opposite rows.
+              tBoard.pieces[(j^1) & 1] = tBoard.pieces[j] >> 8 | tBoard.pieces[j] << 8;
+
+              //Test
+              testBoard(tBoard, numOfTests, testsCorrect);
+          }
+      }
+      cout << "Showing individual moves jump piece locations" << endl;
+      printBoardArray(tTracker,4);
+  }
+
+  //Test a specific board.
+/*
+  {
+    stdBoard tBoard("                rrrrBBBBrrrr    ");
+    tBoard.draw();
+    cout << endl;
+    stdBoard moveList[32];
+    int mvCount = tBoard.genMoves(moveList,0);
+    printBoardArray(moveList,mvCount);
     testBoard(tBoard, numOfTests, testsCorrect);
-
-    for(int j = 0; j < 4;++j) {
-        tBoard.pieces[0] = 0;
-        tBoard.pieces[1] = 0;
-        tBoard.pieces[2] = 0;
-        tBoard.pieces[3] = 0;
-        for(int i = 0; i < 8;++i) {
-            testBoard(tBoard, numOfTests, testsCorrect);
-            tBoard.pieces[j] = 0xF << 4*i;
-            tBoard.pieces[j & 1] = tBoard.pieces[j];
-        }
-    }
-
-	/*
-	//Test 0
-	numOfTests++;
-	test.black = 0xF0000000; //Bottom row all filled.
-	numMoves = test.genMoves(moveChoices);
-	if (numMoves != 7) {
-		cout << "Unexpected number of moves found!" << endl;
-	}
-	else{
-		testsCorrect++;
-	}
-	test.draw();
-	numMoves = test.genMoves(moveChoices);
-	printBoardArray(moveChoices, numMoves);
-
-	test.black = 0xFF000000; //Bottom 2 rows all filled..
-	test.draw();
-	numMoves = test.genMoves(moveChoices);
-	printBoardArray(moveChoices, numMoves);
-
-	test.black = 0xFF000000; //Bottom 2 rows all filled.
-	test.blackK = 0xFF000000; //Bottom 2 rows all kings.
-	test.draw();
-	numMoves = test.genMoves(moveChoices);
-	printBoardArray(moveChoices, numMoves);
-
-	test.black = 0x000000FF; //top all filled.
-	test.blackK = 0x000000FF; //kings
-	test.draw();
-	numMoves = test.genMoves(moveChoices);
-	printBoardArray(moveChoices, numMoves);
-
-	cout << endl << "red moves" << endl;
-
-	test.pieces[0] = 0x00000300;
-	test.pieces[2] = 0;
-	test.pieces[1] = 0xF000000F;
-	test.pieces[3] = 0xF0000000;
-	test.draw();
-	cout << endl;
-	numMoves = test.genMoves(moveChoices, 1);
-	printBoardArray(moveChoices, numMoves);
-
-	test.black = 0xF0000300;
-	test.blackK = 0x30000100;
-	test.pieces[1] = 0x0F0000F0;
-	test.pieces[3] = 0x0F000030;
-	test.draw();
-	cout << endl;
-	numMoves = test.genMoves(moveChoices,1);
-	printBoardArray(moveChoices, numMoves);
-	cout << endl;
-	test.draw();
-	cout << "Black jumps" << endl;
-	numMoves = test.genJumps(moveChoices,0);
-	cout << "numMoves = " << numMoves << endl;
-	printBoardArray(moveChoices, numMoves);
-
-	cout << "Red jumps" << endl;
-	numMoves = test.genJumps(moveChoices, 1);
-	cout << "numMoves = " << numMoves << endl;
-	printBoardArray(moveChoices, numMoves);
-
-	test.pieces[0] = 0x01040400;
-	test.pieces[1] = 0x00204040;
-	test.pieces[2] = 0x0;
-	test.pieces[3] = 0x0;
-
-	test.draw();
-	cout << "Black jumps" << endl;
-	numMoves = test.genJumps(moveChoices, 0);
-	cout << "numMoves = " << numMoves << endl;
-	printBoardArray(moveChoices, numMoves);
-
-	cout << "Red jumps" << endl;
-	numMoves = test.genJumps(moveChoices, 1);
-	cout << "numMoves = " << numMoves << endl;
-	printBoardArray(moveChoices, numMoves);
-
-	cout << "Tests Successful: " << testsCorrect;
-	cout << "/" << numOfTests << endl;
- /
+  }
+*/
+/*
 	//Test Move Generator
 	stdBoard bb;
 	cout << "Beginning Board: " << bb.str() << endl;
