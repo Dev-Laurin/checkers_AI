@@ -22,7 +22,7 @@ namespace altCheckers {
 	//flips the Board around
 	void flipBoard(char BoardStr[]) {
 		char tempboard[BOARDSIZE];
-		for (int x = 0; x < BOARDSIZE; ++x) {
+		for (unsigned int x = 0; x < BOARDSIZE; ++x) {
 			switch (BoardStr[x]) {
 			case REDPAWN:
 				tempboard[BOARDSIZE - x - 1] = BLACKPAWN;
@@ -90,7 +90,11 @@ namespace altCheckers {
 	//Ruleset assumes that a jump MUST be taken if available.
 	//Note:  If no moves are found, that means that this side loses!
 	//BoardStr: 33rd spot is null, IE '0'
-	int MoveGenerator(char BoardStr[], char Boardret[MAXBOARDS][BOARDSIZE], bool isBlack) {
+	int MoveGenerator(char BoardStr[], char Boardret[MAXBOARDS][BOARDSIZE], int side) {
+	    bool isBlack=true;
+	    if (side==1) {
+            isBlack = false;
+	    }
 		if (!isBlack) {
 			flipBoard(BoardStr);
 		}
