@@ -2,9 +2,9 @@
 
 using std::cout;
 using std::endl;
-#include "board.h"
-#include "old_movegenerator.h"
-#include "testboard.h"
+#include "../board.h"
+#include "../old_movegenerator.h"
+#include "testBoard.h"
 
 //print boards horizontally
 void printBoardArray(stdBoard boardList[], int numBoards) {
