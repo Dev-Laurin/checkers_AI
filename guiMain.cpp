@@ -13,10 +13,10 @@ int main(){
 	char input;  
 	bool firstTime = true; 
 	while(true){
-		checkerBoardGUI gui;
 		string results; 
 
 		if(firstTime){
+			checkerBoardGUI gui;
 			results = gui.run(); 
 			cout << "Game ended. Results: " << results << endl;
 			firstTime = false; 
@@ -25,6 +25,7 @@ int main(){
 			std::cin >> input;
 			switch(input){
 				case 'p': { //Play another game
+					checkerBoardGUI gui;
 					results = gui.run(); 
 					cout << "Game ended. Results: " << results << endl;
 				}

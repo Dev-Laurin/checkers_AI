@@ -30,12 +30,17 @@ public:
         piece.setFillColor(color);
 
         //find x y coordinates of position on board
-		updateBoardPosition(positionOnBoard);
+		updateBoardPosition(positionOnBoard, col, king);
 	}
 
-	void updateBoardPosition(const int posBoard){
+	void updateBoardPosition(const int posBoard, sf::Color col, 
+		bool king){
+		isKing = king; 
+		color = col; 
+
 		positionOnBoard = posBoard;
 		convertBoardIndexIntoXYPositions(posBoard);
+		piece.setFillColor(color); 
 		piece.setPosition(x,y);
 	}
 
@@ -165,51 +170,7 @@ public:
 					sf::Vector2i position = sf::Mouse::getPosition(window);
 					error.setString(""); //reset error message
 
-					//Random opponent turn
-					if(waitForOpponent){
-						//get random number
-						stdBoard possibleBoards[30];
-						int moves = b.genMoves(possibleBoards,1); //red
-						if(moves<=0){
-							string results;
-							//there are no moves, count pieces to see who won
-							if(black_pieces.size()>red_pieces.size()){
-								//red won
-								results = "GG you won!";
-							}
-							else if(black_pieces.size()<red_pieces.size()){
-								results = "You lost, GG.";
-							}
-							else{
-								//same amount of pieces
-								results = "We tied.";
-
-							}
-							window.close();
-							return results;
-						}
-
-						int randMove;
-						if(moves==1){
-							randMove = 0;
-						}
-						else{
-							std::mt19937 gen(time(0)); //seed
-							std::uniform_int_distribution<int> dis(0,moves-1);
-							randMove = dis(gen);
-						}
-
-						//choose move
-						string move = possibleBoards[randMove].str();
-
-						b.updateBoard(move);
-						reDrawBoard(move);
-
-						waitForOpponent=false;
-						cout.flush();
-						sf::sleep(sf::milliseconds(1000));
-						turnNotificationText.setString("Turn: Player");
-					}
+					
 
 					//move checker?
 					if(piece_selected){
@@ -281,6 +242,58 @@ public:
 						}
 						if(!valid) //print out to user
 							error.setString("Error: Invalid Move.");
+
+						//Random opponent turn
+						if(waitForOpponent){
+							//turn last selected piece back to normal color
+							if(piece_selected and selected_piece->isKing)
+								selected_piece->piece.setFillColor(sf::Color::Blue);
+							else if(piece_selected)
+								selected_piece->piece.setFillColor(sf::Color::Black);
+
+							//get random number
+							stdBoard possibleBoards[30];
+							int moves = b.genMoves(possibleBoards,1); //red
+							if(moves<=0){
+								string results;
+								//there are no moves, count pieces to see who won
+								if(black_pieces.size()>red_pieces.size()){
+									//red won
+									results = "GG you won!";
+								}
+								else if(black_pieces.size()<red_pieces.size()){
+									results = "You lost, GG.";
+								}
+								else{
+									//same amount of pieces
+									results = "We tied.";
+
+								}
+								window.close();
+								return results;
+							}
+
+							int randMove;
+							if(moves==1){
+								randMove = 0;
+							}
+							else{
+								std::mt19937 gen(time(0)); //seed
+								std::uniform_int_distribution<int> dis(0,moves-1);
+								randMove = dis(gen);
+							}
+
+							//choose move
+							string move = possibleBoards[randMove].str();
+
+							b.updateBoard(move);
+							reDrawBoard(move);
+
+							waitForOpponent=false;
+							cout.flush();
+							sf::sleep(sf::milliseconds(1000));
+							turnNotificationText.setString("Turn: Player");
+						}
 					}
 
 					//turn last selected piece back to normal color
@@ -343,29 +356,73 @@ public:
 	//redraw checkers board based on string
 	void reDrawBoard(string newBoard){
 		//start over
-		black_pieces.clear();
-		red_pieces.clear();
+		//black_pieces.clear();
+		//red_pieces.clear();
+		int blackIndex = 0; 
+		int redIndex = 0;  
 		for(unsigned int i=0; i<newBoard.size(); ++i){
 			if(newBoard[i]=='b'){
 				//draw a black checker there
-				Checker n(22.f, i, sf::Color::Black, &window, false);
-				black_pieces.push_back(n);
+				//Checker n(22.f, i, sf::Color::Black, &window, false);
+				//black_pieces.push_back(n);
+				black_pieces[blackIndex].updateBoardPosition(i, sf::Color::Black, 
+					false); 
+				blackIndex++; 
 			}
 			else if(newBoard[i]=='r'){
-				Checker n(22.f, i, sf::Color(139,0,0,255), &window, false);
-				red_pieces.push_back(n);
+				//Checker n(22.f, i, sf::Color(139,0,0,255), &window, false);
+				//red_pieces.push_back(n);
+				red_pieces[redIndex].updateBoardPosition(i, sf::Color(139,0,0,255),
+					false); 
+				redIndex++; 
 
 			}
 			else if(newBoard[i]=='B'){
-				Checker n(22.f, i, sf::Color::Blue, &window, true);
-				black_pieces.push_back(n);
+				//Checker n(22.f, i, sf::Color::Blue, &window, true);
+				//black_pieces.push_back(n);
+				black_pieces[blackIndex].updateBoardPosition(i,
+					sf::Color::Blue, true); 
+				blackIndex++; 
 			}
 			else if(newBoard[i]=='R'){
-				Checker n(22.f, i, sf::Color::Green, &window, true);
-				red_pieces.push_back(n);
+				//Checker n(22.f, i, sf::Color::Green, &window, true);
+				//red_pieces.push_back(n);
+				red_pieces[redIndex].updateBoardPosition(i, 
+					sf::Color::Green, true); 
+				redIndex++; 
 			}
 		}
+
+		//cout << "Delete pieces" << endl; 
+		//delete pieces
+		for(int i=redIndex+1; i<=red_pieces.size(); ++i){
+		//	cout << "Delete red " << i << "red pieces: " << red_pieces.size();
+		//	cout << endl;
+			red_pieces.erase(red_pieces.end()-1);
+
+		}
+		for(int i=blackIndex+1; i<=black_pieces.size(); ++i){
+		//	cout << "Delete black " << i << "black pieces: " << black_pieces.size();
+		//	cout << endl;
+			black_pieces.erase(black_pieces.end()-1); 
+		}
+
+		//cout << "Red pieces: " << red_pieces.size() << endl;
+		//cout << "Black pieces: " << black_pieces.size() << endl; 
+
+		//debugging
+		// for(int j=0; j<red_pieces.size(); j++){
+		// 	cout << "Red piece at " << red_pieces[j].positionOnBoard; 
+		// 	cout << "( " << red_pieces[j].x << ", " << red_pieces[j].y;
+		// 	cout << endl;  
+		// }
+		// for(int j=0; j<black_pieces.size(); j++){
+		// 	cout << "Black piece at " << black_pieces[j].positionOnBoard; 
+		// 	cout << "( " << black_pieces[j].x << ", " << black_pieces[j].y;
+		// 	cout << endl;  
+		// }
 	}
+
 
 	stdBoard b;
 	bool waitForOpponent;
