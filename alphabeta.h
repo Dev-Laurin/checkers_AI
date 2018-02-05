@@ -34,9 +34,9 @@ double alphabeta(stdBoard board, unsigned int side = 0) {
     for(unsigned int j=0;j<movesB;++j) {
       moveValB[j] = boardCount(boardB[j]);
     }
-    moveValA[i] = std::max_element(moveValB,moveValB+movesB);
+    moveValA[i] = *std::max_element(moveValB,moveValB+movesB);
   }
-  return std::min_element(moveValA,moveValA+movesA);
+  return *std::min_element(moveValA,moveValA+movesA);
 }
 
 

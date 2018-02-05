@@ -73,7 +73,7 @@
 1517814236 source:c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.cpp
 	"old_movegenerator.h"
 
-1517830085 c:\cygwin64\home\firethorn\checkers_ai\alphabeta.h
+1517859777 c:\cygwin64\home\firethorn\checkers_ai\alphabeta.h
 	<bitset>
 	<random>
 	<algorithm>
