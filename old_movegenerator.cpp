@@ -56,6 +56,8 @@ namespace altCheckers {
 		for (int x = 0; x < 4; ++x) {
 			if (Boardret[x] == BLACKPAWN)
 				Boardret[x] = BLACKKING;
+      if (Boardret[31-x] == REDPAWN)
+        Boardret[31-x] = REDKING;
 		}
 	}
 

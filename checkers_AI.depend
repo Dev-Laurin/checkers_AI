@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1517468904 source:c:\cygwin64\home\firethorn\checkers_ai\guimain.cpp
+1517551661 source:c:\cygwin64\home\firethorn\checkers_ai\guimain.cpp
 	<iostream>
 	"board.h"
 	<SFML/Graphics.hpp>
@@ -13,7 +13,7 @@
 	<iostream>
 	<array>
 
-1517469819 c:\cygwin64\home\firethorn\checkers_ai\gui.h
+1517551661 c:\cygwin64\home\firethorn\checkers_ai\gui.h
 	<random>
 
 1517521227 source:c:\cygwin64\home\jason\checkers_ai\guimain.cpp
@@ -46,5 +46,28 @@
 1517533812 source:c:\cygwin64\home\jason\checkers_ai\testboard.cpp
 	<iostream>
 	"board.h"
+	"old_movegenerator.h"
+
+1517814049 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
+	<iostream>
+	"board.h"
+	"old_movegenerator.h"
+	"testboard.h"
+
+1517802896 c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.h
+	<string>
+	<vector>
+	<iostream>
+	<cstring>
+	<algorithm>
+
+1517802896 c:\cygwin64\home\firethorn\checkers_ai\testboard.h
+	<string>
+	<vector>
+	<iostream>
+	<cstring>
+	<algorithm>
+
+1517814236 source:c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.cpp
 	"old_movegenerator.h"
 
