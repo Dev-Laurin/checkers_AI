@@ -370,20 +370,27 @@ int main() {
 		cout << "Moves: " << moves << endl;
 	}
 
+
+
 	//Jump Test 5
-	numOfTests++;
-	cout << "	Check jumping off right edge." << endl;
-	jumpPriority.updateBoard("           r   b                ");
-	moves = jumpPriority.genMoves(possibleMoves, 0);
-	if(moves==1 and possibleMoves[0].str()=="          br                    "){
-		testsCorrect++;
-		cout << "		Successful" << endl;
+	numOfTests++; 
+	cout << "	Check jumping up center." << endl; 
+	jumpPriority.updateBoard("           r       b            "); 
+	moves = jumpPriority.genMoves(possibleMoves, 0); 
+	if(moves==1 and possibleMoves[0].str()=="           r   b                "){
+		testsCorrect++; 
+		cout << "		Successful" << endl; 	
 	}
 	else{
-		cout << "Failed Jump Test 3. Jumping off right edge." << endl;
+		cout << "Failed Jump Test 5" << endl; 
+		cout << possibleMoves[0].str() << endl; 
+		cout << "Moves: " << moves << endl; 
 	}
+
+
 
 	cout << "	Tests Correct: " << testsCorrect << "/" << numOfTests;
 	cout << endl;
+
 
 }
