@@ -25,7 +25,7 @@ namespace altCheckers
 
 	bool jumpcheck(const char ValidMoves[], const char BoardStr[], int x, int pieceValue, char Boardret[MAXBOARDS][BOARDSIZE], int & numMoves);
 
-	int MoveGenerator(char BoardStr[], char Boardret[MAXBOARDS][BOARDSIZE], int side = 0);
+	int MoveGenerator(char BoardStr[], char Boardret[MAXBOARDS][BOARDSIZE], bool isBlack = true);
 
 	void flipBoard(char BoardStr[]);
 	void flipBoard(std::string & Board);
