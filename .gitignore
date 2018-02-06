@@ -5,3 +5,7 @@ bin/
 *.out
 *.stackdump
 *.o
+*.cbp
+*.depend
+*.layout
+
