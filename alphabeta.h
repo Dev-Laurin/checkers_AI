@@ -4,21 +4,76 @@
 #include <bitset>
 #include <random>
 #include <algorithm>
+using std::max;
+using std::min;
+
+#include <limits>
 #include "board.h"
 
 std::default_random_engine gen;
 std::uniform_real_distribution<double> distro(0.0,1.0);
 
 unsigned const static int MAXMOVES = 32;
-
+typedef double sNN;
+constexpr sNN LOWEST = std::numeric_limits<sNN>::lowest();
+constexpr sNN HIGHEST = std::numeric_limits<sNN>::max();
 //A simple piececount AI
-double boardCount(stdBoard board) {
-  double count = board.pieces[0].count() +
+sNN boardCount(stdBoard board) {
+  sNN count = board.pieces[0].count() +
       board.pieces[2].count() -
       board.pieces[1].count() -
       board.pieces[3].count() +
       distro(gen); // random number between 0 and 1 to randomize selection of equal values.
   return count;
+}
+
+//Alpha is the MAX value selector.
+//Always assumed to be black.
+//Flip the board to computer run red.
+//Because a neural network may be good at selecting maximums
+//but not minimums.
+sNN alpha(stdBoard board, int depth) {
+  stdBoard moveList[MAXMOVES];
+  int moveCount;
+  moveCount = board.genMoves(moveList,0);
+  if (moveCount) {
+      sNN rVal=LOWEST;
+      if (depth==1) {
+        for (int i = 0;i<moveCount;++i) {
+            rVal = max(rVal,boardCount(moveList[i]));
+          }
+      } else {
+        for (int i = 0;i<moveCount;++i) {
+          rVal = max(rVal,beta(moveList[i],depth-1));
+        }
+      }
+      //Take the highest value move.
+      return rVal;
+  } else {
+    //No moves available.  We lose!
+    //We don't like this, obviously.
+    return LOWEST;
+  }
+
+}
+
+//Beta is the MINIMUM value selector.
+//Always assumed to be red.
+sNN beta(stdBoard board, int depth) {
+  stdBoard moveList[MAXMOVES];
+  int moveCount;
+  moveCount = board.genMoves(moveList,1);
+  if (moveCount) {
+      sNN rVal=HIGHEST;
+      for (int i = 0;i<moveCount;++i) {
+        rVal = min(rVal,alpha(moveList[i],depth-1));
+      }
+      return rVal;
+  } else {
+    //No moves available.  We win!
+    //We like this, obviously.
+    return HIGHEST;
+  }
 }
 
 double alphabeta(stdBoard board, unsigned int side = 0) {
