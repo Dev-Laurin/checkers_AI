@@ -1,4 +1,5 @@
 #include "gui.h"
+#include "opponent_AI.h"
 
 //used alot
 float tile_width = 62.5;
@@ -290,9 +291,14 @@ std::string checkerBoardGUI::run(){
 						else if(piece_selected)
 							selected_piece->piece.setFillColor(sf::Color::Black);
 
-						//get random number
+						Opponent enemy('r'); //random AI
+						//get enemy move
+						std::string move = enemy.getMove(b); 
+
+
 						stdBoard possibleBoards[30];
 						int moves = b.genMoves(possibleBoards,1); //red
+
 						if(moves<=0){
 							std::string results;
 							//there are no moves, count pieces to see who won
@@ -312,22 +318,10 @@ std::string checkerBoardGUI::run(){
 							return results;
 						}
 
-						int randMove;
-						if(moves==1){
-							randMove = 0;
-						}
-						else{
-							std::mt19937 gen(time(0)); //seed
-							std::uniform_int_distribution<int> dis(0,moves-1);
-							randMove = dis(gen);
-						}
 
 						//Show possible moves from gui
 						highlightMoves(red_tiles, possibleBoards, moves,
 							b); 
-
-						//choose move
-						std::string move = possibleBoards[randMove].str();
 
 						b.updateBoard(move);
 						reDrawBoard(move);
