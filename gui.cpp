@@ -14,20 +14,20 @@ int findCheckerMove(std::string newBoard, std::string oldBoard){
 	}
 }
 
-void highlightMoves(std::vector<sf::RectangleShape>&tiles, stdBoard boards[], 
+void highlightMoves(std::vector<sf::RectangleShape>&tiles, stdBoard boards[],
 	int moves, stdBoard oldBoard){
-	
-	int newBoardPos; 
+
+	int newBoardPos;
 	for(int i=0; i<moves; ++i){
 		newBoardPos = findCheckerMove(boards[i].str(), oldBoard.str());
-		tiles[newBoardPos].setFillColor(sf::Color::Magenta); 
+		tiles[newBoardPos].setFillColor(sf::Color::Magenta);
 	}
 }
 
 void unhighlightMoves(std::vector<sf::RectangleShape>&tiles){
 
-	for(int i=0; i<tiles.size(); ++i){
-		tiles[i].setFillColor(sf::Color::Red); 
+	for(unsigned int i=0; i<tiles.size(); ++i){
+		tiles[i].setFillColor(sf::Color::Red);
 	}
 }
 
@@ -48,14 +48,14 @@ Checker::Checker(const float R, const int pos, const sf::Color col,
 	updateBoardPosition(positionOnBoard, col, king);
 }
 
-void Checker::updateBoardPosition(const int posBoard, sf::Color col, 
+void Checker::updateBoardPosition(const int posBoard, sf::Color col,
 	bool king){
-	isKing = king; 
-	color = col; 
+	isKing = king;
+	color = col;
 
 	positionOnBoard = posBoard;
 	convertBoardIndexIntoXYPositions(posBoard);
-	piece.setFillColor(color); 
+	piece.setFillColor(color);
 	piece.setPosition(x,y);
 }
 
@@ -172,13 +172,13 @@ std::string checkerBoardGUI::run(){
 				sf::Vector2i position = sf::Mouse::getPosition(window);
 				error.setString(""); //reset error message
 
-				
+
 
 				//move checker?
 				if(piece_selected){
 
 					//unhighlight enemy postions
-					unhighlightMoves(red_tiles); 
+					unhighlightMoves(red_tiles);
 
 					//find tile that user clicked
 					int clickedIndex = 9000;
@@ -248,13 +248,13 @@ std::string checkerBoardGUI::run(){
 					if(!valid){ //print out to user
 						error.setString("Error: Invalid Move.");
 
-						highlightMoves(red_tiles, possibleBoards, movesFound, b); 
+						highlightMoves(red_tiles, possibleBoards, movesFound, b);
 
 						if(piece_selected and selected_piece->isKing)
 							selected_piece->piece.setFillColor(sf::Color::Blue);
 						else if(piece_selected)
 							selected_piece->piece.setFillColor(sf::Color::Black);
-						piece_selected = false; 
+						piece_selected = false;
 
 						//check if it was another piece that was selected instead
 						//See which piece was selected
@@ -282,18 +282,18 @@ std::string checkerBoardGUI::run(){
 					//Random opponent turn
 					if(waitForOpponent){
 						//unhighlight player moves
-						unhighlightMoves(red_tiles); 
+						unhighlightMoves(red_tiles);
 
 						//turn last selected piece back to normal color
-						piece_selected = true; 
+						piece_selected = true;
 						if(piece_selected and selected_piece->isKing)
 							selected_piece->piece.setFillColor(sf::Color::Blue);
 						else if(piece_selected)
 							selected_piece->piece.setFillColor(sf::Color::Black);
 
-						Opponent enemy('r'); //random AI
+						Opponent enemy('g'); //random AI
 						//get enemy move
-						std::string move = enemy.getMove(b); 
+						std::string move = enemy.getMove(b);
 
 
 						stdBoard possibleBoards[30];
@@ -321,7 +321,7 @@ std::string checkerBoardGUI::run(){
 
 						//Show possible moves from gui
 						highlightMoves(red_tiles, possibleBoards, moves,
-							b); 
+							b);
 
 						b.updateBoard(move);
 						reDrawBoard(move);
@@ -330,13 +330,13 @@ std::string checkerBoardGUI::run(){
 						cout.flush();
 						sf::sleep(sf::milliseconds(1000));
 						turnNotificationText.setString("Turn: Player");
-					
-						piece_selected = false; 
+
+						piece_selected = false;
 					}
 				}
 				else{
 					//unhighlight enemy moves
-					unhighlightMoves(red_tiles); 
+					unhighlightMoves(red_tiles);
 
 					//turn last selected piece back to normal color
 					if(piece_selected and selected_piece->isKing)
@@ -369,7 +369,7 @@ std::string checkerBoardGUI::run(){
 						int moves = b.genMoves(possibleBoards,0);
 
 						//highlight possible player moves
-						highlightMoves(red_tiles, possibleBoards, moves, b); 
+						highlightMoves(red_tiles, possibleBoards, moves, b);
 
 				}
 
@@ -410,47 +410,47 @@ void checkerBoardGUI::reDrawBoard(std::string newBoard){
 	//start over
 	//black_pieces.clear();
 	//red_pieces.clear();
-	int blackIndex = 0; 
-	int redIndex = 0;  
+	int blackIndex = 0;
+	int redIndex = 0;
 	for(unsigned int i=0; i<newBoard.size(); ++i){
 		if(newBoard[i]=='b'){
 			//draw a black checker there
 			//Checker n(22.f, i, sf::Color::Black, &window, false);
 			//black_pieces.push_back(n);
-			black_pieces[blackIndex].updateBoardPosition(i, sf::Color::Black, 
-				false); 
-			blackIndex++; 
+			black_pieces[blackIndex].updateBoardPosition(i, sf::Color::Black,
+				false);
+			blackIndex++;
 		}
 		else if(newBoard[i]=='r'){
 			//Checker n(22.f, i, sf::Color(139,0,0,255), &window, false);
 			//red_pieces.push_back(n);
 			red_pieces[redIndex].updateBoardPosition(i, sf::Color(139,0,0,255),
-				false); 
-			redIndex++; 
+				false);
+			redIndex++;
 
 		}
 		else if(newBoard[i]=='B'){
 			//Checker n(22.f, i, sf::Color::Blue, &window, true);
 			//black_pieces.push_back(n);
 			black_pieces[blackIndex].updateBoardPosition(i,
-				sf::Color::Blue, true); 
-			blackIndex++; 
+				sf::Color::Blue, true);
+			blackIndex++;
 		}
 		else if(newBoard[i]=='R'){
 			//Checker n(22.f, i, sf::Color::Green, &window, true);
 			//red_pieces.push_back(n);
-			red_pieces[redIndex].updateBoardPosition(i, 
-				sf::Color::Green, true); 
-			redIndex++; 
+			red_pieces[redIndex].updateBoardPosition(i,
+				sf::Color::Green, true);
+			redIndex++;
 		}
 	}
 
 	//delete pieces
-	for(int i=redIndex+1; i<=red_pieces.size(); ++i){
+	for(unsigned int i=redIndex+1; i<=red_pieces.size(); ++i){
 		red_pieces.erase(red_pieces.end()-1);
 
 	}
-	for(int i=blackIndex+1; i<=black_pieces.size(); ++i){
-		black_pieces.erase(black_pieces.end()-1); 
+	for(unsigned int i=blackIndex+1; i<=black_pieces.size(); ++i){
+		black_pieces.erase(black_pieces.end()-1);
 	}
 }

@@ -8,25 +8,42 @@ using std::max;
 using std::min;
 
 #include <limits>
-#include "board.h"
 
-std::default_random_engine gen;
-std::uniform_real_distribution<double> distro(0.0,1.0);
+#include "board.h"
 
 unsigned const static int MAXMOVES = 32;
 typedef double sNN;
 constexpr sNN LOWEST = std::numeric_limits<sNN>::lowest();
 constexpr sNN HIGHEST = std::numeric_limits<sNN>::max();
+
+std::default_random_engine gen;
+std::uniform_real_distribution<sNN> distro(0.0,1.0);
+
 //A simple piececount AI
 sNN boardCount(stdBoard board) {
-  sNN count = board.pieces[0].count() +
-      board.pieces[2].count() -
-      board.pieces[1].count() -
-      board.pieces[3].count() +
-      distro(gen); // random number between 0 and 1 to randomize selection of equal values.
+  sNN count = int(
+        board.pieces[0].count() +
+        board.pieces[2].count() -
+        board.pieces[1].count() -
+        board.pieces[3].count()
+        );
+
+    sNN rSeed = distro(gen); // random number between 0 and 1 to randomize selection of equal values.
+      count += rSeed;
+      if (count > 24.0) {
+        cout << "board pieces values: " <<
+            board.pieces[0].count() << " " <<
+            board.pieces[1].count() << " " <<
+            board.pieces[2].count() << " " <<
+            board.pieces[3].count() << " " <<
+            rSeed << endl;
+        cout << "count: " << count << endl;
+        cout << "0-1: " << (board.pieces[0].count() - board.pieces[1].count()) << endl;
+      }
   return count;
 }
 
+sNN beta(stdBoard board, int depth);
 //Alpha is the MAX value selector.
 //Always assumed to be black.
 //Flip the board to computer run red.
@@ -38,13 +55,16 @@ sNN alpha(stdBoard board, int depth) {
   moveCount = board.genMoves(moveList,0);
   if (moveCount) {
       sNN rVal=LOWEST;
-      if (depth==1) {
-        for (int i = 0;i<moveCount;++i) {
-            rVal = max(rVal,boardCount(moveList[i]));
-          }
-      } else {
+      if (depth>1) {
         for (int i = 0;i<moveCount;++i) {
           rVal = max(rVal,beta(moveList[i],depth-1));
+        }
+      } else {
+        for (int i = 0;i<moveCount;++i) {
+            rVal = max(rVal,boardCount(moveList[i]));
+            if (rVal > 24) {
+                //cout << "rVal at invalid value: " << rVal << endl;
+            }
         }
       }
       //Take the highest value move.

@@ -17,22 +17,24 @@
 1517551661 c:\cygwin64\home\firethorn\checkers_ai\gui.h
 	<random>
 
-1517521227 source:c:\cygwin64\home\jason\checkers_ai\guimain.cpp
+1517964442 source:c:\cygwin64\home\jason\checkers_ai\guimain.cpp
 	<iostream>
 	"board.h"
-	<SFML/Graphics.hpp>
-	<vector>
 	"gui.h"
-	<random>
 
-1517359935 c:\cygwin64\home\jason\checkers_ai\board.h
+1517864416 c:\cygwin64\home\jason\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
 	<array>
+	<bitset>
 
-1517521449 c:\cygwin64\home\jason\checkers_ai\gui.h
+1517964442 c:\cygwin64\home\jason\checkers_ai\gui.h
 	<random>
+	<string>
+	"board.h"
+	<SFML/Graphics.hpp>
+	<vector>
 
 1517533956 source:c:\cygwin64\home\jason\checkers_ai\old_movegenerator.cpp
 	"old_movegenerator.h"
@@ -77,5 +79,21 @@
 	<bitset>
 	<random>
 	<algorithm>
+	"board.h"
+
+1518048475 source:c:\cygwin64\home\jason\checkers_ai\gui.cpp
+	"gui.h"
+	"opponent_AI.h"
+
+1518044352 c:\cygwin64\home\jason\checkers_ai\opponent_ai.h
+	<random>
+	<string>
+	"alphabeta.h"
+
+1518048657 c:\cygwin64\home\jason\checkers_ai\alphabeta.h
+	<bitset>
+	<random>
+	<algorithm>
+	<limits>
 	"board.h"
 
