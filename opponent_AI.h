@@ -41,8 +41,8 @@ public:
 			    sNN tempMove;
 			    for (int i = 1;i<moves;++i) {
                     tempMove = beta(possibleBoards[i],7);
-                    cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
-                    cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
+                    //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
+                    //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
                     if (tempMove > moveVal) {
                         //better move found
                         moveVal = tempMove;
