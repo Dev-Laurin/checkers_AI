@@ -318,6 +318,17 @@ public:
 		}
 		return moveCount;
 	}
+	stdBoard flip() {
+        stdBoard temp;
+        for(int i = 0;i<32;++i) {
+            temp.pieces[0][i] = pieces[1][31-i];
+            temp.pieces[1][i] = pieces[0][31-i];
+            temp.pieces[2][i] = pieces[3][31-i];
+            temp.pieces[3][i] = pieces[2][31-i];
+        }
+        return temp;
+	}
+
 	string flipBoard()
 	{
 		string oldBoard = str();

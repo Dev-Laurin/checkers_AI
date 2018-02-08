@@ -34,7 +34,8 @@ public:
 			}
 			case 'g': {
 			    stdBoard possibleBoards[32];
-			    int moves = b.genMoves(possibleBoards,1);
+			    stdBoard tBoard = b.flip();
+			    int moves = tBoard.genMoves(possibleBoards,0);
 			    int selectMove = 0;
 			    sNN moveVal = beta(possibleBoards[0],7);
 			    sNN tempMove;
@@ -48,7 +49,8 @@ public:
                         selectMove = i;
                     }
 			    }
-			    return possibleBoards[selectMove].str();
+			    tBoard = possibleBoards[selectMove].flip();
+			    return tBoard.str();
 			}
 			default:
 				cout << "That AI Doesn't exist" << endl;

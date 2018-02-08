@@ -22,7 +22,7 @@
 	"board.h"
 	"gui.h"
 
-1517864416 c:\cygwin64\home\jason\checkers_ai\board.h
+1518050196 c:\cygwin64\home\jason\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -81,11 +81,11 @@
 	<algorithm>
 	"board.h"
 
-1518048475 source:c:\cygwin64\home\jason\checkers_ai\gui.cpp
+1518048693 source:c:\cygwin64\home\jason\checkers_ai\gui.cpp
 	"gui.h"
 	"opponent_AI.h"
 
-1518044352 c:\cygwin64\home\jason\checkers_ai\opponent_ai.h
+1518050575 c:\cygwin64\home\jason\checkers_ai\opponent_ai.h
 	<random>
 	<string>
 	"alphabeta.h"
