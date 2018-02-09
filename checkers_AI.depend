@@ -36,10 +36,10 @@
 	<SFML/Graphics.hpp>
 	<vector>
 
-1517533956 source:c:\cygwin64\home\jason\checkers_ai\old_movegenerator.cpp
+1517864416 source:c:\cygwin64\home\jason\checkers_ai\old_movegenerator.cpp
 	"old_movegenerator.h"
 
-1517533737 c:\cygwin64\home\jason\checkers_ai\old_movegenerator.h
+1517801715 c:\cygwin64\home\jason\checkers_ai\old_movegenerator.h
 	<string>
 	<vector>
 	<iostream>
@@ -85,7 +85,7 @@
 	"gui.h"
 	"opponent_AI.h"
 
-1518050575 c:\cygwin64\home\jason\checkers_ai\opponent_ai.h
+1518141865 c:\cygwin64\home\jason\checkers_ai\opponent_ai.h
 	<random>
 	<string>
 	"alphabeta.h"

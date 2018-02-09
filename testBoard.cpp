@@ -6,6 +6,8 @@ using std::endl;
 #include "alphabeta.h"
 #include "old_movegenerator.h"
 #include "testboard.h"
+#include <random>
+#include <chrono>
 
 //print boards horizontally
 void printBoardArray(stdBoard boardList[], int numBoards) {
@@ -373,18 +375,18 @@ int main() {
 
 
 	//Jump Test 5
-	numOfTests++; 
-	cout << "	Check jumping up center." << endl; 
-	jumpPriority.updateBoard("           r       b            "); 
-	moves = jumpPriority.genMoves(possibleMoves, 0); 
+	numOfTests++;
+	cout << "	Check jumping up center." << endl;
+	jumpPriority.updateBoard("           r       b            ");
+	moves = jumpPriority.genMoves(possibleMoves, 0);
 	if(moves==1 and possibleMoves[0].str()=="           r   b                "){
-		testsCorrect++; 
-		cout << "		Successful" << endl; 	
+		testsCorrect++;
+		cout << "		Successful" << endl;
 	}
 	else{
-		cout << "Failed Jump Test 5" << endl; 
-		cout << possibleMoves[0].str() << endl; 
-		cout << "Moves: " << moves << endl; 
+		cout << "Failed Jump Test 5" << endl;
+		cout << possibleMoves[0].str() << endl;
+		cout << "Moves: " << moves << endl;
 	}
 
 
@@ -392,5 +394,21 @@ int main() {
 	cout << "	Tests Correct: " << testsCorrect << "/" << numOfTests;
 	cout << endl;
 
+    cout << "Benchmarking performance" << endl;
+    {
+        stdBoard initial;
+        //Board Returns.
+        stdBoard Br[10][32];
+        string rndBoard;
+
+        for(int i=0;i<32;++i) {
+        }
+    }
+
+    std::mt19937 gen(time(0));
+    std::uniform_real_distribution<double> dis(-1.0,1.0);
+    for (int i = 0;i < 100;++i) {
+        cout << dis(gen) << endl;
+    }
 
 }
