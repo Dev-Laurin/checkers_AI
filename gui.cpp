@@ -1,5 +1,9 @@
 #include "gui.h"
 #include "opponent_AI.h"
+#include <thread> 
+#include <future>
+#include <chrono> 
+using namespace std::chrono_literals; 
 
 //used alot
 float tile_width = 62.5;
@@ -197,7 +201,8 @@ std::string checkerBoardGUI::run(){
 					//turn this board into std::string
 					stdBoard possibleBoards[30];
 					int movesFound = b.genMoves(possibleBoards, 0);//black
-					if(movesFound==0){
+				 
+					if(movesFound<=0){
 						std::string results;
 						//there are no moves, count pieces to see who won
 						if(black_pieces.size()>red_pieces.size()){
@@ -290,15 +295,10 @@ std::string checkerBoardGUI::run(){
 							selected_piece->piece.setFillColor(sf::Color::Blue);
 						else if(piece_selected)
 							selected_piece->piece.setFillColor(sf::Color::Black);
-
-						Opponent enemy('g'); //random AI
-						//get enemy move
-						std::string move = enemy.getMove(b);
-
-
+						
+						//check if there are moves left
 						stdBoard possibleBoards[30];
 						int moves = b.genMoves(possibleBoards,1); //red
-
 						if(moves<=0){
 							std::string results;
 							//there are no moves, count pieces to see who won
@@ -318,6 +318,59 @@ std::string checkerBoardGUI::run(){
 							return results;
 						}
 
+						//parameters
+						char opponentAIType = 'g'; 
+						std::string move; 
+
+						//atomic flag to determine if thread is finished
+						std::atomic<bool> done(false); 
+ 
+						stdBoard bCopy = b; 
+						//thread to compute enemy move while main draws
+						std::thread enemy([&done, &bCopy, 
+							&move, &opponentAIType]{
+
+							Opponent opp(opponentAIType); 
+							move = opp.getMove(bCopy); 
+							done = true;  
+						}); 
+
+						//if main thread, keep drawing until enemy thread joins
+						while(!done and window.isOpen()){
+							sf::Event event;
+							while (window.pollEvent(event) and !done){
+								if(event.type == sf::Event::Closed){
+									window.close();
+									return "Exited game.";
+								}
+								window.clear();
+								//draw background (black)
+								window.draw(board);
+
+
+								//draw red tile spaces
+								for(unsigned int i=0; i<red_tiles.size(); ++i){
+									window.draw(red_tiles[i]);
+								}
+
+								//draw pieces
+								for(unsigned int i=0; i<red_pieces.size(); ++i){
+									red_pieces[i].draw();
+								}
+
+								for(unsigned int i=0; i<black_pieces.size(); ++i){
+									black_pieces[i].draw();
+								}
+
+								window.draw(debugWindow);
+
+								window.draw(debugText);
+								window.draw(turnNotificationText);
+								window.draw(error);
+								window.display();
+							}
+						}
+						enemy.join();
 
 						//Show possible moves from gui
 						highlightMoves(red_tiles, possibleBoards, moves,
@@ -327,14 +380,12 @@ std::string checkerBoardGUI::run(){
 						reDrawBoard(move);
 
 						waitForOpponent=false;
-						cout.flush();
-						sf::sleep(sf::milliseconds(1000));
 						turnNotificationText.setString("Turn: Player");
 
 						piece_selected = false;
 					}
 				}
-				else{
+				else if(!waitForOpponent) {
 					//unhighlight enemy moves
 					unhighlightMoves(red_tiles);
 
@@ -367,6 +418,25 @@ std::string checkerBoardGUI::run(){
 
 						stdBoard possibleBoards[30];
 						int moves = b.genMoves(possibleBoards,0);
+
+						if(moves<=0){
+							std::string results;
+							//there are no moves, count pieces to see who won
+							if(black_pieces.size()>red_pieces.size()){
+								//red won
+								results = "GG you won!";
+							}
+							else if(black_pieces.size()<red_pieces.size()){
+								results = "You lost, GG.";
+							}
+							else{
+								//same amount of pieces
+								results = "We tied.";
+
+							}
+							window.close();
+							return results;
+						}
 
 						//highlight possible player moves
 						highlightMoves(red_tiles, possibleBoards, moves, b);
