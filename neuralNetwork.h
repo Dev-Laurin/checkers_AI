@@ -112,7 +112,7 @@ public:
     std::mt19937 gen; //(time(0));
     std::vector<std::vector<double >> nodes; 
 
-  std::mt19937 gen; //(time(0));
+//  std::mt19937 gen; //(time(0));
 //  std::vector<int> nodeSizes;
 
 };
