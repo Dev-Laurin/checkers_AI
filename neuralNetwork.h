@@ -48,9 +48,11 @@ public:
 			if(net!=0)
 				netIndex = net - 1;
 			int networkIndex = 0; 
-			//for each node, sum up the weights & firing value
+			//for each next node, sum up the weights & firing value
 			for(int node=0; node<nodes[net+1].size(); ++node){
 				double sumWeights = 0;
+				//For each last node, multiply their firing number & the weight bet
+					//it and the next node 
 				for(int weight=0; weight<nodes[net].size(); ++weight){
 					sumWeights+= network[netIndex][networkIndex] * nodes[net][weight];
 					++networkIndex; 
