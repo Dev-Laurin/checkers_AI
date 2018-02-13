@@ -5,6 +5,7 @@
 using std::cout; 
 using std::endl; 
 #include "board.h"
+#include <ctime> 
 
 int main(){
 
@@ -141,7 +142,39 @@ int main(){
 	cout << "Timing code. Timing how fast the";
 	cout << " Neural Network Evaluates a Board " << endl; 
 
+	{
+		cout << "Timed Test 1. Board: '           r       b            '";
+		cout << endl; 
+		clock_t start; 
+		double duration; 
+		start = clock();
 
+		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
+		NN nTimed1(nodes); 
+		stdBoard b; 
+		b.updateBoard("           r       b            "); 
+		auto output = nTimed1.calculateBoard(b);
+		cout << "Output: " << output << endl; 
 
+		duration = (clock() - start) / (double) CLOCKS_PER_SEC;
+		cout << "Time Difference: " << duration << endl; 
+	}
+
+	{
+		cout << "Timed Test 2. Board: Default";
+		cout << endl; 
+		clock_t start; 
+		double duration; 
+		start = clock();
+
+		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
+		NN nTimed1(nodes); 
+		stdBoard b; 
+		auto output = nTimed1.calculateBoard(b);
+		cout << "Output: " << output << endl; 
+
+		duration = (clock() - start) / (double) CLOCKS_PER_SEC;
+		cout << "Time Difference: " << duration << endl; 
+	}
 
 }
