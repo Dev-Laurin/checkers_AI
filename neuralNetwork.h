@@ -22,6 +22,11 @@ public:
 		gen.seed(time(0)); 
     	std::uniform_real_distribution<double> dis(-1.0,1.0);
 
+	// NN(std::vector<int>& nS){
+	// 	gen.seed(time(0));
+ //   	std::uniform_real_distribution<double> dis(-1.0,1.0);
+ //   	nodeSizes = nS;
+
 		//create how many layers there will be (4,32,40,10,1)
 		network.resize(nodeSizes.size()-1);
 		for(int j=0; j<network.size(); ++j){
@@ -104,6 +109,10 @@ public:
 	std::vector<std::vector<double > > network;
     std::mt19937 gen; //(time(0));
     std::vector<std::vector<double >> nodes; 
+
+  std::mt19937 gen; //(time(0));
+//  std::vector<int> nodeSizes;
+
 };
 
 #endif /* NEURAL_NETWORK_H */

@@ -25,21 +25,9 @@ sNN boardCount(stdBoard board) {
         board.pieces[0].count() +
         board.pieces[2].count() -
         board.pieces[1].count() -
-        board.pieces[3].count()
+        board.pieces[3].count() +
+        distro(gen);
         );
-
-    sNN rSeed = distro(gen); // random number between 0 and 1 to randomize selection of equal values.
-      count += rSeed;
-      if (count > 24.0) {
-        cout << "board pieces values: " <<
-            board.pieces[0].count() << " " <<
-            board.pieces[1].count() << " " <<
-            board.pieces[2].count() << " " <<
-            board.pieces[3].count() << " " <<
-            rSeed << endl;
-        cout << "count: " << count << endl;
-        cout << "0-1: " << (board.pieces[0].count() - board.pieces[1].count()) << endl;
-      }
   return count;
 }
 
@@ -62,9 +50,6 @@ sNN alpha(stdBoard board, int depth) {
       } else {
         for (int i = 0;i<moveCount;++i) {
             rVal = max(rVal,boardCount(moveList[i]));
-            if (rVal > 24) {
-                //cout << "rVal at invalid value: " << rVal << endl;
-            }
         }
       }
       //Take the highest value move.
