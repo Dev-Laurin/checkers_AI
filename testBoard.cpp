@@ -396,19 +396,61 @@ int main() {
 
     cout << "Benchmarking performance" << endl;
     {
-        stdBoard initial;
+//        std::mt19936 gen(time(0));
+//        std::uniform_int_distribution<int> dis(0,3);
+        stdBoard iBoard;
         //Board Returns.
         stdBoard Br[10][32];
-        string rndBoard;
-
-        for(int i=0;i<32;++i) {
+        int i[10] = {0};
+        int numMoves[10];
+        int boardsGenerated[10] = {0};
+        auto tStart = std::chrono::high_resolution_clock::now();
+        numMoves[0] = iBoard.genMoves(Br[0],0);
+        boardsGenerated[0] += numMoves[0];
+        for(i[0] = 0;i[0] < numMoves[0];++i[0]) {
+            numMoves[1] = Br[0][i[0]].genMoves(Br[1],1);
+            boardsGenerated[1] += numMoves[1];
+            for(i[1]=0;i[1] < numMoves[1];++i[1]) {
+                numMoves[2] = Br[1][i[1]].genMoves(Br[2],0);
+                boardsGenerated[2] += numMoves[2];
+                for(i[2]=0;i[2] < numMoves[2];++i[2]) {
+                    numMoves[3] = Br[2][i[2]].genMoves(Br[2],1);
+                    boardsGenerated[3] += numMoves[3];
+                    for(i[3]=0;i[3] < numMoves[3];++i[3]) {
+                        numMoves[4] = Br[3][i[3]].genMoves(Br[3],0);
+                        boardsGenerated[4] += numMoves[4];
+                        for(i[4]=0;i[4] < numMoves[4];++i[4]) {
+                            numMoves[5] = Br[4][i[4]].genMoves(Br[4],1);
+                            boardsGenerated[5] += numMoves[5];
+                            for(i[5]=0;i[5] < numMoves[5];++i[5]) {
+                                numMoves[6] = Br[5][i[5]].genMoves(Br[5],0);
+                                boardsGenerated[6] += numMoves[6];
+                                for(i[6]=0;i[6] < numMoves[6];++i[6]) {
+                                    numMoves[7] = Br[6][i[6]].genMoves(Br[6],1);
+                                    boardsGenerated[7] += numMoves[7];
+                                    for(i[7]=0;i[7] < numMoves[7];++i[7]) {
+                                        numMoves[8] = Br[7][i[7]].genMoves(Br[7],0);
+                                        boardsGenerated[8] += numMoves[8];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-    }
+        auto tStop = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed = tStop - tStart;
 
-    std::mt19937 gen(time(0));
-    std::uniform_real_distribution<double> dis(-1.0,1.0);
-    for (int i = 0;i < 100;++i) {
-        cout << dis(gen) << endl;
+        cout << "boards generated: ";
+        int totalBoards = 0;
+        for(int j = 0; j < 9; ++j) {
+                cout << boardsGenerated[j] << " ";
+                totalBoards += boardsGenerated[j];
+        }
+        cout << endl;
+        cout << "In " << elapsed.count() << " seconds, ";
+        cout << "boards per second: " << int(totalBoards / elapsed.count()) << endl;
     }
 
 }
