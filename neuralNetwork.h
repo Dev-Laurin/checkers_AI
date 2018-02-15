@@ -5,6 +5,9 @@
 
 #include <random>
 #include <vector>
+#include <chrono>
+using std::time;
+
 using std::cout;
 using std::endl;
 #include "board.h"

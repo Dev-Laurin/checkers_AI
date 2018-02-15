@@ -2,28 +2,31 @@
 #include <iostream>
 #include "neuralNetwork.h"
 #include <vector>
-using std::cout; 
-using std::endl; 
+using std::cout;
+using std::endl;
 #include "board.h"
 #include <ctime> 
 #include <random> 
+
+// #include <ctime>
+// #include <chrono>
 
 int main(){
 
 	{
 		//Test a network
-		std::vector<int> nodes{32, 1}; //50, 50, 50, 100, 50, 1}; 
-		NN bigN(nodes); 
+		std::vector<int> nodes{32, 1}; //50, 50, 50, 100, 50, 1};
+		NN bigN(nodes);
 
-		cout << endl; 
+		cout << endl;
 		cout << "Small Neural Network - {32, 1}.--------" << endl;
 		cout << "Network layers: " << bigN.network.size() << endl;
-		double weights = 0; 
+		double weights = 0;
 		for(int i=0; i<bigN.network.size(); ++i){
-			weights += bigN.network[i].size(); 
+			weights += bigN.network[i].size();
 			cout << "Dendrite sizes: " << bigN.network[i].size() << endl;
 			// for(int j=0; j<bigN.network[i].size(); ++j){
-			// 	cout << bigN.network[i][j] << endl; 
+			// 	cout << bigN.network[i][j] << endl;
 			// }
 		}
 		cout << "Counted network weights: " << weights << endl; 
@@ -36,52 +39,54 @@ int main(){
 		
 		cout << "	Checking filling up nodes with input from board." << endl; 
 		string nodeInputs = ""; 
+
 		for(int i=0; i<bigN.nodes.size(); ++i){
 			for(int j=0; j<bigN.nodes[i].size(); ++j){
-				nodeInputs += std::to_string((int)bigN.nodes[i][j]);  
+				nodeInputs += std::to_string((int)bigN.nodes[i][j]);
 			}
 		}
 		if(nodeInputs=="-1-1-1-1-1-1-1-1-1-1-1-1000000001111111111110"){
 			cout << "	Node inputs from board successful." << endl;
-		}	
+		}
 		else{
-			cout << nodeInputs << endl; 
-			cout << "vs" << endl; 
+			cout << nodeInputs << endl;
+			cout << "vs" << endl;
 			cout << "-1-1-1-1-1-1-1-1-1-1-1-1000000001111111111110" << endl;
 		}
 
 		int boardEvalReturn = bigN.calculateBoard(b, 0); 
-		cout << "	First board evaluation: " << boardEvalReturn;
-		cout << endl; 
 
-		string nodeInts = "";   
+		cout << "	First board evaluation: " << boardEvalReturn;
+		cout << endl;
+
+		string nodeInts = "";
 		for(int i=0; i<bigN.nodes.size(); ++i){
 			for(int j=0; j<bigN.nodes[i].size(); ++j){
-				nodeInts+= std::to_string((int)bigN.nodes[i][j]);  
+				nodeInts+= std::to_string((int)bigN.nodes[i][j]);
 			}
-		}	
-		nodeInputs[nodeInputs.size()-1] = (std::to_string((int)boardEvalReturn))[0]; 
-		nodeInputs+=(std::to_string((int)boardEvalReturn))[1]; 
+		}
+		nodeInputs[nodeInputs.size()-1] = (std::to_string((int)boardEvalReturn))[0];
+		nodeInputs+=(std::to_string((int)boardEvalReturn))[1];
 		if(nodeInputs==nodeInts){
 			cout << "	After board eval node vals same. Successful" << endl;
 		}
 		else{
-			cout << nodeInts << endl; 
-			cout << "vs" << endl; 
-			cout << nodeInputs << endl; 
+			cout << nodeInts << endl;
+			cout << "vs" << endl;
+			cout << nodeInputs << endl;
 		}
 
-		cout << "Weights: " << endl; 
-		double sum = 0; 
+		cout << "Weights: " << endl;
+		double sum = 0;
 		for(int i=0; i<bigN.network.size(); ++i){
 			for(int j=0; j<bigN.network[i].size(); ++j){
-				cout << bigN.network[i][j] << " "; 
-				sum += (bigN.network[i][j] * bigN.nodes[i][j]); 
+				cout << bigN.network[i][j] << " ";
+				sum += (bigN.network[i][j] * bigN.nodes[i][j]);
 			}
-			cout << endl; 
+			cout << endl;
 		}
-		cout << "Sum of weights: " << sum << endl; 
-		auto sigOutput = bigN.sigmoid(sum); 
+		cout << "Sum of weights: " << sum << endl;
+		auto sigOutput = bigN.sigmoid(sum);
 		cout << "Sigmoid of : " << sigOutput << endl;
 
 		if(sigOutput>0.55){
@@ -95,12 +100,12 @@ int main(){
 		} 
 		else if(sigOutput<0.45){
 			if(bigN.nodes[1][0] == -1)
-				cout << "	Test successful. Output = -1." << endl; 
+				cout << "	Test successful. Output = -1." << endl;
 		}
 		else{
-			//it doesn't fire, output 0 
+			//it doesn't fire, output 0
 			if(bigN.nodes[1][0] == 0)
-				cout << "	Test successful. Output = 0." << endl; 
+				cout << "	Test successful. Output = 0." << endl;
 		}
 	}
 
@@ -200,14 +205,15 @@ int main(){
 
 	//Time the NN 
 	cout << endl; 
+
 	cout << "Timing code. Timing how fast the";
-	cout << " Neural Network Evaluates a Board " << endl; 
+	cout << " Neural Network Evaluates a Board " << endl;
 
 	{
 		cout << "Timed Test 1. Board: '           r       b            '";
-		cout << endl; 
-		clock_t start; 
-		double duration; 
+		cout << endl;
+		clock_t start;
+		double duration;
 		start = clock();
 
 		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
@@ -218,14 +224,14 @@ int main(){
 		cout << "Output: " << output << endl; 
 
 		duration = (clock() - start) / (double) CLOCKS_PER_SEC;
-		cout << "Time Difference: " << duration << endl; 
+		cout << "Time Difference: " << duration << endl;
 	}
 
 	{
 		cout << "Timed Test 2. Board: Default";
-		cout << endl; 
-		clock_t start; 
-		double duration; 
+		cout << endl;
+		clock_t start;
+		double duration;
 		start = clock();
 
 		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
@@ -253,7 +259,7 @@ int main(){
 		cout << "Output: " << output << endl; 
 
 		duration = (clock() - start) / (double) CLOCKS_PER_SEC;
-		cout << "Time Difference: " << duration << endl; 
+		cout << "Time Difference: " << duration << endl;
 	}
 
 	{
@@ -396,4 +402,7 @@ int main(){
 	//To create NN & evaluate: Max Time (not loop) = 0.006 to 0.007 seconds = 6 miliseconds = 6 mil nanoseconds
 	//If O2 flag = 11955.3 boards per sec (around 12,000)
 		//179,329.5 boards in 15 sec 
+
+	return 0; 
 }
+

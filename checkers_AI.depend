@@ -7,7 +7,7 @@
 	"gui.h"
 	<random>
 
-1517825044 c:\cygwin64\home\firethorn\checkers_ai\board.h
+1518059905 c:\cygwin64\home\firethorn\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -95,5 +95,19 @@
 	<random>
 	<algorithm>
 	<limits>
+	"board.h"
+
+1518732342 source:c:\cygwin64\home\firethorn\checkers_ai\testnn.cpp
+	<iostream>
+	"neuralNetwork.h"
+	<vector>
+	"board.h"
+	<ctime>
+	<chrono>
+
+1518732133 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+	<random>
+	<vector>
+	<chrono>
 	"board.h"
 

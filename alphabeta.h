@@ -13,6 +13,7 @@ using std::min;
 
 unsigned const static int MAXMOVES = 32;
 typedef double sNN;
+
 constexpr sNN LOWEST = std::numeric_limits<sNN>::lowest();
 constexpr sNN HIGHEST = std::numeric_limits<sNN>::max();
 
@@ -25,8 +26,8 @@ sNN boardCount(stdBoard board) {
         board.pieces[0].count() +
         board.pieces[2].count() -
         board.pieces[1].count() -
-        board.pieces[3].count() +
-        distro(gen)); 
+        board.pieces[3].count()) +
+        distro(gen);
   return count;
 }
 
