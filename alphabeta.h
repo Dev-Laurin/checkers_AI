@@ -21,13 +21,12 @@ std::uniform_real_distribution<sNN> distro(0.0,1.0);
 
 //A simple piececount AI
 sNN boardCount(stdBoard board) {
-  sNN count = int(
+  sNN count = (int)(
         board.pieces[0].count() +
         board.pieces[2].count() -
         board.pieces[1].count() -
         board.pieces[3].count() +
-        distro(gen);
-        );
+        distro(gen)); 
   return count;
 }
 
