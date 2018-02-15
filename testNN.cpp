@@ -278,6 +278,28 @@ int main(){
 
 		duration = (clock() - start) / (double) CLOCKS_PER_SEC;
 		cout << "Time Difference: " << duration << endl; 
+
+
+		//Test whether the NN is consistent
+		vector<int> nod{32, 40, 10, 1}; 
+		NN consistent(nod); 
+		stdBoard bb; 
+
+		cout << "Testing for NN consistancy." << endl; 
+		vector<int>outputFromNN(4); 
+		for(int i=0; i<4; i++){
+			outputFromNN[i] = consistent.calculateBoard(bb, 0); 
+		}
+		if(outputFromNN[0]==outputFromNN[1]==outputFromNN[2]==outputFromNN[3]){
+			cout << "NN is consistent using same board. Successful." << endl;
+		}
+		else{
+			cout << "Failed consistancy."<< endl; 
+			for(int i=0; i<outputFromNN.size(); i++){
+				cout << outputFromNN[i] << endl;
+			}
+		}
+
 	}
 
 		{
@@ -399,9 +421,9 @@ int main(){
 	cout << "Board Evals per second: " << runs/duration << endl;
 
 
-	//To create NN & evaluate: Max Time (not loop) = 0.006 to 0.007 seconds = 6 miliseconds = 6 mil nanoseconds
-	//If O2 flag = 11955.3 boards per sec (around 12,000)
-		//179,329.5 boards in 15 sec 
+// 	//To create NN & evaluate: Max Time (not loop) = 0.006 to 0.007 seconds = 6 miliseconds = 6 mil nanoseconds
+// 	//If O2 flag = 11955.3 boards per sec (around 12,000)
+// 		//179,329.5 boards in 15 sec 
 
 	return 0; 
 }
