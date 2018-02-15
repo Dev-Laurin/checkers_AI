@@ -5,6 +5,9 @@
 
 #include <random>
 #include <vector>
+#include <chrono>
+using std::time;
+
 using std::cout;
 using std::endl;
 #include "board.h"
@@ -20,11 +23,7 @@ public:
 		}
 		//Random number generator
 		gen.seed(time(0));
-    	std::uniform_real_distribution<doub		"five": {accept:true, fallback:"angry",
-			edges:[
-				{match:"Nn",next:"four"},
-			]
-		},le> dis(-1.0,1.0);
+    std::uniform_real_distribution<double> dis(-1.0,1.0);
 
 	// NN(std::vector<int>& nS){
 	// 	gen.seed(time(0));
