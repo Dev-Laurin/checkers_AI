@@ -111,3 +111,17 @@
 	<chrono>
 	"board.h"
 
+1518743508 source:c:\cygwin64\home\jason\checkers_ai\testnn.cpp
+	<iostream>
+	"neuralNetwork.h"
+	<vector>
+	"board.h"
+	<ctime>
+	<random>
+
+1518751980 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
+	<random>
+	<vector>
+	<chrono>
+	"board.h"
+
