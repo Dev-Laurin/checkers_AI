@@ -22,7 +22,7 @@ int main(){
 		cout << "Small Neural Network - {32, 1}.--------" << endl;
 		cout << "Network layers: " << bigN.network.size() << endl;
 		double weights = 0;
-		for(int i=0; i<bigN.network.size(); ++i){
+		for(unsigned int i=0; i<bigN.network.size(); ++i){
 			weights += bigN.network[i].size();
 			cout << "Dendrite sizes: " << bigN.network[i].size() << endl;
 			// for(int j=0; j<bigN.network[i].size(); ++j){
@@ -40,8 +40,8 @@ int main(){
 		cout << "	Checking filling up nodes with input from board." << endl;
 		string nodeInputs = "";
 
-		for(int i=0; i<bigN.nodes.size(); ++i){
-			for(int j=0; j<bigN.nodes[i].size(); ++j){
+		for(unsigned int i=0; i<bigN.nodes.size(); ++i){
+			for(unsigned int j=0; j<bigN.nodes[i].size(); ++j){
 				nodeInputs += std::to_string((int)bigN.nodes[i][j]);
 			}
 		}
@@ -60,8 +60,8 @@ int main(){
 		cout << endl;
 
 		string nodeInts = "";
-		for(int i=0; i<bigN.nodes.size(); ++i){
-			for(int j=0; j<bigN.nodes[i].size(); ++j){
+		for(unsigned int i=0; i<bigN.nodes.size(); ++i){
+			for(unsigned int j=0; j<bigN.nodes[i].size(); ++j){
 				nodeInts+= std::to_string((int)bigN.nodes[i][j]);
 			}
 		}
@@ -78,8 +78,8 @@ int main(){
 
 		cout << "Weights: " << endl;
 		double sum = 0;
-		for(int i=0; i<bigN.network.size(); ++i){
-			for(int j=0; j<bigN.network[i].size(); ++j){
+		for(unsigned int i=0; i<bigN.network.size(); ++i){
+			for(unsigned int j=0; j<bigN.network[i].size(); ++j){
 				cout << bigN.network[i][j] << " ";
 				sum += (bigN.network[i][j] * bigN.nodes[i][j]);
 			}
@@ -118,7 +118,7 @@ int main(){
 
 		//Check if first hidden layer 2 nodes are correct
 		double firstNode = 0;
-		for(int j=0; j<twoLayer.nodes[0].size(); ++j){
+		for(unsigned int j=0; j<twoLayer.nodes[0].size(); ++j){
 			firstNode += twoLayer.nodes[0][j] * twoLayer.network[0][j];
 		}
 		firstNode = twoLayer.sigmoid(firstNode);
@@ -145,7 +145,7 @@ int main(){
 		//Second node
 		double secondNode = 0;
 		int networkIndex = 32;
-		for(int j=0; j<twoLayer.nodes[0].size(); ++j){
+		for(unsigned int j=0; j<twoLayer.nodes[0].size(); ++j){
 			secondNode += twoLayer.nodes[0][j] * twoLayer.network[0][networkIndex];
 			++networkIndex;
 		}
@@ -173,7 +173,7 @@ int main(){
 
 		//Test output as well
 		double finalNode = 0;
-		for(int i=0; i<twoLayer.nodes[1].size(); ++i){
+		for(unsigned int i=0; i<twoLayer.nodes[1].size(); ++i){
 			finalNode += twoLayer.nodes[1][i] * twoLayer.network[1][i];
 		}
 		finalNode = twoLayer.sigmoid(finalNode);
@@ -295,7 +295,7 @@ int main(){
 		}
 		else{
 			cout << "Failed consistancy."<< endl;
-			for(int i=0; i<outputFromNN.size(); i++){
+			for(unsigned int i=0; i<outputFromNN.size(); i++){
 				cout << outputFromNN[i] << endl;
 			}
 		}
@@ -309,7 +309,7 @@ int main(){
 
 		cout << "Imitating Blondie24 Neural Network Size.--------" << endl;
 		cout << "Network layers:  " << n.network.size() << endl;
-		for(int i=0; i<n.network.size(); ++i){
+		for(unsigned int i=0; i<n.network.size(); ++i){
 			std::cout << "Dendrite sizes: " << n.network[i].size() << std::endl;
 
 			// for(int j=0; j<n.network[i].size(); ++j){
@@ -372,7 +372,7 @@ int main(){
 		cout << "Bigger Neural Network > 10,000 weights." << endl;
 		cout << "Network layers: " << bigN.network.size() << endl;
 		double weights = 0;
-		for(int i=0; i<bigN.network.size(); ++i){
+		for(unsigned int i=0; i<bigN.network.size(); ++i){
 			weights += bigN.network[i].size();
 			cout << "Dendrite sizes: " << bigN.network[i].size() << endl;
 			// for(int j=0; j<bigN.network[i].size(); ++j){
@@ -398,9 +398,8 @@ int main(){
 //Start the timer
 
 	cout << "Timing for Big NN {32, 50, 50, 50, 100, 50, 1}." << endl;
-	clock_t start;
+	clock_t start, stop;
 	double duration;
-	start = clock();
 
 	std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
 	NN loopTimedNN(nodes);
@@ -408,13 +407,19 @@ int main(){
 	int randIndex = 0;
 	//For loop for timing purposes, testing 4 boards chosen randomly
 	int runs = 1000;
+  double answers[1000];
+	start = clock();
 	for(int i=0; i<runs; ++i){
 		randIndex = dis(gen);
-		cout << "Answer: " << loopTimedNN.calculateBoard(boards[randIndex], 0) << endl;
+    answers[i] = loopTimedNN.calculateBoard(boards[randIndex], 0);
 	}
+	stop = clock();
+	duration = (stop - start) / (double) CLOCKS_PER_SEC;
+
+  std::uniform_int_distribution<int> dis1k(0,1000);
+  cout << "Random Board Value: " << answers[dis1k(gen)] << endl;
 
 
-	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
 	cout << "Time Difference: " << duration << endl;
 
 	double timePerBoard = duration/runs;
@@ -426,6 +431,11 @@ int main(){
 // 	//If O2 flag = 11955.3 boards per sec (around 12,000)
 // 		//179,329.5 boards in 15 sec
 
+// Jason's hella old home computer:
+// A Beast when new, a decade ago.
+// No Opt: 1515.15 boards/second.
+// O2: 15384.6 boards/second.
+// O3: 16393.4
 	return 0;
 }
 

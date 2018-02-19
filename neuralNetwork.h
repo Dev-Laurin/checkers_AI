@@ -13,15 +13,24 @@ using std::endl;
 #include "board.h"
 using std::vector;
 
+class AIPlayer{
+public:
+    double kingVal = 0.4;  //Value of kings over pawns.
+    double pieceWeight = 1.0; //Value of piece counter input
+    double montyWeight = 1.0;
+    int montyK = 1; // (w-l)/(w+l+k)
 
-class NN{
+};
+
+class NN: public AIPlayer
+{
 public:
 	//Set weights to random values
 	NN(std::vector<int>& nS){
 	    nodeSizes = nS;
 		//Save the node configuration
 		nodes.resize(nodeSizes.size());
-		for(int i=0; i<nodeSizes.size(); ++i){
+		for(unsigned int i=0; i<nodeSizes.size(); ++i){
 			nodes[i].resize(nodeSizes[i], 0);
 		}
 		//Random number generator
@@ -30,18 +39,18 @@ public:
 
 		//create how many layers there will be (4,32,40,10,1)
 		network.resize(nodeSizes.size()-1);
-		for(int j=0; j<network.size(); ++j){
+		for(unsigned int j=0; j<network.size(); ++j){
             network[j].resize(nodeSizes[j]*nodeSizes[j+1]);
-            for(int k=0; k<network[j].size(); ++k){
+            for(unsigned int k=0; k<network[j].size(); ++k){
                 //put random weights in
                 network[j][k] = dis(gen);
 			}
 		}
 	}
 	//user defined node inputs
-	int giveInputs(vector<vector<double > > & inNodes){
-		for(int i=0; i<inNodes.size(); ++i){
-			for(int j=0; j<inNodes[i].size(); ++j){
+	void giveInputs(vector<vector<double > > & inNodes){
+		for(unsigned int i=0; i<inNodes.size(); ++i){
+			for(unsigned int j=0; j<inNodes[i].size(); ++j){
 				nodes[i][j] = inNodes[i][j];
 			}
 		}
@@ -51,7 +60,7 @@ public:
 	double calculateBoard(stdBoard & board, int nodeLayerIndex){
 		getBoardInput(board, nodeLayerIndex);
 
-		for (int i = 0; i < network.size(); ++ i) { //Step through network layers
+		for (unsigned int i = 0; i < network.size(); ++ i) { //Step through network layers
 /*                cout << "i: " << i << endl;
                 cout << "nodeSizes.size(): " << nodeSizes.size() << endl;
                 cout << "nodeSize[i] " << nodeSizes[i] << " " << nodeSizes[i+1] << endl;
@@ -63,13 +72,12 @@ public:
                 }
             }
             //layer done, apply sigmoid
-            for (int j = 0; j < nodes[i+1].size(); ++j) {
+            for (unsigned int j = 0; j < nodes[i+1].size(); ++j) {
                 nodes[i+1][j] = sigmoid(nodes[i+1][j]);
             }
 		}
 		//Add other modifiers
-		double finalValue = nodes[nodes.size()-1][0] + boardCount(board)* pieceWeight;
-		return nodes[nodes.size()-1][0];
+		return nodes[nodes.size()-1][0] + boardCount(board)* pieceWeight;
 		/*
 		//Go through entire node vector
 		for(int outerNodeVector=0; outerNodeVector<nodes.size()-1; outerNodeVector++){
@@ -135,11 +143,6 @@ public:
     std::mt19937_64 gen; //(time(0));
     std::vector<std::vector<double>> nodes; //Count of nodes per layer
     std::vector<int> nodeSizes;
-
-    double kingVal = 0.4;  //Value of kings over pawns.
-    double pieceWeight = 1.0; //Value of piece counter input
-    double montyWeight = 1.0;
-    int montyK = 1; // (w-l)/(w+l+k)
 
 };
 
