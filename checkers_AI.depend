@@ -75,10 +75,11 @@
 1517814236 source:c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.cpp
 	"old_movegenerator.h"
 
-1517859777 c:\cygwin64\home\firethorn\checkers_ai\alphabeta.h
+1519067843 c:\cygwin64\home\firethorn\checkers_ai\alphabeta.h
 	<bitset>
 	<random>
 	<algorithm>
+	<limits>
 	"board.h"
 
 1518048693 source:c:\cygwin64\home\jason\checkers_ai\gui.cpp
@@ -97,7 +98,7 @@
 	<limits>
 	"board.h"
 
-1519066082 source:c:\cygwin64\home\firethorn\checkers_ai\testnn.cpp
+1519066985 source:c:\cygwin64\home\firethorn\checkers_ai\testnn.cpp
 	<iostream>
 	"neuralNetwork.h"
 	<vector>
@@ -105,11 +106,12 @@
 	<ctime>
 	<random>
 
-1519065990 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1519069324 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<random>
 	<vector>
 	<chrono>
 	"board.h"
+	"alphabeta.h"
 
 1518743508 source:c:\cygwin64\home\jason\checkers_ai\testnn.cpp
 	<iostream>

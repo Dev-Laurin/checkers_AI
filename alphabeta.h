@@ -81,12 +81,12 @@ sNN beta(stdBoard board, int depth) {
   }
 }
 
-double alphabeta(stdBoard board, unsigned int side = 0) {
+sNN alphabeta(stdBoard board, unsigned int side = 0) {
   stdBoard boardA[MAXMOVES];
   stdBoard boardB[MAXMOVES];
   unsigned int movesA, movesB;
-  double moveValA[MAXMOVES];
-  double moveValB[MAXMOVES];
+  sNN moveValA[MAXMOVES];
+  sNN moveValB[MAXMOVES];
 
   movesA = board.genMoves(boardA,1-side);
   for(unsigned int i=0;i<movesA;++i) {

@@ -11,6 +11,8 @@ using std::time;
 using std::cout;
 using std::endl;
 #include "board.h"
+#include "alphabeta.h"
+
 using std::vector;
 
 class AIPlayer{
@@ -19,6 +21,32 @@ public:
     double pieceWeight = 1.0; //Value of piece counter input
     double montyWeight = 1.0;
     int montyK = 1; // (w-l)/(w+l+k)
+
+    stdBoard getMove(stdBoard board, bool side=false) {
+          stdBoard possibleBoards[32];
+          if(side) {
+            board = board.flip();
+          }
+			    int moves = tBoard.genMoves(possibleBoards,0);
+			    int selectMove = 0;
+			    sNN moveVal = beta(possibleBoards[0],7);
+			    sNN tempMove;
+			    for (int i = 1;i<moves;++i) {
+                    tempMove = beta(possibleBoards[i],7);
+                    //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
+                    //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
+                    if (tempMove > moveVal) {
+                        //better move found
+                        moveVal = tempMove;
+                        selectMove = i;
+                    }
+			    }
+			    board = possibleBoards[selectMove];
+			    if (side) {
+              board = board.flip();
+			    }
+			    return board;
+    }
 
 };
 
@@ -78,41 +106,6 @@ public:
 		}
 		//Add other modifiers
 		return nodes[nodes.size()-1][0] + boardCount(board)* pieceWeight;
-		/*
-		//Go through entire node vector
-		for(int outerNodeVector=0; outerNodeVector<nodes.size()-1; outerNodeVector++){
-
-			int networkIndex = 0;
-			//For every right-hand node
-			for(int i=0; i<nodes[outerNodeVector+1].size(); ++i){
-				double sumWeights = 0;
-				//The left-hand nodes
-				for(int j=0; j<nodes[outerNodeVector].size(); ++j){
-					sumWeights+= network[outerNodeVector][networkIndex] * nodes[outerNodeVector][j];
-					++networkIndex;
-				}
-
-				//Apply the sigmoid function to the weights & fires
-				//cout << "Sum of weights: " << sumWeights << endl;
-				double sigmoidOutput = sigmoid(sumWeights);
-				//cout << "Sigmoid: " << sigmoidOutput << endl;
-				//cout << "outerNodeVector: " << outerNodeVector << endl;
-				if(sigmoidOutput>0.55){
-					//it fires, output a 1 ?
-					nodes[outerNodeVector+1][i] = 1;
-				}
-				else if(sigmoidOutput<0.45){
-					nodes[outerNodeVector+1][i] = -1;
-				}
-				else{
-					//it doesn't fire, output 0
-					nodes[outerNodeVector+1][i] = 0;
-				}
-			}
-		}
-		//the output
-		return nodes[nodes.size()-1][0];
-		*/
 	}
 
 	//Puts board input into nodes vector in user specified index
