@@ -7,3 +7,6 @@ testBoard: Test/testBoard.cpp old_movegenerator.cpp
 testNN: testNN.cpp
 	g++ -std=c++14 testNN.cpp -o nnTest.o
 	./nnTest.o 
+train: training.cpp
+	g++ -std=c++14 training.cpp -o train.o
+	./train.o 

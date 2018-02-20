@@ -12,22 +12,29 @@ using std::cout;
 using std::endl;
 #include "board.h"
 #include "alphabeta.h"
+#include <fstream> 
+using std::ofstream; 
+#include <string>
+using std::string; 
+using std::to_string; 
 
 using std::vector;
 
 class AIPlayer{
 public:
     double kingVal = 0.4;  //Value of kings over pawns.
+    double sigma = 0.05; //How much we vary from the parent weights
     double pieceWeight = 1.0; //Value of piece counter input
     double montyWeight = 1.0;
     int montyK = 1; // (w-l)/(w+l+k)
+    int generation = 0; //Starts out as parent 
 
     stdBoard getMove(stdBoard board, bool side=false) {
           stdBoard possibleBoards[32];
           if(side) {
             board = board.flip();
           }
-			    int moves = tBoard.genMoves(possibleBoards,0);
+			    int moves = board.genMoves(possibleBoards,0);
 			    int selectMove = 0;
 			    sNN moveVal = beta(possibleBoards[0],7);
 			    sNN tempMove;
@@ -62,8 +69,9 @@ public:
 			nodes[i].resize(nodeSizes[i], 0);
 		}
 		//Random number generator
-		gen.seed(time(0));
-    	std::uniform_real_distribution<double> dis(-1.0,1.0);
+		gen.seed(time(0)); 
+		//Each weight is now between -0.2 and 0.2 (see proj3)
+    	std::uniform_real_distribution<double> dis(-0.2,0.2);
 
 		//create how many layers there will be (4,32,40,10,1)
 		network.resize(nodeSizes.size()-1);
@@ -74,6 +82,9 @@ public:
                 network[j][k] = dis(gen);
 			}
 		}
+		//Generate a random king value U(1.0, 3.0)
+		std::uniform_real_distribution<double> kingDis(1.0, 3.0); 
+		kingVal = kingDis(gen); 
 	}
 	//user defined node inputs
 	void giveInputs(vector<vector<double > > & inNodes){
@@ -89,12 +100,7 @@ public:
 		getBoardInput(board, nodeLayerIndex);
 
 		for (unsigned int i = 0; i < network.size(); ++ i) { //Step through network layers
-/*                cout << "i: " << i << endl;
-                cout << "nodeSizes.size(): " << nodeSizes.size() << endl;
-                cout << "nodeSize[i] " << nodeSizes[i] << " " << nodeSizes[i+1] << endl;
-                cout << "nodes size: " << nodes[i].size() << " " << nodeSizes[i+1] << endl;
-                cout << "network size: " << network[i].size() << endl;
-*/            for (int j = 0; j < nodeSizes[i]; ++j) { //Step through first layer nodes
+           for (int j = 0; j < nodeSizes[i]; ++j) { //Step through first layer nodes
                 for (int k = 0; k < nodeSizes[i+1]; ++k) {//Step through second layer nodes
                     nodes[i+1][k] += nodes[i][j] * network[i][j*nodeSizes[i+1] + k];
                 }
@@ -115,7 +121,6 @@ public:
             nodes[nodeLayerIndex][i] =
                 (int)(board.pieces[0][i] - board.pieces[1][i]) +
                 (int)(board.pieces[2][i] - board.pieces[3][i]) * kingVal;
-            //cout << "node " << i << " val: " << nodes[nodeLayerIndex][i] << endl;
 		}
 	}
 
@@ -132,6 +137,44 @@ public:
 		const static double e = 2.71828182845;
 		return 1/(1 + pow(e, -num));
 	}
+
+	//Save this NN to a file
+	int saveToFile(string filename){
+
+		ofstream file(filename + "_NN_" + to_string(generation) + ".txt"); 
+
+		if(!file){
+			cout << "Unable to open file." << endl;
+			return -1; 
+		}
+
+		//write NN to file 
+			//save the generation number 
+		file << generation << endl; 
+			//save the king value
+		file << kingVal << " " << sigma << endl; 
+			//Save the weights
+		//Save the size of the weight network
+		file << network.size() << " "; 
+		for(int i=0; i<network.size(); ++i){
+			file << network[i].size() << " "; 
+		}
+		file << endl; 
+		//Save the actual weights
+		for(int i=0; i<network.size(); ++i){
+			for(int j=0; j<network[i].size(); ++j){
+				file << network[i][j] << " "; 
+			}
+			file << endl; //newline after each vector
+		}
+
+
+		file.close(); 
+
+	}
+
+
+	//Data Members
 	std::vector<std::vector<double>> network;
     std::mt19937_64 gen; //(time(0));
     std::vector<std::vector<double>> nodes; //Count of nodes per layer
