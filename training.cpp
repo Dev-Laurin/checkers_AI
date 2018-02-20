@@ -15,12 +15,8 @@ int main(){
 	blondie24.saveToFile(); 
 	blondie24.loadFromFile("blondie_NN_0.txt"); 
 
-	NN copy = blondie24; 
-	copy.generation+=1; 
-	copy.saveToFile(); 
-
-	ifstream file("blondie_NN_0.txt"); 
-	ifstream file1("blondie_NN_1.txt"); 
-
+	NN child = blondie24; 
+	child.becomeOffspring(); 
+	child.saveToFile(); 
 	return 0; 
 }

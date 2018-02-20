@@ -266,6 +266,28 @@ public:
 		return 0; 
 	}
 
+	//generate offspring, randomize this NN 
+		//(assuming this is a copy of the original) 
+	void becomeOffspring(){
+
+		//change generation #
+		++generation; 
+
+		//Randomize king value 
+		std::uniform_real_distribution<double> kingDis(-0.1,0.1);
+		kingVal = kingVal + kingDis(gen);
+
+		//randomize the sigmas
+		std::normal_distribution<double> nDis(0.0, 1.0);
+
+		for(int i=0; i<sigmas.size(); ++i){
+			for(int j=0; j<sigmas[i].size(); ++j){ 
+				sigmas[i][j] = pow(sigmas[i][j], 1.0/sqrt(2.0*sqrt(nDis(gen)))); 
+				//randomize the weights using new sigmas
+				network[i][j] = network[i][j] + sigmas[i][j] * nDis(gen); 
+			}
+		}
+	}
 
 	//Data Members
 	std::vector<std::vector<double>> network;
