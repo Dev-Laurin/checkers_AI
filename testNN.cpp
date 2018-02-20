@@ -11,6 +11,25 @@ using std::endl;
 // #include <ctime>
 // #include <chrono>
 
+
+int checkIfFilesAreEqual(ifstream & file1, ifstream & file2){
+
+	string line, line2; 
+	//skip generation line
+	getline(file1, line); 
+	getline(file2, line2); 
+
+	while(getline(file1, line) and getline(file2, line2)){
+		if(line!=line2){
+			cout << line << endl; 
+			cout << "vs" << endl;
+			cout << line2 << endl; 
+			return -1; 
+		}
+	}
+	return 0; 
+}
+
 int main(){
 
 	{
@@ -425,6 +444,26 @@ int main(){
 	double timePerBoard = duration/runs;
 	cout << "Time per board: " << timePerBoard << endl;
 	cout << "Board Evals per second: " << runs/duration << endl;
+
+
+//Test Saving & Loading feature
+{
+	vector<int> nodes{32, 40, 10, 1}; 
+	NN blondie24(nodes, "blondie");  
+	blondie24.saveToFile(); 
+	blondie24.loadFromFile("blondie_NN_0.txt"); 
+
+	NN copy = blondie24; 
+	copy.generation+=1; 
+	copy.saveToFile(); 
+
+	ifstream file("blondie_NN_0.txt"); 
+	ifstream file1("blondie_NN_1.txt"); 
+
+	if(checkIfFilesAreEqual(file, file1)==0){
+		cout << "File saving & loading successful." << endl;
+	} 	
+}
 
 
 // 	//To create NN & evaluate: Max Time (not loop) = 0.006 to 0.007 seconds = 6 miliseconds = 6 mil nanoseconds

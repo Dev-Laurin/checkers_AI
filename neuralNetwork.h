@@ -10,6 +10,7 @@ using std::time;
 
 using std::cout;
 using std::endl;
+using std::getline; 
 #include "board.h"
 #include "alphabeta.h"
 #include <fstream> 
@@ -17,6 +18,9 @@ using std::ofstream;
 #include <string>
 using std::string; 
 using std::to_string; 
+#include <sstream> 
+using std::istringstream; 
+using std::ifstream; 
 
 using std::vector;
 
@@ -28,6 +32,7 @@ public:
     double montyWeight = 1.0;
     int montyK = 1; // (w-l)/(w+l+k)
     int generation = 0; //Starts out as parent 
+    string familyName = ""; 
 
     stdBoard getMove(stdBoard board, bool side=false) {
           stdBoard possibleBoards[32];
@@ -61,7 +66,10 @@ class NN: public AIPlayer
 {
 public:
 	//Set weights to random values
-	NN(std::vector<int>& nS){
+	NN(std::vector<int>& nS, string familyname){
+		//Save the family name (to tell apart/organize)
+		familyName = familyname; 
+
 	    nodeSizes = nS;
 		//Save the node configuration
 		nodes.resize(nodeSizes.size());
@@ -85,6 +93,12 @@ public:
 		//Generate a random king value U(1.0, 3.0)
 		std::uniform_real_distribution<double> kingDis(1.0, 3.0); 
 		kingVal = kingDis(gen); 
+
+		//Save the beg sigmas of the weights
+		sigmas.resize(network.size());
+		for(int i=0; i<network.size(); ++i){
+			sigmas[i].resize(network[i].size(), sigma); 
+		}
 	}
 	//user defined node inputs
 	void giveInputs(vector<vector<double > > & inNodes){
@@ -139,9 +153,9 @@ public:
 	}
 
 	//Save this NN to a file
-	int saveToFile(string filename){
+	int saveToFile(){
 
-		ofstream file(filename + "_NN_" + to_string(generation) + ".txt"); 
+		ofstream file(familyName + "_NN_" + to_string(generation) + ".txt"); 
 
 		if(!file){
 			cout << "Unable to open file." << endl;
@@ -152,7 +166,7 @@ public:
 			//save the generation number 
 		file << generation << endl; 
 			//save the king value
-		file << kingVal << " " << sigma << endl; 
+		file << kingVal << endl;
 			//Save the weights
 		//Save the size of the weight network
 		file << network.size() << " "; 
@@ -167,10 +181,89 @@ public:
 			}
 			file << endl; //newline after each vector
 		}
+		file << "sigmas: " << endl; 
+		//Save the sigmas
+		for(int i=0; i<sigmas.size(); ++i){
+			for(int j=0; j<sigmas[i].size(); ++j){
+				file << sigmas[i][j] << " "; 
+			}
+			file << endl; 
+		}
+		file.close(); 
+		return 0; //successful
+	}
+	//Load NN from file
+	int loadFromFile(string filename){
+		ifstream file(filename); 
+		if(!file){
+			cout << "Error opening file."; 
+			cout << " Filename: " << filename << endl;
+			return -1; 
+		}
+		//Read file line by line until failure
+			//Read in the generation number
+		string line; 
+		getline(file, line); 
 
+		istringstream num(line); 
+		num >> generation; 
+
+		//Read in the kingval
+		getline(file, line); 
+		istringstream king(line); 
+		king >> kingVal; 
+
+		//Read in the network size
+		getline(file, line); 
+
+		istringstream netSize(line); 
+		int networkSize; 
+		netSize >> networkSize; 
+
+		//Get the inner network sizes
+		vector<int> networkWeightSize(networkSize); 
+		int i = 0; 
+		while(netSize){
+			netSize >> networkWeightSize[i]; 
+			++i; 
+		}
+
+		//Change the overall network size
+		network.resize(networkSize); 
+
+		//Read in the weights
+		i = 0; 
+		while(getline(file, line) and line!="sigmas: "){
+			istringstream weight(line);
+
+			//Make the networks big enough
+			network[i].resize(networkWeightSize[i]);
+
+			//Load all the weights in 
+			for(int j=0; j<network[i].size(); ++j){
+				weight >> network[i][j]; 
+			} 
+			++i;
+		}
+
+		//Read in sigmas
+		i = 0; 
+		sigmas.resize(networkSize); 
+		while(getline(file, line)){
+
+			//Make the sigma vec the right size (from file)
+			istringstream sig(line); 
+			sigmas[i].resize(networkWeightSize[i]); 
+
+			//Load the sigmas in 
+			for(int j=0; j<sigmas[i].size(); ++j){
+				sig >> sigmas[i][j];  
+			}
+			++i; 
+		}
 
 		file.close(); 
-
+		return 0; 
 	}
 
 
@@ -179,6 +272,7 @@ public:
     std::mt19937_64 gen; //(time(0));
     std::vector<std::vector<double>> nodes; //Count of nodes per layer
     std::vector<int> nodeSizes;
+    std::vector<vector<double>> sigmas; //the change in weights
 
 };
 
