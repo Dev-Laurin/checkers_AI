@@ -278,13 +278,30 @@ public:
 		kingVal = kingVal + kingDis(gen);
 
 		//randomize the sigmas
-		std::normal_distribution<double> nDis(0.0, 1.0);
+		//(mean, standard deviation)
+			//we are using 0.5 because its bet (0 and 1)
+		std::normal_distribution<double> nDis(0.5, 2.0);
 
 		for(int i=0; i<sigmas.size(); ++i){
-			for(int j=0; j<sigmas[i].size(); ++j){ 
-				sigmas[i][j] = pow(sigmas[i][j], 1.0/sqrt(2.0*sqrt(nDis(gen)))); 
+			for(int j=0; j<sigmas[i].size(); ++j){
+
+				//The normal distribution returns numbers outside
+					//our range, keep getting a rand number until
+					//we get one we can use in our range 0-1
+				double rand = nDis(gen); 
+				while(rand<0.0 or rand>1.0){
+					rand = nDis(gen); 
+				} 
+
+				//Compute our new sigma 
+				sigmas[i][j] = pow(sigmas[i][j], 1.0/sqrt(2.0*sqrt(rand)));
+
 				//randomize the weights using new sigmas
-				network[i][j] = network[i][j] + sigmas[i][j] * nDis(gen); 
+				rand = nDis(gen); 
+				while(rand<0.0 or rand>1.0){
+					rand = nDis(gen); 
+				} 
+				network[i][j] = network[i][j] + sigmas[i][j] * rand; 
 			}
 		}
 	}
