@@ -44,7 +44,7 @@ public:
     string familyName = "";
     // Returns the value of the board given.
     // A virtual function to be implimented by the specific AI.
-    virtual sNN calculateBoard(stdBoard & board, int nodeLayerIndex=0);
+    virtual sNN calculateBoard(stdBoard & board){return 1.0;}
 
     // Returns a move given a board and a side.
     stdBoard getMove(stdBoard & board, bool side=false);
@@ -64,7 +64,7 @@ class PieceCount: public AIPlayer
   std::default_random_engine gen;
   std::uniform_real_distribution<double> distro;
 
-  sNN calculateBoard(stdBoard & board, int nodeLayerIndex=0) {
+  sNN calculateBoard(stdBoard & board) {
     sNN count = (int)(
           board.pieces[0].count() +
           board.pieces[2].count() -
@@ -109,7 +109,7 @@ public:
 
 		//Save the beg sigmas of the weights
 		sigmas.resize(network.size());
-		for(int i=0; i<network.size(); ++i){
+		for(size_t i=0; i<network.size(); ++i){
 			sigmas[i].resize(network[i].size(), sigma);
 		}
 	}
@@ -124,8 +124,10 @@ public:
 
 	//Given a board, calculate the output of the NN
 	double calculateBoard(stdBoard & board){
+		for(size_t i = 0;i < nodes.size();++i) {
+            std::fill(nodes[i].begin(),nodes[i].end(),0.0);
+		}
 		getBoardInput(board);
-
 		for (unsigned int i = 0; i < network.size(); ++ i) { //Step through network layers
            for (int j = 0; j < nodeSizes[i]; ++j) { //Step through first layer nodes
                 for (int k = 0; k < nodeSizes[i+1]; ++k) {//Step through second layer nodes
@@ -138,7 +140,8 @@ public:
             }
 		}
 		//Add other modifiers
-		return nodes[nodes.size()-1][0] + boardCount(board)* pieceWeight;
+		return nodes[nodes.size()-1][0];
+		//nodes[nodes.size()-1][0] + boardCount(board)* pieceWeight;
 	}
 
 	//Puts board input into nodes vector in user specified index
@@ -183,21 +186,21 @@ public:
 			//Save the weights
 		//Save the size of the weight network
 		file << network.size() << " ";
-		for(int i=0; i<network.size(); ++i){
+		for(size_t i=0; i<network.size(); ++i){
 			file << network[i].size() << " ";
 		}
 		file << endl;
 		//Save the actual weights
-		for(int i=0; i<network.size(); ++i){
-			for(int j=0; j<network[i].size(); ++j){
+		for(size_t i=0; i<network.size(); ++i){
+			for(size_t j=0; j<network[i].size(); ++j){
 				file << network[i][j] << " ";
 			}
 			file << endl; //newline after each vector
 		}
 		file << "sigmas: " << endl;
 		//Save the sigmas
-		for(int i=0; i<sigmas.size(); ++i){
-			for(int j=0; j<sigmas[i].size(); ++j){
+		for(size_t i=0; i<sigmas.size(); ++i){
+			for(size_t j=0; j<sigmas[i].size(); ++j){
 				file << sigmas[i][j] << " ";
 			}
 			file << endl;
@@ -253,7 +256,7 @@ public:
 			network[i].resize(networkWeightSize[i]);
 
 			//Load all the weights in
-			for(int j=0; j<network[i].size(); ++j){
+			for(size_t j=0; j<network[i].size(); ++j){
 				weight >> network[i][j];
 			}
 			++i;
@@ -269,7 +272,7 @@ public:
 			sigmas[i].resize(networkWeightSize[i]);
 
 			//Load the sigmas in
-			for(int j=0; j<sigmas[i].size(); ++j){
+			for(size_t j=0; j<sigmas[i].size(); ++j){
 				sig >> sigmas[i][j];
 			}
 			++i;
@@ -295,8 +298,8 @@ public:
 			//we are using 0.5 because its bet (0 and 1)
 		std::normal_distribution<double> nDis(0.5, 2.0);
 
-		for(int i=0; i<sigmas.size(); ++i){
-			for(int j=0; j<sigmas[i].size(); ++j){
+		for(size_t i=0; i<sigmas.size(); ++i){
+			for(size_t j=0; j<sigmas[i].size(); ++j){
 
 				//The normal distribution returns numbers outside
 					//our range, keep getting a rand number until

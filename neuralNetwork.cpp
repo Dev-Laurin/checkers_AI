@@ -47,7 +47,7 @@ sNN AIPlayer::alpha(stdBoard & board, int depth) {
         }
       } else {
         for (int i = 0;i<moveCount;++i) {
-            rVal = max(rVal,calculateBoard(moveList[i],0));
+            rVal = max(rVal,calculateBoard(moveList[i]));
         }
       }
       //Take the highest value move.
@@ -89,7 +89,7 @@ sNN AIPlayer::alphabeta(stdBoard board, unsigned int side) {
   for(unsigned int i=0;i<movesA;++i) {
     movesB = boardA[i].genMoves(boardB,side);
     for(unsigned int j=0;j<movesB;++j) {
-      moveValB[j] = calculateBoard(boardB[j],0);
+      moveValB[j] = calculateBoard(boardB[j]);
     }
     moveValA[i] = *std::max_element(moveValB,moveValB+movesB);
   }
