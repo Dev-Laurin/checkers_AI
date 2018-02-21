@@ -123,8 +123,8 @@ public:
 	}
 
 	//Given a board, calculate the output of the NN
-	double calculateBoard(stdBoard & board, int nodeLayerIndex){
-		getBoardInput(board, nodeLayerIndex);
+	double calculateBoard(stdBoard & board){
+		getBoardInput(board);
 
 		for (unsigned int i = 0; i < network.size(); ++ i) { //Step through network layers
            for (int j = 0; j < nodeSizes[i]; ++j) { //Step through first layer nodes
@@ -142,10 +142,10 @@ public:
 	}
 
 	//Puts board input into nodes vector in user specified index
-	void getBoardInput(stdBoard & board, int nodeLayerIndex){
+	void getBoardInput(stdBoard & board){
 
 		for(int i=0; i<32; ++i){
-            nodes[nodeLayerIndex][i] =
+            nodes[0][i] =
                 (int)(board.pieces[0][i] - board.pieces[1][i]) +
                 (int)(board.pieces[2][i] - board.pieces[3][i]) * kingVal;
 		}

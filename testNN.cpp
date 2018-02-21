@@ -1,4 +1,6 @@
 //testNN.cpp
+//2-10-18
+//To test our neural network implementation. 
 #include <iostream>
 #include "neuralNetwork.h"
 #include <vector>
@@ -8,399 +10,248 @@ using std::endl;
 #include <ctime>
 #include <random>
 
-// #include <ctime>
-// #include <chrono>
+//Tells catch to provide a main (one file only)
+#define CATCH_CONFIG_MAIN
+#include "Catch2.hpp" //C++ Testing Framework 
+
+// #include <chrono> <- Doesn't work on Laurin's machine
+	//Issue with new 5.4.1 g++ version on Ubuntu 16.06? 
 
 
+//Check's if two NN save files are equal 
 int checkIfFilesAreEqual(ifstream & file1, ifstream & file2){
 
-	string line, line2;
+	string line, line2; 
 	//skip generation line
-	getline(file1, line);
-	getline(file2, line2);
+	getline(file1, line); 
+	getline(file2, line2); 
 
 	while(getline(file1, line) and getline(file2, line2)){
 		if(line!=line2){
-			cout << line << endl;
+			cout << line << endl; 
 			cout << "vs" << endl;
-			cout << line2 << endl;
-			return -1;
+			cout << line2 << endl; 
+			return -1; 
 		}
 	}
-	return 0;
+	return 0; 
 }
 
-int main(){
+//Check if vector is full of same number
+int checkIfVectorIsSame(vector<double> v){
+	double num = v[0]; 
+	for(int i=0; i<v.size(); ++i){
+		auto diff = v[i] - num; 
+		if(diff>0.1 or diff< -0.1)
+			return -1; 
+	}
+	return 0; 
+}
 
-	{
-		//Test a network
-		std::vector<int> nodes{32, 1}; //50, 50, 50, 100, 50, 1};
-		NN bigN(nodes,"");
+//Beginning Testing of NN using Catch2 
 
-		cout << endl;
-		cout << "Small Neural Network - {32, 1}.--------" << endl;
-		cout << "Network layers: " << bigN.network.size() << endl;
-		double weights = 0;
-		for(unsigned int i=0; i<bigN.network.size(); ++i){
-			weights += bigN.network[i].size();
-			cout << "Dendrite sizes: " << bigN.network[i].size() << endl;
-			// for(int j=0; j<bigN.network[i].size(); ++j){
-			// 	cout << bigN.network[i][j] << endl;
-			// }
-		}
-		cout << "Counted network weights: " << weights << endl;
-		cout << endl;
-		cout << "Testing Board input-output" << endl;
+//Test a single network 
+TEST_CASE("Testing creation of small Neural Network.", "{32, 1}"){
+	//Test a network
+	std::vector<int> nodes{32, 1};
+	NN smallN(nodes, "smallnn");
 
-		stdBoard b;
-		//b.updateBoard("           r       b            ");
-		bigN.getBoardInput(b, 0);
+	//Test it is the right overall size
+	REQUIRE( smallN.network.size() == 1);
+	REQUIRE( smallN.nodes.size() == 2); 
+	//Test if the weights are the right size
+	REQUIRE( smallN.network[0].size() == 32 );  
+	//Test how many weights there are 
+	double weights = 0;
+	for(unsigned int i=0; i<smallN.network.size(); ++i){
+		weights += smallN.network[i].size();
+	}
+	REQUIRE(weights == 32);
+}
 
-		cout << "	Checking filling up nodes with input from board." << endl;
-		string nodeInputs = "";
+TEST_CASE("Testing small NN input-output.", "{32, 1}"){
+	std::vector<int> nodes{32, 1};
+	NN smallN(nodes, "smallnn");
 
-		for(unsigned int i=0; i<bigN.nodes.size(); ++i){
-			for(unsigned int j=0; j<bigN.nodes[i].size(); ++j){
-				nodeInputs += std::to_string((int)bigN.nodes[i][j]);
-			}
-		}
-		if(nodeInputs=="-1-1-1-1-1-1-1-1-1-1-1-1000000001111111111110"){
-			cout << "	Node inputs from board successful." << endl;
-		}
-		else{
-			cout << nodeInputs << endl;
-			cout << "vs" << endl;
-			cout << "-1-1-1-1-1-1-1-1-1-1-1-1000000001111111111110" << endl;
-		}
+	stdBoard b;
+	smallN.getBoardInput(b);
 
-		int boardEvalReturn = bigN.calculateBoard(b, 0);
-
-		cout << "	First board evaluation: " << boardEvalReturn;
-		cout << endl;
-
-		string nodeInts = "";
-		for(unsigned int i=0; i<bigN.nodes.size(); ++i){
-			for(unsigned int j=0; j<bigN.nodes[i].size(); ++j){
-				nodeInts+= std::to_string((int)bigN.nodes[i][j]);
-			}
-		}
-		nodeInputs[nodeInputs.size()-1] = (std::to_string((int)boardEvalReturn))[0];
-		nodeInputs+=(std::to_string((int)boardEvalReturn))[1];
-		if(nodeInputs==nodeInts){
-			cout << "	After board eval node vals same. Successful" << endl;
-		}
-		else{
-			cout << nodeInts << endl;
-			cout << "vs" << endl;
-			cout << nodeInputs << endl;
-		}
-
-		cout << "Weights: " << endl;
-		double sum = 0;
-		for(unsigned int i=0; i<bigN.network.size(); ++i){
-			for(unsigned int j=0; j<bigN.network[i].size(); ++j){
-				cout << bigN.network[i][j] << " ";
-				sum += (bigN.network[i][j] * bigN.nodes[i][j]);
-			}
-			cout << endl;
-		}
-		cout << "Sum of weights: " << sum << endl;
-		auto sigOutput = bigN.sigmoid(sum);
-		cout << "Sigmoid of : " << sigOutput << endl;
-
-		if(sigOutput>0.55){
-			//it fires, output a 1 ?
-			if(bigN.nodes[1][0] == 1){
-				cout << "	Test successful. Output = 1." << endl;
-			}
-			else{
-				cout << "Failed. " << bigN.nodes[1][0] << endl;
-			}
-		}
-		else if(sigOutput<0.45){
-			if(bigN.nodes[1][0] == -1)
-				cout << "	Test successful. Output = -1." << endl;
-		}
-		else{
-			//it doesn't fire, output 0
-			if(bigN.nodes[1][0] == 0)
-				cout << "	Test successful. Output = 0." << endl;
+	//Check if nodes are input correctly
+		//default 0
+		//Board is loaded in 
+	string nodeInputs = "";
+	for(unsigned int i=0; i<smallN.nodes.size(); ++i){
+		for(unsigned int j=0; j<smallN.nodes[i].size(); ++j){
+			nodeInputs += std::to_string((int)smallN.nodes[i][j]);
 		}
 	}
 
-	{
-		cout << "Testing a 2 hidden layer network: " << endl;
-		std::vector<int>nodes{32, 2, 1};
-		NN twoLayer(nodes,"");
-		stdBoard b;
-		int output = twoLayer.calculateBoard(b, 0);
+	REQUIRE( nodeInputs == "-1-1-1-1-1-1-1-1-1-1-1-1000000001111111111110");
 
-		//Check if first hidden layer 2 nodes are correct
-		double firstNode = 0;
-		for(unsigned int j=0; j<twoLayer.nodes[0].size(); ++j){
-			firstNode += twoLayer.nodes[0][j] * twoLayer.network[0][j];
-		}
-		firstNode = twoLayer.sigmoid(firstNode);
-		if(firstNode>0.55){
-			//it fires, output a 1 ?
-			firstNode = 1;
-		}
-		else if(firstNode<0.45){
-			firstNode = -1;
-		}
-		else{
-			//it doesn't fire, output 0
-			firstNode = 0;
-		}
-		if(firstNode==twoLayer.nodes[1][0]){
-			cout << "First hidden layer node successful." << endl;
-		}
-		else{
-			cout << "Failed first hidden node." << endl;
-			cout << firstNode << endl;
-			cout << "vs" << endl;
-			cout << twoLayer.nodes[1][0] << endl;
-		}
-		//Second node
-		double secondNode = 0;
-		int networkIndex = 32;
-		for(unsigned int j=0; j<twoLayer.nodes[0].size(); ++j){
-			secondNode += twoLayer.nodes[0][j] * twoLayer.network[0][networkIndex];
-			++networkIndex;
-		}
-		secondNode = twoLayer.sigmoid(secondNode);
-		if(secondNode>0.55){
-			//it fires, output a 1 ?
-			secondNode = 1;
-		}
-		else if(secondNode<0.45){
-			secondNode = -1;
-		}
-		else{
-			//it doesn't fire, output 0
-			secondNode = 0;
-		}
-		if(secondNode==twoLayer.nodes[1][1]){
-			cout << "Successful Second hidden node." << endl;
-		}
-		else{
-			cout << "Failed 2nd hidden node." << endl;
-			cout << secondNode << endl;
-			cout << "Vs" << endl;
-			cout << twoLayer.nodes[1][1] << endl;
-		}
+	//Test board evaluation 
+	int boardEvalReturn = smallN.calculateBoard(b);
+	
 
-		//Test output as well
-		double finalNode = 0;
-		for(unsigned int i=0; i<twoLayer.nodes[1].size(); ++i){
-			finalNode += twoLayer.nodes[1][i] * twoLayer.network[1][i];
+	string nodeInts = "";
+	for(unsigned int i=0; i<smallN.nodes.size(); ++i){
+		for(unsigned int j=0; j<smallN.nodes[i].size(); ++j){
+			nodeInts+= std::to_string((int)smallN.nodes[i][j]);
 		}
-		finalNode = twoLayer.sigmoid(finalNode);
-		if(finalNode>0.55){
-			//it fires, output a 1 ?
-			finalNode = 1;
-		}
-		else if(finalNode<0.45){
-			finalNode = -1;
-		}
-		else{
-			//it doesn't fire, output 0
-			finalNode = 0;
-		}
-		if(finalNode==twoLayer.nodes[2][0] and
-			finalNode==output){
-			cout << "Successful Final node." << endl;
-		}
-		else{
-			cout << "Failed Final node." << endl;
-			cout << finalNode << endl;
-			cout << "vs" << endl;
-			cout << twoLayer.nodes[2][0] << endl;
-			cout << "vs" << endl;
-			cout << output << endl;
-		}
+	}
+	nodeInputs[nodeInputs.size()-1] = (std::to_string((int)boardEvalReturn))[0];
 
+	REQUIRE (nodeInputs==nodeInts); 
+
+
+	//Test the weights calculation 
+	double sum = 0;
+	for(unsigned int i=0; i<smallN.network.size(); ++i){
+		for(unsigned int j=0; j<smallN.network[i].size(); ++j){
+			sum += (smallN.network[i][j] * smallN.nodes[i][j]);
+		}
+	}
+	
+	auto sigOutput = smallN.sigmoid(sum);
+	REQUIRE(sigOutput==smallN.nodes[1][0]); 
+
+}
+
+TEST_CASE("Testing a 2 hidden layer network. ", "{32, 2, 1}"){
+	std::vector<int>nodes{32, 2, 1};
+	NN twoLayer(nodes, "twolayer");
+	stdBoard b;
+	int output = twoLayer.calculateBoard(b);
+
+	//Check if first hidden layer 2 nodes are correct
+	double firstNode = 0;
+	for(unsigned int j=0; j<twoLayer.nodes[0].size(); ++j){
+		firstNode += twoLayer.nodes[0][j] * twoLayer.network[0][j];
+	}
+	firstNode = twoLayer.sigmoid(firstNode);
+	REQUIRE(firstNode == twoLayer.nodes[1][0]); 
+
+	//Second node
+	double secondNode = 0;
+	int networkIndex = 32;
+	for(unsigned int j=0; j<twoLayer.nodes[0].size(); ++j){
+		secondNode += twoLayer.nodes[0][j] * twoLayer.network[0][networkIndex];
+		++networkIndex;
+	}
+	secondNode = twoLayer.sigmoid(secondNode);
+	REQUIRE(secondNode == twoLayer.nodes[1][1]); 
+
+	//Test output as well
+	double finalNode = 0;
+	for(unsigned int i=0; i<twoLayer.nodes[1].size(); ++i){
+		finalNode += twoLayer.nodes[1][i] * twoLayer.network[1][i];
+	}
+	finalNode = twoLayer.sigmoid(finalNode);
+	REQUIRE(finalNode == twoLayer.nodes[2][0]); 
+}
+
+TEST_CASE("Testing NN for consistancy. If the outputs are the same for the same board.", 
+	"{32, 40, 10, 1}"){
+
+	//Test whether the NN is consistent
+	vector<int> nod{32, 40, 10, 1};
+	NN consistent(nod, "consistentNNTest");
+	stdBoard bb;
+
+	vector<double>outputFromNN(4);
+	for(int i=0; i<4; i++){
+		outputFromNN[i] = consistent.calculateBoard(bb);
+	}
+	cout << outputFromNN[0] << " " << outputFromNN[1]; 
+	cout << " " << outputFromNN[2] << " " << outputFromNN[3];
+	cout << endl; 
+	REQUIRE(0==checkIfVectorIsSame(outputFromNN)); 
+}
+
+TEST_CASE("Blondie24", "{32, 40, 10, 1}"){
+	//Blondie24
+	std::vector<int> nodes{ 32, 40, 10, 1};
+	NN blondie(nodes, "blondie24");
+
+	REQUIRE(blondie.network.size() == 3); 
+	REQUIRE(blondie.network[0].size() == 32*40); 
+	REQUIRE(blondie.network[1].size() == 40*10); 
+	REQUIRE(blondie.network[2].size() == 10); 
+
+	REQUIRE(blondie.nodes.size() == 4); 
+	REQUIRE(blondie.nodes[0].size() == 32); 
+	REQUIRE(blondie.nodes[1].size() == 40); 
+	REQUIRE(blondie.nodes[2].size() == 10); 
+	REQUIRE(blondie.nodes[3].size() == 1); 
+}
+
+TEST_CASE("Timing Blondie24.", "{32, 40, 10, 1}"){
+	
+	//Timing
+	stdBoard b; //Default
+	stdBoard b1;
+	b1.updateBoard("           r       b            ");
+	stdBoard b2;
+	b2.updateBoard("rrrrrrrrrr r  r  b  bb bbbbbbbbb");
+	stdBoard b3;
+	b3.updateBoard("rrrrr    r       r    b bbbbbbbb");
+	std::vector<stdBoard> boards{b, b1, b2, b3};
+
+	std::vector<int> nodes{ 32, 40, 10, 1};
+
+	std::mt19937 gen(time(0));
+	std::uniform_int_distribution<int> dis(0,boards.size()-1);
+
+	clock_t start;
+	double duration;
+	start = clock();
+	NN blondie(nodes, "blondie24");
+
+	int runs = 1000;
+	double outputTotal = 0; 
+	for(int i=0; i<runs; ++i){
+		outputTotal += blondie.calculateBoard(boards[dis(gen)]);
 	}
 
-	//Time the NN
-	cout << endl;
+	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
+	cout << "To not compiler optimize: " << outputTotal << endl;
+	cout << "Blondie24 Time Difference: " << duration << endl;
 
-	cout << "Timing code. Timing how fast the";
-	cout << " Neural Network Evaluates a Board " << endl;
-
-	{
-		cout << "Timed Test 1. Board: '           r       b            '";
-		cout << endl;
-		clock_t start;
-		double duration;
-		start = clock();
-
-		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
-		NN nTimed1(nodes,"");
-		stdBoard b;
-		b.updateBoard("           r       b            ");
-		auto output = nTimed1.calculateBoard(b, 0);
-		cout << "Output: " << output << endl;
-
-		duration = (clock() - start) / (double) CLOCKS_PER_SEC;
-		cout << "Time Difference: " << duration << endl;
-	}
-
-	{
-		cout << "Timed Test 2. Board: Default";
-		cout << endl;
-		clock_t start;
-		double duration;
-		start = clock();
-
-		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
-		NN nTimed1(nodes,"");
-		stdBoard b;
-		auto output = nTimed1.calculateBoard(b, 0);
-		cout << "Output: " << output << endl;
-
-		duration = (clock() - start) / (double) CLOCKS_PER_SEC;
-		cout << "Time Difference: " << duration << endl;
-	}
-
-	{
-		cout << "Timed Test 3. Board: 'rrrrrrrrrr r  r  b  bb bbbbbbbbb'";
-		cout << endl;
-		clock_t start;
-		double duration;
-		start = clock();
-
-		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
-		NN nTimed1(nodes,"");
-		stdBoard b;
-		b.updateBoard("rrrrrrrrrr r  r  b  bb bbbbbbbbb");
-		auto output = nTimed1.calculateBoard(b, 0);
-		cout << "Output: " << output << endl;
-
-		duration = (clock() - start) / (double) CLOCKS_PER_SEC;
-		cout << "Time Difference: " << duration << endl;
-	}
-
-	{
-		cout << "Timed Test 4. Board: 'rrrrr    r       r    b bbbbbbbb'";
-		cout << endl;
-		clock_t start;
-		double duration;
-		start = clock();
-
-		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
-		NN nTimed1(nodes,"");
-		stdBoard b;
-		b.updateBoard("rrrrr    r       r    b bbbbbbbb");
-		auto output = nTimed1.calculateBoard(b, 0);
-		cout << "Output: " << output << endl;
-
-		duration = (clock() - start) / (double) CLOCKS_PER_SEC;
-		cout << "Time Difference: " << duration << endl;
+	double timePerBoard = duration/runs;
+	cout << "Time per board: " << timePerBoard << endl;
+	cout << "Board Evals per second: " << runs/duration << endl;
+	cout << endl; 
+	//We should have at least 12,000 boards per second
+	REQUIRE(runs/duration > 10000); 
+}
 
 
-		//Test whether the NN is consistent
-		vector<int> nod{32, 40, 10, 1};
-		NN consistent(nod,"");
-		stdBoard bb;
+TEST_CASE("Construction of Big Neural Network.", 
+	"{32, 50, 50, 50, 100, 50, 1}"){
 
-		cout << "Testing for NN consistancy." << endl;
-		vector<int>outputFromNN(4);
-		for(int i=0; i<4; i++){
-			outputFromNN[i] = consistent.calculateBoard(bb, 0);
-		}
-		if(outputFromNN[0]==outputFromNN[1]==outputFromNN[2]==outputFromNN[3]){
-			cout << "NN is consistent using same board. Successful." << endl;
-		}
-		else{
-			cout << "Failed consistancy."<< endl;
-			for(unsigned int i=0; i<outputFromNN.size(); i++){
-				cout << outputFromNN[i] << endl;
-			}
-		}
+	//Test a bigger network
+	std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
+	NN bigN(nodes, "bigN");
 
-	}
+	REQUIRE(bigN.network.size() == 6); 
+	REQUIRE(bigN.network[0].size() == 32*50); 
+	REQUIRE(bigN.network[1].size() == 50*50); 
+	REQUIRE(bigN.network[2].size() == 50*50); 
+	REQUIRE(bigN.network[3].size() == 50*100); 
+	REQUIRE(bigN.network[4].size() == 100*50);
+	REQUIRE(bigN.network[5].size() == 50); 
 
-		{
-		//Blondie24
-		std::vector<int> nodes{ 32, 40, 10, 1};
-		NN n(nodes,"");
+	REQUIRE(bigN.nodes.size() == 7); 
+	REQUIRE(bigN.nodes[0].size() == 32); 
+	REQUIRE(bigN.nodes[1].size() == 50);
+	REQUIRE(bigN.nodes[2].size() == 50);
+	REQUIRE(bigN.nodes[3].size() == 50);  
+	REQUIRE(bigN.nodes[4].size() == 100);
+	REQUIRE(bigN.nodes[5].size() == 50);
+	REQUIRE(bigN.nodes[6].size() == 1);    
+}
 
-		cout << "Imitating Blondie24 Neural Network Size.--------" << endl;
-		cout << "Network layers:  " << n.network.size() << endl;
-		for(unsigned int i=0; i<n.network.size(); ++i){
-			std::cout << "Dendrite sizes: " << n.network[i].size() << std::endl;
-
-			// for(int j=0; j<n.network[i].size(); ++j){
-			// 	cout << n.network[i][j] << endl;
-			// }
-		}
-
-		//Timing
-		stdBoard b; //Default
-		stdBoard b1;
-		b1.updateBoard("           r       b            ");
-		stdBoard b2;
-		b2.updateBoard("rrrrrrrrrr r  r  b  bb bbbbbbbbb");
-		stdBoard b3;
-		b3.updateBoard("rrrrr    r       r    b bbbbbbbb");
-		std::vector<stdBoard> boards{b, b1, b2, b3};
-
-		std::mt19937 gen(time(0));
-		std::uniform_int_distribution<int> dis(0,boards.size()-1);
-
-		//Inputs for Blondie {4, ...}
-		//b = 1.0
-		//B = 1.4
-		//r = -1.0
-		//R = -1.4
-
-		// std::vector<std::vector<double > > nodeInput{
-		// 	{1.0,
-		// 	1.4,
-		// 	-1.0,
-		// 	-1.4}, };
-
-		cout << "Timing for Blondie24 NN. " << endl;
-		clock_t start;
-		double duration;
-		start = clock();
-		NN blondie(nodes,"");
-		//blondie.giveInputs(nodeInput);
-
-		int runs = 1000;
-		for(int i=0; i<runs; ++i){
-			cout << blondie.calculateBoard(boards[dis(gen)], 0) << endl;
-		}
-
-		duration = (clock() - start) / (double) CLOCKS_PER_SEC;
-		cout << "Time Difference: " << duration << endl;
-
-		double timePerBoard = duration/runs;
-		cout << "Time per board: " << timePerBoard << endl;
-		cout << "Board Evals per second: " << runs/duration << endl;
-	}
-
-	{
-		cout << endl;
-		cout << "Bigger Neural Net.--------" << endl;
-		//Test a bigger network
-		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
-		NN bigN(nodes,"");
-
-		cout << "Bigger Neural Network > 10,000 weights." << endl;
-		cout << "Network layers: " << bigN.network.size() << endl;
-		double weights = 0;
-		for(unsigned int i=0; i<bigN.network.size(); ++i){
-			weights += bigN.network[i].size();
-			cout << "Dendrite sizes: " << bigN.network[i].size() << endl;
-			// for(int j=0; j<bigN.network[i].size(); ++j){
-			// 	cout << bigN.network[i][j] << endl;
-			// }
-		}        vector<vector<double>> Neuron; //The nodes of
-
-		cout << "Counted network weights: " << weights << endl;
-	}
+TEST_CASE("Timing for Big Neural Network.", 
+	"{32, 50, 50, 50, 100, 50, 1}"){	
 
 	stdBoard b; //Default
 	stdBoard b1;
@@ -414,29 +265,28 @@ int main(){
 	std::mt19937 gen(time(0));
 	std::uniform_int_distribution<int> dis(0,boards.size()-1);
 
-//Start the timer
-
-	cout << "Timing for Big NN {32, 50, 50, 50, 100, 50, 1}." << endl;
+	//Start the timer
 	clock_t start, stop;
 	double duration;
 
 	std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
-	NN loopTimedNN(nodes,"");
+	NN loopTimedNN(nodes, "bigNTimed");
 
 	int randIndex = 0;
 	//For loop for timing purposes, testing 4 boards chosen randomly
 	int runs = 1000;
-  double answers[1000];
+  	double answers[1000];
 	start = clock();
+
 	for(int i=0; i<runs; ++i){
 		randIndex = dis(gen);
-    answers[i] = loopTimedNN.calculateBoard(boards[randIndex], 0);
+    	answers[i] = loopTimedNN.calculateBoard(boards[randIndex]);
 	}
 	stop = clock();
 	duration = (stop - start) / (double) CLOCKS_PER_SEC;
 
-  std::uniform_int_distribution<int> dis1k(0,1000);
-  cout << "Random Board Value: " << answers[dis1k(gen)] << endl;
+  	std::uniform_int_distribution<int> dis1k(0,1000);
+  	cout << "Random Board Value: " << answers[dis1k(gen)] << endl;
 
 
 	cout << "Time Difference: " << duration << endl;
@@ -445,24 +295,26 @@ int main(){
 	cout << "Time per board: " << timePerBoard << endl;
 	cout << "Board Evals per second: " << runs/duration << endl;
 
+	REQUIRE(runs/duration > 10000); //at least 10,000 boards per sec
+}
 
 //Test Saving & Loading feature
-{
-	vector<int> nodes{32, 40, 10, 1};
-	NN blondie24(nodes, "blondie");
-	blondie24.saveToFile();
-	blondie24.loadFromFile("blondie_NN_0.txt");
+TEST_CASE("Saving and Loading NN from file. ", 
+	"{32, 40, 10, 1}"){
 
-	NN copy = blondie24;
-	copy.generation+=1;
-	copy.saveToFile();
+	vector<int> nodes{32, 40, 10, 1}; 
+	NN blondie24(nodes, "blondie");  
+	blondie24.saveToFile(); 
+	blondie24.loadFromFile("blondie_NN_0.txt"); 
 
-	ifstream file("blondie_NN_0.txt");
-	ifstream file1("blondie_NN_1.txt");
+	NN copy = blondie24; 
+	copy.generation+=1; 
+	copy.saveToFile(); 
 
-	if(checkIfFilesAreEqual(file, file1)==0){
-		cout << "File saving & loading successful." << endl;
-	}
+	ifstream file("blondie_NN_0.txt"); 
+	ifstream file1("blondie_NN_1.txt"); 
+
+	REQUIRE(checkIfFilesAreEqual(file, file1)==0);
 }
 
 
@@ -475,6 +327,5 @@ int main(){
 // No Opt: 1515.15 boards/second.
 // O2: 15384.6 boards/second.
 // O3: 16393.4
-	return 0;
-}
+
 
