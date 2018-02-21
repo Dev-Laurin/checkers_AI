@@ -106,12 +106,16 @@
 	<ctime>
 	<random>
 
-1519069324 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1519171090 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<random>
 	<vector>
 	<chrono>
+	<iostream>
 	"board.h"
-	"alphabeta.h"
+	<fstream>
+	<string>
+	<sstream>
+	<algorithm>
 
 1518743508 source:c:\cygwin64\home\jason\checkers_ai\testnn.cpp
 	<iostream>
@@ -126,4 +130,7 @@
 	<vector>
 	<chrono>
 	"board.h"
+
+1519171164 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
+	"neuralNetwork.h"
 

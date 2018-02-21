@@ -14,20 +14,20 @@ using std::endl;
 
 int checkIfFilesAreEqual(ifstream & file1, ifstream & file2){
 
-	string line, line2; 
+	string line, line2;
 	//skip generation line
-	getline(file1, line); 
-	getline(file2, line2); 
+	getline(file1, line);
+	getline(file2, line2);
 
 	while(getline(file1, line) and getline(file2, line2)){
 		if(line!=line2){
-			cout << line << endl; 
+			cout << line << endl;
 			cout << "vs" << endl;
-			cout << line2 << endl; 
-			return -1; 
+			cout << line2 << endl;
+			return -1;
 		}
 	}
-	return 0; 
+	return 0;
 }
 
 int main(){
@@ -35,7 +35,7 @@ int main(){
 	{
 		//Test a network
 		std::vector<int> nodes{32, 1}; //50, 50, 50, 100, 50, 1};
-		NN bigN(nodes);
+		NN bigN(nodes,"");
 
 		cout << endl;
 		cout << "Small Neural Network - {32, 1}.--------" << endl;
@@ -131,7 +131,7 @@ int main(){
 	{
 		cout << "Testing a 2 hidden layer network: " << endl;
 		std::vector<int>nodes{32, 2, 1};
-		NN twoLayer(nodes);
+		NN twoLayer(nodes,"");
 		stdBoard b;
 		int output = twoLayer.calculateBoard(b, 0);
 
@@ -236,7 +236,7 @@ int main(){
 		start = clock();
 
 		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
-		NN nTimed1(nodes);
+		NN nTimed1(nodes,"");
 		stdBoard b;
 		b.updateBoard("           r       b            ");
 		auto output = nTimed1.calculateBoard(b, 0);
@@ -254,7 +254,7 @@ int main(){
 		start = clock();
 
 		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
-		NN nTimed1(nodes);
+		NN nTimed1(nodes,"");
 		stdBoard b;
 		auto output = nTimed1.calculateBoard(b, 0);
 		cout << "Output: " << output << endl;
@@ -271,7 +271,7 @@ int main(){
 		start = clock();
 
 		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
-		NN nTimed1(nodes);
+		NN nTimed1(nodes,"");
 		stdBoard b;
 		b.updateBoard("rrrrrrrrrr r  r  b  bb bbbbbbbbb");
 		auto output = nTimed1.calculateBoard(b, 0);
@@ -289,7 +289,7 @@ int main(){
 		start = clock();
 
 		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
-		NN nTimed1(nodes);
+		NN nTimed1(nodes,"");
 		stdBoard b;
 		b.updateBoard("rrrrr    r       r    b bbbbbbbb");
 		auto output = nTimed1.calculateBoard(b, 0);
@@ -301,7 +301,7 @@ int main(){
 
 		//Test whether the NN is consistent
 		vector<int> nod{32, 40, 10, 1};
-		NN consistent(nod);
+		NN consistent(nod,"");
 		stdBoard bb;
 
 		cout << "Testing for NN consistancy." << endl;
@@ -324,7 +324,7 @@ int main(){
 		{
 		//Blondie24
 		std::vector<int> nodes{ 32, 40, 10, 1};
-		NN n(nodes);
+		NN n(nodes,"");
 
 		cout << "Imitating Blondie24 Neural Network Size.--------" << endl;
 		cout << "Network layers:  " << n.network.size() << endl;
@@ -365,7 +365,7 @@ int main(){
 		clock_t start;
 		double duration;
 		start = clock();
-		NN blondie(nodes);
+		NN blondie(nodes,"");
 		//blondie.giveInputs(nodeInput);
 
 		int runs = 1000;
@@ -386,7 +386,7 @@ int main(){
 		cout << "Bigger Neural Net.--------" << endl;
 		//Test a bigger network
 		std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
-		NN bigN(nodes);
+		NN bigN(nodes,"");
 
 		cout << "Bigger Neural Network > 10,000 weights." << endl;
 		cout << "Network layers: " << bigN.network.size() << endl;
@@ -421,7 +421,7 @@ int main(){
 	double duration;
 
 	std::vector<int> nodes{32, 50, 50, 50, 100, 50, 1};
-	NN loopTimedNN(nodes);
+	NN loopTimedNN(nodes,"");
 
 	int randIndex = 0;
 	//For loop for timing purposes, testing 4 boards chosen randomly
@@ -448,21 +448,21 @@ int main(){
 
 //Test Saving & Loading feature
 {
-	vector<int> nodes{32, 40, 10, 1}; 
-	NN blondie24(nodes, "blondie");  
-	blondie24.saveToFile(); 
-	blondie24.loadFromFile("blondie_NN_0.txt"); 
+	vector<int> nodes{32, 40, 10, 1};
+	NN blondie24(nodes, "blondie");
+	blondie24.saveToFile();
+	blondie24.loadFromFile("blondie_NN_0.txt");
 
-	NN copy = blondie24; 
-	copy.generation+=1; 
-	copy.saveToFile(); 
+	NN copy = blondie24;
+	copy.generation+=1;
+	copy.saveToFile();
 
-	ifstream file("blondie_NN_0.txt"); 
-	ifstream file1("blondie_NN_1.txt"); 
+	ifstream file("blondie_NN_0.txt");
+	ifstream file1("blondie_NN_1.txt");
 
 	if(checkIfFilesAreEqual(file, file1)==0){
 		cout << "File saving & loading successful." << endl;
-	} 	
+	}
 }
 
 

@@ -8,21 +8,30 @@
 #include <chrono>
 using std::time;
 
+#include <iostream>
 using std::cout;
 using std::endl;
-using std::getline; 
+using std::getline;
 #include "board.h"
-#include "alphabeta.h"
-#include <fstream> 
-using std::ofstream; 
+#include <fstream>
+using std::ofstream;
 #include <string>
-using std::string; 
-using std::to_string; 
-#include <sstream> 
-using std::istringstream; 
-using std::ifstream; 
+using std::string;
+using std::to_string;
+#include <sstream>
+using std::istringstream;
+using std::ifstream;
 
 using std::vector;
+
+#include <algorithm>
+using std::max;
+using std::min;
+
+unsigned const static int MAXMOVES = 32;
+typedef double sNN;
+constexpr sNN LOWEST = std::numeric_limits<sNN>::lowest();
+constexpr sNN HIGHEST = std::numeric_limits<sNN>::max();
 
 class AIPlayer{
 public:
@@ -31,35 +40,39 @@ public:
     double pieceWeight = 1.0; //Value of piece counter input
     double montyWeight = 1.0;
     int montyK = 1; // (w-l)/(w+l+k)
-    int generation = 0; //Starts out as parent 
-    string familyName = ""; 
+    int generation = 0; //Starts out as parent
+    string familyName = "";
+    // Returns the value of the board given.
+    // A virtual function to be implimented by the specific AI.
+    virtual sNN calculateBoard(stdBoard & board, int nodeLayerIndex=0);
 
-    stdBoard getMove(stdBoard board, bool side=false) {
-          stdBoard possibleBoards[32];
-          if(side) {
-            board = board.flip();
-          }
-			    int moves = board.genMoves(possibleBoards,0);
-			    int selectMove = 0;
-			    sNN moveVal = beta(possibleBoards[0],7);
-			    sNN tempMove;
-			    for (int i = 1;i<moves;++i) {
-                    tempMove = beta(possibleBoards[i],7);
-                    //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
-                    //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
-                    if (tempMove > moveVal) {
-                        //better move found
-                        moveVal = tempMove;
-                        selectMove = i;
-                    }
-			    }
-			    board = possibleBoards[selectMove];
-			    if (side) {
-              board = board.flip();
-			    }
-			    return board;
-    }
+    // Returns a move given a board and a side.
+    stdBoard getMove(stdBoard & board, bool side=false);
+    // Beta side of the board
+    sNN beta(stdBoard & board, int depth);
+    //  Alpha side of the board
+    sNN alpha(stdBoard & board, int depth);
+    // Handles starting up the alpha-beta search
+    sNN alphabeta(stdBoard board, unsigned int side = 0);
+};
 
+class PieceCount: public AIPlayer
+{
+  PieceCount() {
+    distro = std::uniform_real_distribution<double>(0.0,1.0);
+  }
+  std::default_random_engine gen;
+  std::uniform_real_distribution<double> distro;
+
+  sNN calculateBoard(stdBoard & board, int nodeLayerIndex=0) {
+    sNN count = (int)(
+          board.pieces[0].count() +
+          board.pieces[2].count() -
+          board.pieces[1].count() -
+          board.pieces[3].count()) +
+          distro(gen);
+    return count;
+  }
 };
 
 class NN: public AIPlayer
@@ -68,7 +81,7 @@ public:
 	//Set weights to random values
 	NN(std::vector<int>& nS, string familyname){
 		//Save the family name (to tell apart/organize)
-		familyName = familyname; 
+		familyName = familyname;
 
 	    nodeSizes = nS;
 		//Save the node configuration
@@ -77,7 +90,7 @@ public:
 			nodes[i].resize(nodeSizes[i], 0);
 		}
 		//Random number generator
-		gen.seed(time(0)); 
+		gen.seed(time(0));
 		//Each weight is now between -0.2 and 0.2 (see proj3)
     	std::uniform_real_distribution<double> dis(-0.2,0.2);
 
@@ -91,13 +104,13 @@ public:
 			}
 		}
 		//Generate a random king value U(1.0, 3.0)
-		std::uniform_real_distribution<double> kingDis(1.0, 3.0); 
-		kingVal = kingDis(gen); 
+		std::uniform_real_distribution<double> kingDis(1.0, 3.0);
+		kingVal = kingDis(gen);
 
 		//Save the beg sigmas of the weights
 		sigmas.resize(network.size());
 		for(int i=0; i<network.size(); ++i){
-			sigmas[i].resize(network[i].size(), sigma); 
+			sigmas[i].resize(network[i].size(), sigma);
 		}
 	}
 	//user defined node inputs
@@ -155,125 +168,125 @@ public:
 	//Save this NN to a file
 	int saveToFile(){
 
-		ofstream file(familyName + "_NN_" + to_string(generation) + ".txt"); 
+		ofstream file(familyName + "_NN_" + to_string(generation) + ".txt");
 
 		if(!file){
 			cout << "Unable to open file." << endl;
-			return -1; 
+			return -1;
 		}
 
-		//write NN to file 
-			//save the generation number 
-		file << generation << endl; 
+		//write NN to file
+			//save the generation number
+		file << generation << endl;
 			//save the king value
 		file << kingVal << endl;
 			//Save the weights
 		//Save the size of the weight network
-		file << network.size() << " "; 
+		file << network.size() << " ";
 		for(int i=0; i<network.size(); ++i){
-			file << network[i].size() << " "; 
+			file << network[i].size() << " ";
 		}
-		file << endl; 
+		file << endl;
 		//Save the actual weights
 		for(int i=0; i<network.size(); ++i){
 			for(int j=0; j<network[i].size(); ++j){
-				file << network[i][j] << " "; 
+				file << network[i][j] << " ";
 			}
 			file << endl; //newline after each vector
 		}
-		file << "sigmas: " << endl; 
+		file << "sigmas: " << endl;
 		//Save the sigmas
 		for(int i=0; i<sigmas.size(); ++i){
 			for(int j=0; j<sigmas[i].size(); ++j){
-				file << sigmas[i][j] << " "; 
+				file << sigmas[i][j] << " ";
 			}
-			file << endl; 
+			file << endl;
 		}
-		file.close(); 
+		file.close();
 		return 0; //successful
 	}
 	//Load NN from file
 	int loadFromFile(string filename){
-		ifstream file(filename); 
+		ifstream file(filename);
 		if(!file){
-			cout << "Error opening file."; 
+			cout << "Error opening file.";
 			cout << " Filename: " << filename << endl;
-			return -1; 
+			return -1;
 		}
 		//Read file line by line until failure
 			//Read in the generation number
-		string line; 
-		getline(file, line); 
+		string line;
+		getline(file, line);
 
-		istringstream num(line); 
-		num >> generation; 
+		istringstream num(line);
+		num >> generation;
 
 		//Read in the kingval
-		getline(file, line); 
-		istringstream king(line); 
-		king >> kingVal; 
+		getline(file, line);
+		istringstream king(line);
+		king >> kingVal;
 
 		//Read in the network size
-		getline(file, line); 
+		getline(file, line);
 
-		istringstream netSize(line); 
-		int networkSize; 
-		netSize >> networkSize; 
+		istringstream netSize(line);
+		int networkSize;
+		netSize >> networkSize;
 
 		//Get the inner network sizes
-		vector<int> networkWeightSize(networkSize); 
-		int i = 0; 
+		vector<int> networkWeightSize(networkSize);
+		int i = 0;
 		while(netSize){
-			netSize >> networkWeightSize[i]; 
-			++i; 
+			netSize >> networkWeightSize[i];
+			++i;
 		}
 
 		//Change the overall network size
-		network.resize(networkSize); 
+		network.resize(networkSize);
 
 		//Read in the weights
-		i = 0; 
+		i = 0;
 		while(getline(file, line) and line!="sigmas: "){
 			istringstream weight(line);
 
 			//Make the networks big enough
 			network[i].resize(networkWeightSize[i]);
 
-			//Load all the weights in 
+			//Load all the weights in
 			for(int j=0; j<network[i].size(); ++j){
-				weight >> network[i][j]; 
-			} 
+				weight >> network[i][j];
+			}
 			++i;
 		}
 
 		//Read in sigmas
-		i = 0; 
-		sigmas.resize(networkSize); 
+		i = 0;
+		sigmas.resize(networkSize);
 		while(getline(file, line)){
 
 			//Make the sigma vec the right size (from file)
-			istringstream sig(line); 
-			sigmas[i].resize(networkWeightSize[i]); 
+			istringstream sig(line);
+			sigmas[i].resize(networkWeightSize[i]);
 
-			//Load the sigmas in 
+			//Load the sigmas in
 			for(int j=0; j<sigmas[i].size(); ++j){
-				sig >> sigmas[i][j];  
+				sig >> sigmas[i][j];
 			}
-			++i; 
+			++i;
 		}
 
-		file.close(); 
-		return 0; 
+		file.close();
+		return 0;
 	}
 
-	//generate offspring, randomize this NN 
-		//(assuming this is a copy of the original) 
+	//generate offspring, randomize this NN
+		//(assuming this is a copy of the original)
 	void becomeOffspring(){
 
 		//change generation #
-		++generation; 
+		++generation;
 
-		//Randomize king value 
+		//Randomize king value
 		std::uniform_real_distribution<double> kingDis(-0.1,0.1);
 		kingVal = kingVal + kingDis(gen);
 
@@ -288,20 +301,20 @@ public:
 				//The normal distribution returns numbers outside
 					//our range, keep getting a rand number until
 					//we get one we can use in our range 0-1
-				double rand = nDis(gen); 
+				double rand = nDis(gen);
 				while(rand<0.0 or rand>1.0){
-					rand = nDis(gen); 
-				} 
+					rand = nDis(gen);
+				}
 
-				//Compute our new sigma 
+				//Compute our new sigma
 				sigmas[i][j] = pow(sigmas[i][j], 1.0/sqrt(2.0*sqrt(rand)));
 
 				//randomize the weights using new sigmas
-				rand = nDis(gen); 
+				rand = nDis(gen);
 				while(rand<0.0 or rand>1.0){
-					rand = nDis(gen); 
-				} 
-				network[i][j] = network[i][j] + sigmas[i][j] * rand; 
+					rand = nDis(gen);
+				}
+				network[i][j] = network[i][j] + sigmas[i][j] * rand;
 			}
 		}
 	}

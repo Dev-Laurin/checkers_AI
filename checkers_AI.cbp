@@ -60,6 +60,7 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
+		<Unit filename="neuralNetwork.cpp" />
 		<Unit filename="neuralNetwork.h">
 			<Option target="testNN" />
 		</Unit>
