@@ -111,7 +111,8 @@ TEST_CASE("Testing small NN input-output.", "{32, 1}"){
 		}
 	}
 
-	auto sigOutput = smallN.sigmoid(sum);
+	double sigOutput = sum;
+	smallN.sigmoid(sigOutput);
 	REQUIRE(sigOutput==smallN.nodes[1][0]);
 
 }
@@ -127,7 +128,7 @@ TEST_CASE("Testing a 2 hidden layer network. ", "{32, 2, 1}"){
 	for(unsigned int j=0; j<twoLayer.nodes[0].size(); ++j){
 		firstNode += twoLayer.nodes[0][j] * twoLayer.network[0][j*twoLayer.nodes[1].size()];
 	}
-	firstNode = twoLayer.sigmoid(firstNode);
+	twoLayer.sigmoid(firstNode);
 	REQUIRE(firstNode == twoLayer.nodes[1][0]);
 
 	//Second node
@@ -137,7 +138,7 @@ TEST_CASE("Testing a 2 hidden layer network. ", "{32, 2, 1}"){
 		secondNode += twoLayer.nodes[0][j] * twoLayer.network[0][j*twoLayer.nodes[1].size()+1 ];
 		++networkIndex;
 	}
-	secondNode = twoLayer.sigmoid(secondNode);
+	twoLayer.sigmoid(secondNode);
 	REQUIRE(secondNode == twoLayer.nodes[1][1]);
 
 	//Test output as well
@@ -145,7 +146,7 @@ TEST_CASE("Testing a 2 hidden layer network. ", "{32, 2, 1}"){
 	for(unsigned int i=0; i<twoLayer.nodes[1].size(); ++i){
 		finalNode += twoLayer.nodes[1][i] * twoLayer.network[1][i];
 	}
-	finalNode = twoLayer.sigmoid(finalNode);
+	twoLayer.sigmoid(finalNode);
 	REQUIRE(finalNode == twoLayer.nodes[2][0]);
 }
 
@@ -204,8 +205,8 @@ TEST_CASE("Timing Blondie24.", "{32, 40, 10, 1}"){
 	clock_t start;
 	double duration;
 	NN blondie(nodes, "blondie24");
-	int runs = 1000;
-	int boardsel[1000];
+	int runs = 100000;
+	int boardsel[100000];
 	for (int i=0; i<runs;++i) {
         boardsel[i] = dis(gen);
 	}

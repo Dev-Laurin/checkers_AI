@@ -11,7 +11,7 @@ using std::min;
 
 #include "board.h"
 
-unsigned const static int MAXMOVES = 32;
+unsigned const static int MAXMOVES = 16;
 typedef double sNN;
 
 constexpr sNN LOWEST = std::numeric_limits<sNN>::lowest();

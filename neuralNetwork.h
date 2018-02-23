@@ -3,8 +3,13 @@
 #ifndef NEURAL_NETWORK_H
 #define NEURAL_NETWORK_H
 
+#include <cmath>
+using std::exp;
+
 #include <random>
 #include <vector>
+using std::vector;
+
 #include <chrono>
 using std::time;
 
@@ -12,7 +17,7 @@ using std::time;
 using std::cout;
 using std::endl;
 using std::getline;
-#include "board.h"
+
 #include <fstream>
 using std::ofstream;
 #include <string>
@@ -22,13 +27,14 @@ using std::to_string;
 using std::istringstream;
 using std::ifstream;
 
-using std::vector;
-
 #include <algorithm>
 using std::max;
 using std::min;
 
-unsigned const static int MAXMOVES = 32;
+#include "board.h"
+
+
+unsigned const static int MAXMOVES = 16;
 typedef double sNN;
 constexpr sNN LOWEST = std::numeric_limits<sNN>::lowest();
 constexpr sNN HIGHEST = std::numeric_limits<sNN>::max();
@@ -135,8 +141,9 @@ public:
                 }
             }
             //layer done, apply sigmoid
+
             for (unsigned int j = 0; j < nodes[i+1].size(); ++j) {
-                nodes[i+1][j] = sigmoid(nodes[i+1][j]);
+                sigmoid(nodes[i+1][j]);
             }
 		}
 		//Add other modifiers
@@ -163,9 +170,11 @@ public:
     }
 
 	//Given a number, calculate a sigmoid function output
-	double sigmoid(double num){
-		const static double e = 2.71828182845;
-		return 1/(1 + pow(e, -num));
+	void sigmoid(double & num){
+//		const static double e = 2.71828182845;
+		//num = 1/(1 + exp(-num));
+		num = num/(1+std::abs(num));
+
 	}
 
 	//Save this NN to a file

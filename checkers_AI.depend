@@ -46,10 +46,14 @@
 	<cstring>
 	<algorithm>
 
-1517533812 source:c:\cygwin64\home\jason\checkers_ai\testboard.cpp
+1519348921 source:c:\cygwin64\home\jason\checkers_ai\testboard.cpp
 	<iostream>
 	"board.h"
+	"alphabeta.h"
 	"old_movegenerator.h"
+	"testboard.h"
+	<random>
+	<chrono>
 
 1517825437 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
 	<iostream>
@@ -91,7 +95,7 @@
 	<string>
 	"alphabeta.h"
 
-1518048657 c:\cygwin64\home\jason\checkers_ai\alphabeta.h
+1519074065 c:\cygwin64\home\jason\checkers_ai\alphabeta.h
 	<bitset>
 	<random>
 	<algorithm>
@@ -117,7 +121,7 @@
 	<sstream>
 	<algorithm>
 
-1519178296 source:c:\cygwin64\home\jason\checkers_ai\testnn.cpp
+1519350420 source:c:\cygwin64\home\jason\checkers_ai\testnn.cpp
 	<iostream>
 	"neuralNetwork.h"
 	<vector>
@@ -126,16 +130,17 @@
 	<random>
 	"Catch2.hpp"
 
-1519177890 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
+1519351102 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
+	<cmath>
 	<random>
 	<vector>
 	<chrono>
 	<iostream>
-	"board.h"
 	<fstream>
 	<string>
 	<sstream>
 	<algorithm>
+	"board.h"
 
 1519171164 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
@@ -333,5 +338,12 @@
 	<assert.h>
 	<sstream>
 	<ctime>
+	<algorithm>
+
+1517801715 c:\cygwin64\home\jason\checkers_ai\testboard.h
+	<string>
+	<vector>
+	<iostream>
+	<cstring>
 	<algorithm>
 
