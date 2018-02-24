@@ -46,10 +46,14 @@
 	<cstring>
 	<algorithm>
 
-1517533812 source:c:\cygwin64\home\jason\checkers_ai\testboard.cpp
+1519348921 source:c:\cygwin64\home\jason\checkers_ai\testboard.cpp
 	<iostream>
 	"board.h"
+	"alphabeta.h"
 	"old_movegenerator.h"
+	"testboard.h"
+	<random>
+	<chrono>
 
 1517825437 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
 	<iostream>
@@ -91,7 +95,7 @@
 	<string>
 	"alphabeta.h"
 
-1518048657 c:\cygwin64\home\jason\checkers_ai\alphabeta.h
+1519074065 c:\cygwin64\home\jason\checkers_ai\alphabeta.h
 	<bitset>
 	<random>
 	<algorithm>
@@ -106,24 +110,240 @@
 	<ctime>
 	<random>
 
-1519069324 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1519171090 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<random>
 	<vector>
 	<chrono>
+	<iostream>
 	"board.h"
-	"alphabeta.h"
+	<fstream>
+	<string>
+	<sstream>
+	<algorithm>
 
-1518743508 source:c:\cygwin64\home\jason\checkers_ai\testnn.cpp
+1519350420 source:c:\cygwin64\home\jason\checkers_ai\testnn.cpp
 	<iostream>
 	"neuralNetwork.h"
 	<vector>
 	"board.h"
 	<ctime>
 	<random>
+	"Catch2.hpp"
 
-1518751980 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
+1519351102 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
+	<cmath>
 	<random>
 	<vector>
 	<chrono>
+	<iostream>
+	<fstream>
+	<string>
+	<sstream>
+	<algorithm>
 	"board.h"
+
+1519171164 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
+	"neuralNetwork.h"
+
+1519174589 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
+	"neuralNetwork.h"
+
+1519174137 c:\cygwin64\home\jason\checkers_ai\catch2.hpp
+	<TargetConditionals.h>
+	<iosfwd>
+	<string>
+	<cstdint>
+	<vector>
+	<memory>
+	<cstddef>
+	<string>
+	<iosfwd>
+	<vector>
+	<cstddef>
+	<type_traits>
+	<string>
+	<iosfwd>
+	<cstddef>
+	<ostream>
+	<utility>
+	<tuple>
+	<ctime>
+	<ratio>
+	<chrono>
+	<iosfwd>
+	<string>
+	<string>
+	<cstddef>
+	<string>
+	<cstdint>
+	<string>
+	<cstdint>
+	<string>
+	<string>
+	<memory>
+	<exception>
+	<string>
+	<vector>
+	<type_traits>
+	<stdexcept>
+	<string>
+	<iosfwd>
+	<string>
+	<vector>
+	<type_traits>
+	<cmath>
+	<string>
+	<algorithm>
+	<string>
+	<vector>
+	<memory>
+	<string>
+	<string>
+	<vector>
+	<memory>
+	<string>
+	<iosfwd>
+	<string>
+	<vector>
+	<memory>
+	<memory>
+	<vector>
+	<string>
+	<string>
+	<string>
+	<iosfwd>
+	<map>
+	<set>
+	<memory>
+	<algorithm>
+	<cstring>
+	<cfloat>
+	<cstdio>
+	<assert.h>
+	<memory>
+	<ostream>
+	<vector>
+	<string>
+	<vector>
+	<memory>
+	<cmath>
+	<limits>
+	<memory>
+	<signal.h>
+	<string>
+	<AfxWin.h>
+	<windows.h>
+	<signal.h>
+	<string>
+	<cassert>
+	<ostream>
+	<sstream>
+	<vector>
+	<memory>
+	<set>
+	<algorithm>
+	<fstream>
+	<ctime>
+	<cstring>
+	<ostream>
+	<stdexcept>
+	<iosfwd>
+	<sstream>
+	<unistd.h>
+	<string>
+	<assert.h>
+	<stdbool.h>
+	<sys/types.h>
+	<unistd.h>
+	<sys/sysctl.h>
+	<cstddef>
+	<ostream>
+	<fstream>
+	<string>
+	<cerrno>
+	<vector>
+	<string>
+	<memory>
+	<signal.h>
+	<crtdbg.h>
+	<set>
+	<limits>
+	<algorithm>
+	<iomanip>
+	<cstdlib>
+	<cstdint>
+	<cstring>
+	<stdexcept>
+	<regex>
+	<algorithm>
+	<cstdlib>
+	<vector>
+	<set>
+	<algorithm>
+	<ios>
+	<map>
+	<string>
+	<map>
+	<vector>
+	<exception>
+	<cassert>
+	<algorithm>
+	<sstream>
+	<memory>
+	<iosfwd>
+	<cstdlib>
+	<iomanip>
+	<cstdio>
+	<iostream>
+	<fstream>
+	<sstream>
+	<vector>
+	<memory>
+	<algorithm>
+	<ostream>
+	<cstring>
+	<cctype>
+	<ostream>
+	<cstring>
+	<cstdint>
+	<sstream>
+	<cctype>
+	<exception>
+	<algorithm>
+	<sstream>
+	<sstream>
+	<algorithm>
+	<assert.h>
+	<stdexcept>
+	<memory>
+	<sstream>
+	<algorithm>
+	<string>
+	<vector>
+	<memory>
+	<chrono>
+	<cmath>
+	<iomanip>
+	<exception>
+	<ostream>
+	<sstream>
+	<iomanip>
+	<cstring>
+	<cfloat>
+	<cstdio>
+	<assert.h>
+	<memory>
+	<cfloat>
+	<cstdio>
+	<assert.h>
+	<sstream>
+	<ctime>
+	<algorithm>
+
+1517801715 c:\cygwin64\home\jason\checkers_ai\testboard.h
+	<string>
+	<vector>
+	<iostream>
+	<cstring>
+	<algorithm>
 
