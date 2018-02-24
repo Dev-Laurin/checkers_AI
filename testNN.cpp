@@ -338,15 +338,14 @@ void printNormal(vector<int> & buckets){
 
 TEST_CASE("Testing Normal Distribution Random Number Generator.",
 	"std::normal_distribution<double> nDis(0.5, 2.0);"){
-	std::random_device rd; 
-	std::mt19937_64 gen(rd()); 
-	std::normal_distribution<double> nDis(5.0, 2.0);
+
+	std::mt19937_64 gen(time(0)); 
+	std::normal_distribution<double> nDis(0.5, 2.0);
 
 //0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 
 
 	//10 different buckets from 0.0 to 1.0 
 	vector<int> buckets(10, 0); 
-
 
 	//For a 1000 normal distributed random numbers 
 	for(int i=0; i<100000; ++i){
@@ -354,15 +353,12 @@ TEST_CASE("Testing Normal Distribution Random Number Generator.",
 		double rand = nDis(gen);
 
 		if(rand>0.0 and rand<1.0){
-			cout << "Random number: " << rand << endl; 
 			int index = (int)((rand*10)); 
-			cout << "Index in bucket: " << index << endl; 
 			++buckets[index]; 			
 		}
 	} 
 
 	//Write numbers to a file 
-	printNormal(buckets); 
 
 	ofstream file("normalDistributionNumbers.txt", std::ios::out); 
 	for(int i=0; i<buckets.size(); i++){
