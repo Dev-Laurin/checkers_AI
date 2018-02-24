@@ -308,7 +308,7 @@ public:
 
 	//Data Members
 	std::vector<std::vector<double>> network;
-    std::mt19937_64 gen; //(time(0));
+    std::mt19937_64 gen; 
     std::vector<std::vector<double>> nodes; //Count of nodes per layer
     std::vector<int> nodeSizes;
     std::vector<vector<double>> sigmas; //the change in weights

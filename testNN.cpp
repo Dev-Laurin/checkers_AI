@@ -9,6 +9,8 @@ using std::endl;
 #include "board.h"
 #include <ctime>
 #include <random>
+#include "NumberDuck.h"
+using namespace NumberDuck;
 
 //Tells catch to provide a main (one file only)
 #define CATCH_CONFIG_MAIN
@@ -203,8 +205,9 @@ TEST_CASE("Timing Blondie24.", "{32, 40, 10, 1}"){
 
 	clock_t start;
 	double duration;
-	start = clock();
 	NN blondie(nodes, "blondie24");
+
+	start = clock();
 
 	int runs = 1000;
 	double outputTotal = 0; 
@@ -317,6 +320,51 @@ TEST_CASE("Saving and Loading NN from file. ",
 	REQUIRE(checkIfFilesAreEqual(file, file1)==0);
 }
 
+void printNormal(vector<int> & buckets){
+	for(int i=0; i<buckets.size(); ++i){
+		cout << i << " : "; 
+		for(int j=0; j<buckets[i]; ++j){
+			cout << "x";
+		}	
+		cout << endl; 
+	}
+}
+
+TEST_CASE("Testing Normal Distribution Random Number Generator.",
+	"std::normal_distribution<double> nDis(0.5, 2.0);"){
+	std::random_device rd; 
+	std::mt19937_64 gen(rd()); 
+	std::normal_distribution<double> nDis(5.0, 2.0);
+
+//0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 
+
+	//10 different buckets from 0.0 to 1.0 
+	vector<int> buckets(10, 0); 
+
+
+	//For a 1000 normal distributed random numbers 
+	for(int i=0; i<100000; ++i){
+
+		double rand = nDis(gen);
+
+		if(rand>0.0 and rand<1.0){
+			cout << "Random number: " << rand << endl; 
+			int index = (int)((rand*10)); 
+			cout << "Index in bucket: " << index << endl; 
+			++buckets[index]; 			
+		}
+	} 
+
+	//Write numbers to a file 
+	printNormal(buckets); 
+
+	ofstream file("normalDistributionNumbers.txt", std::ios::out); 
+	for(int i=0; i<buckets.size(); i++){
+		file << buckets[i] << endl; 
+	}
+	file.close(); 
+
+}
 
 // 	//To create NN & evaluate: Max Time (not loop) = 0.006 to 0.007 seconds = 6 miliseconds = 6 mil nanoseconds
 // 	//If O2 flag = 11955.3 boards per sec (around 12,000)
