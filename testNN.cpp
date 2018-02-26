@@ -9,8 +9,6 @@ using std::endl;
 #include "board.h"
 #include <ctime>
 #include <random>
-#include "NumberDuck.h"
-using namespace NumberDuck;
 
 //Tells catch to provide a main (one file only)
 #define CATCH_CONFIG_MAIN
@@ -337,23 +335,34 @@ void printNormal(vector<int> & buckets){
 }
 
 TEST_CASE("Testing Normal Distribution Random Number Generator.",
-	"std::normal_distribution<double> nDis(0.5, 2.0);"){
+	"std::normal_distribution<double> nDis(0, 1);"){
 
 	std::mt19937_64 gen(time(0)); 
-	std::normal_distribution<double> nDis(0.5, 2.0);
-
-//0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0 
-
+	//Mean = 0, StdDev = 1 
+	std::normal_distribution<double> nDis(0, 1.0);
+	//-1.0 -0.9 -0.8 -0.7 -0.6...
+	//0 	1 	  2    3    4   
 	//10 different buckets from 0.0 to 1.0 
-	vector<int> buckets(10, 0); 
+	vector<int> buckets(20, 0); 
 
 	//For a 1000 normal distributed random numbers 
-	for(int i=0; i<100000; ++i){
+	int runs = 100000; 
+	for(int i=0; i<runs; ++i){
 
 		double rand = nDis(gen);
 
-		if(rand>0.0 and rand<1.0){
+		//If within our range
+		if(rand>-1.0 and rand<1.0){ 
+
 			int index = (int)((rand*10)); 
+
+			//If negative 
+			if(index<=0){
+				index = (-index - 9)*-1;
+			}
+			else{//number is positive
+				index = index + 9; 
+			}
 			++buckets[index]; 			
 		}
 	} 
@@ -366,6 +375,22 @@ TEST_CASE("Testing Normal Distribution Random Number Generator.",
 	}
 	file.close(); 
 
+	//Test sum all the numbers and see if they are in the correct percentage
+	//for a standard deviation. 
+	double sum =0; 
+	for(int i=0; i<buckets.size(); ++i){
+		sum+=buckets[i]; 
+	}
+	double percentage = sum/runs;
+	REQUIRE(percentage>0.67 and percentage<0.7); //should be around 68% 
+
+}
+
+TEST_CASE("Testing child generation.", "{32, 40, 10, 1}"){
+	vector<int> nodes{32, 40, 10, 1};
+	NN blondie24(nodes, "blondie24"); 
+	NN child = blondie24; 
+	
 }
 
 // 	//To create NN & evaluate: Max Time (not loop) = 0.006 to 0.007 seconds = 6 miliseconds = 6 mil nanoseconds

@@ -304,8 +304,8 @@ public:
 
 		//randomize the sigmas
 		//(mean, standard deviation)
-			//we are using 0.5 because its bet (0 and 1)
-		std::normal_distribution<double> nDis(0.5, 2.0);
+		//Our numbers will generate bet -1 and 1 
+		std::normal_distribution<double> nDis(0.0, 1.0);
 
 		for(size_t i=0; i<sigmas.size(); ++i){
 			for(size_t j=0; j<sigmas[i].size(); ++j){
@@ -314,7 +314,7 @@ public:
 					//our range, keep getting a rand number until
 					//we get one we can use in our range 0-1
 				double rand = nDis(gen);
-				while(rand<0.0 or rand>1.0){
+				while(rand<-1.0 or rand>1.0){
 					rand = nDis(gen);
 				}
 
@@ -323,7 +323,7 @@ public:
 
 				//randomize the weights using new sigmas
 				rand = nDis(gen);
-				while(rand<0.0 or rand>1.0){
+				while(rand<-1.0 or rand>1.0){
 					rand = nDis(gen);
 				}
 				network[i][j] = network[i][j] + sigmas[i][j] * rand;
