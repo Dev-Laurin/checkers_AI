@@ -162,9 +162,7 @@ TEST_CASE("Testing NN for consistancy. If the outputs are the same for the same 
 	for(int i=0; i<4; i++){
 		outputFromNN[i] = consistent.calculateBoard(bb);
 	}
-	cout << outputFromNN[0] << " " << outputFromNN[1];
-	cout << " " << outputFromNN[2] << " " << outputFromNN[3];
-	cout << endl;
+
 	REQUIRE(0==checkIfVectorIsSame(outputFromNN));
 }
 
@@ -324,15 +322,6 @@ TEST_CASE("Saving and Loading NN from file. ",
 	REQUIRE(checkIfFilesAreEqual(file, file1)==0);
 }
 
-void printNormal(vector<int> & buckets){
-	for(int i=0; i<buckets.size(); ++i){
-		cout << i << " : "; 
-		for(int j=0; j<buckets[i]; ++j){
-			cout << "x";
-		}	
-		cout << endl; 
-	}
-}
 
 TEST_CASE("Testing Normal Distribution Random Number Generator.",
 	"std::normal_distribution<double> nDis(0, 1);"){
@@ -369,7 +358,7 @@ TEST_CASE("Testing Normal Distribution Random Number Generator.",
 
 	//Write numbers to a file 
 
-	ofstream file("normalDistributionNumbers.txt", std::ios::out); 
+	ofstream file("generatedTestFiles/normalDistributionNumbers.txt", std::ios::out); 
 	for(int i=0; i<buckets.size(); i++){
 		file << buckets[i] << endl; 
 	}
@@ -382,25 +371,102 @@ TEST_CASE("Testing Normal Distribution Random Number Generator.",
 		sum+=buckets[i]; 
 	}
 	double percentage = sum/runs;
-	REQUIRE(percentage>0.67 and percentage<0.7); //should be around 68% 
+	REQUIRE(percentage>0.67); 
+	REQUIRE(percentage<0.7); //should be around 68% 
 
 }
 
+
+//Calculate the new weights based on oldweights + random number
+	//re-created with new weights 
 TEST_CASE("Testing child generation.", "{32, 40, 10, 1}"){
 	vector<int> nodes{32, 40, 10, 1};
-	NN blondie24(nodes, "blondie24"); 
+	NN blondie24(nodes, "blondie_child_gen_test"); 
 	NN child = blondie24; 
-	
+
+
+	//save the old weights
+	vector<vector<double>> oldWeights(child.network.size()); 
+ 
+	for(int i=0; i<child.network.size(); ++i){
+		oldWeights[i].resize(child.network[i].size()); 
+
+		for(int j=0; j<child.network[i].size(); ++j){
+			oldWeights[i][j] = child.network[i][j]; 
+		}
+	}
+
+	//save the old sigmas 
+	vector<vector<double>> oldSigmas(child.sigmas.size()); 
+
+	for(int i=0; i<child.sigmas.size(); ++i){
+		oldSigmas[i].resize(child.sigmas[i].size()); 
+		for(int j=0; j<child.sigmas[i].size(); ++j){
+			oldSigmas[i][j] = child.sigmas[i][j]; 
+		}
+	}
+
+	child.becomeOffspring(); 
+
+	//test if each one is just an operation
+	for(int i=0; i<child.network.size(); ++i){
+		for(int j=0; j<child.network[i].size(); ++j){
+			
+			//Get new values 
+			double newWeight = child.network[i][j]; 
+			double newSig = child.sigmas[i][j];
+
+			//Calculate tau
+			double tau = (1.0/sqrt(2*sqrt(oldSigmas[i].size()))); 
+
+			//Get what random numbers were 
+			double randSigNum = log(newSig) / (tau*log(oldSigmas[i][j])); 
+			double randWeightNum = (newWeight - oldWeights[i][j])/newSig;
+
+			//calculate it to see if we get the same thing
+			double testNewSig = pow(oldSigmas[i][j], tau*randSigNum); 
+			double testNewWeight = 	oldWeights[i][j] + testNewSig *randWeightNum;
+
+			int placeValue = 1000; 
+			//Round to int (hundredth's place) for checking (doubles aren't accurate)
+			REQUIRE((int)(child.network[i][j]*placeValue)==(int)(testNewWeight*placeValue));
+			REQUIRE((int)(child.sigmas[i][j]*placeValue)==(int)(testNewSig*placeValue));  
+		}
+	}
 }
 
-// 	//To create NN & evaluate: Max Time (not loop) = 0.006 to 0.007 seconds = 6 miliseconds = 6 mil nanoseconds
-// 	//If O2 flag = 11955.3 boards per sec (around 12,000)
-// 		//179,329.5 boards in 15 sec
 
-// Jason's hella old home computer:
-// A Beast when new, a decade ago.
-// No Opt: 1515.15 boards/second.
-// O2: 15384.6 boards/second.
-// O3: 16393.4
+//Test child generation values by getting the difference from the parent
+//for each value then graphing (should be uniform dist?)
+TEST_CASE("Testing child generation, with plotting random numbers.",
+	"{32, 40, 10, 1}"){
 
+	vector<int> nodes{32, 40, 10, 1};
+	NN blondie24(nodes, "blondie_child_gen_test2"); 
+	NN child = blondie24; 
+
+	child.becomeOffspring(); 
+
+	//Subtract parent values by child values to get difference
+
+	//sigma difference 
+	ofstream sigmaDifferencesFile("generatedTestFiles/sigmaDiff_childGenerationTest2.txt"); 
+
+	for(int i=0; i<blondie24.sigmas.size(); ++i){
+		for(int j=0; j<blondie24.sigmas[i].size(); ++j){
+			sigmaDifferencesFile << blondie24.sigmas[i][j] - child.sigmas[i][j] << endl;
+		}
+	}
+
+	//weight difference 
+	//write to file for graphing into excel 
+	ofstream weightDifferencesFile("generatedTestFiles/weightDifferences_childGenerationTest2.txt"); 
+
+	for(int i=0; i<blondie24.network.size(); ++i){
+		for(int j=0; j<blondie24.network[i].size(); ++j){
+			weightDifferencesFile <<  blondie24.network[i][j] - child.network[i][j] << endl;
+		} 
+	}
+
+}
 

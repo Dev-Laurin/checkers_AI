@@ -180,7 +180,7 @@ public:
 	//Save this NN to a file
 	int saveToFile(){
 
-		ofstream file(familyName + "_NN_" + to_string(generation) + ".txt");
+		ofstream file("NeuralNetworkFiles/" + familyName + "_NN_" + to_string(generation) + ".txt");
 
 		if(!file){
 			cout << "Unable to open file." << endl;
@@ -219,7 +219,7 @@ public:
 	}
 	//Load NN from file
 	int loadFromFile(string filename){
-		ifstream file(filename);
+		ifstream file("NeuralNetworkFiles/" + filename);
 		if(!file){
 			cout << "Error opening file.";
 			cout << " Filename: " << filename << endl;
@@ -318,14 +318,17 @@ public:
 					rand = nDis(gen);
 				}
 
+				//newSig = oldsig^(1/sqrt(2*sqrt(n)) * random)
+
 				//Compute our new sigma
-				sigmas[i][j] = pow(sigmas[i][j], 1.0/sqrt(2.0*sqrt(rand)));
+				sigmas[i][j] = pow(sigmas[i][j], (1.0/sqrt(2.0*sqrt(sigmas[i].size())))*rand);
 
 				//randomize the weights using new sigmas
 				rand = nDis(gen);
 				while(rand<-1.0 or rand>1.0){
 					rand = nDis(gen);
 				}
+				//newWeight = oldWeight + newSig * random normal num
 				network[i][j] = network[i][j] + sigmas[i][j] * rand;
 			}
 		}

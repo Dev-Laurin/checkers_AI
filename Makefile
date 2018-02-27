@@ -5,7 +5,7 @@ testBoard: Test/testBoard.cpp old_movegenerator.cpp
 	g++ -std=c++17 Test/testBoard.cpp old_movegenerator.cpp
 	./a.out
 testNN: testNN.cpp
-	g++ -std=c++17 testNN.cpp -O2 -I../Include -L../Bin64 -Wl,-rpath,../Bin64 -lNumberDuck -o nnTest.o
+	g++ -std=c++17 testNN.cpp -O2 -o nnTest.o
 	./nnTest.o 
 train: training.cpp
 	g++ -std=c++17 training.cpp -o train.o
