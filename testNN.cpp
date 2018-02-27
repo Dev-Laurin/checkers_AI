@@ -440,7 +440,10 @@ TEST_CASE("Testing Normal Distribution Random Number Generator.",
 
 	//Write numbers to a file 
 
-	ofstream file("generatedTestFiles/normalDistributionNumbers.txt", std::ios::out); 
+	ofstream file("testGeneratedFiles/normalDistributionNumbers.txt", std::ios::out); 
+	
+	REQUIRE(file); 
+	
 	for(int i=0; i<buckets.size(); i++){
 		file << buckets[i] << endl; 
 	}
@@ -532,7 +535,9 @@ TEST_CASE("Testing child generation, with plotting random numbers.",
 	//Subtract parent values by child values to get difference
 
 	//sigma difference 
-	ofstream sigmaDifferencesFile("generatedTestFiles/sigmaDiff_childGenerationTest2.txt"); 
+	ofstream sigmaDifferencesFile("testGeneratedFiles/sigmaDiff_childGenerationTest2.txt"); 
+
+	REQUIRE(sigmaDifferencesFile); 
 
 	for(int i=0; i<blondie24.sigmas.size(); ++i){
 		for(int j=0; j<blondie24.sigmas[i].size(); ++j){
@@ -542,7 +547,9 @@ TEST_CASE("Testing child generation, with plotting random numbers.",
 
 	//weight difference 
 	//write to file for graphing into excel 
-	ofstream weightDifferencesFile("generatedTestFiles/weightDifferences_childGenerationTest2.txt"); 
+	ofstream weightDifferencesFile("testGeneratedFiles/weightDifferences_childGenerationTest2.txt"); 
+	
+	REQUIRE(weightDifferencesFile); 
 
 	for(int i=0; i<blondie24.network.size(); ++i){
 		for(int j=0; j<blondie24.network[i].size(); ++j){
