@@ -4,8 +4,8 @@ all: guiMain.cpp
 testBoard: Test/testBoard.cpp old_movegenerator.cpp
 	g++ -std=c++17 Test/testBoard.cpp old_movegenerator.cpp
 	./a.out
-testNN: testNN.cpp
-	g++ -std=c++17 testNN.cpp -O2 -o nnTest.o
+testNN: testNN.cpp neuralNetwork.cpp
+	g++ -std=c++17 testNN.cpp neuralNetwork.cpp -O2 -o nnTest.o
 	./nnTest.o 
 train: training.cpp
 	g++ -std=c++17 training.cpp -o train.o

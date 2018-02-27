@@ -18,23 +18,75 @@ using std::endl;
 	//Issue with new 5.4.1 g++ version on Ubuntu 16.06?
 
 
-//Check's if two NN save files are equal
+//Check's if two NN save files are equal (binary)
+	//disregarding generation numbers 
 int checkIfFilesAreEqual(ifstream & file1, ifstream & file2){
 
-	string line, line2;
-	//skip generation line
-	getline(file1, line);
-	getline(file2, line2);
+  //read in generation number, but ignore it
+  int gen, gen2; 
+  file1.read(reinterpret_cast<char *>(&gen), sizeof(gen)); 
+  file2.read(reinterpret_cast<char *>(&gen2), sizeof(gen2));
 
-	while(getline(file1, line) and getline(file2, line2)){
-		if(line!=line2){
-			cout << line << endl;
-			cout << "vs" << endl;
-			cout << line2 << endl;
-			return -1;
-		}
-	}
-	return 0;
+  int placeValue = 1000; 
+  //read in the kingvalue 
+  double kingVal, kingVal2; 
+  file1.read(reinterpret_cast<char *>(&kingVal), sizeof(kingVal));
+  file2.read(reinterpret_cast<char *>(&kingVal2), sizeof(kingVal2)); 
+
+  if((int)(kingVal*placeValue)!=(int)(kingVal2*placeValue))
+  	return -1; 
+
+  //read in the overall size of the weights
+  int weightSize, weightSize2; 
+  file1.read(reinterpret_cast<char *>(&weightSize), sizeof(int)); 
+  file2.read(reinterpret_cast<char *>(&weightSize2), sizeof(int));
+ 
+  if(weightSize!=weightSize2)
+  	return -1; 
+
+  vector<vector<double>> network(weightSize2); 
+  vector<vector<double>> network2(weightSize2); 
+
+  vector<vector<double>> sigmas(weightSize2); 
+  vector<vector<double>> sigmas2(weightSize2); 
+
+  //read in size of individual vectors (2D)
+  for(int i=0; i<weightSize; ++i){
+    int size, size2; 
+    file1.read(reinterpret_cast<char *>(&size), sizeof(int));
+    file2.read(reinterpret_cast<char *>(&size2), sizeof(int));
+
+    if(size!=size2)
+    	return -1; 
+
+    network.resize(size); 
+    network2.resize(size); 
+    sigmas.resize(size); 
+    sigmas2.resize(size); 
+  }
+
+
+  //read in the actual weights 
+  for(int i=0; i<network.size(); ++i){
+    file1.read((char *)network[i].data(), network[i].size()*sizeof(double)); 
+  	file2.read((char *)network2[i].data(), network2[i].size()*sizeof(double)); 
+  	
+  	if(network[i]!=network2[i])
+  		return -1; 
+  }
+
+  //read in sigmas 
+  for(int i=0; i<sigmas.size(); ++i){
+    file1.read((char *)sigmas[i].data(), sigmas[i].size()*sizeof(double)); 
+ 	file2.read((char *)sigmas2[i].data(), sigmas2[i].size()*sizeof(double)); 
+  	if(sigmas[i]!=sigmas2[i])
+  		return -1; 
+  }
+  
+  file1.close();
+  file2.close(); 
+
+  return 0; 
 }
 
 //Check if vector is full of same number
@@ -310,16 +362,46 @@ TEST_CASE("Saving and Loading NN from file. ",
 	vector<int> nodes{32, 40, 10, 1};
 	NN blondie24(nodes, "blondie");
 	blondie24.saveToFile();
-	blondie24.loadFromFile("blondie_NN_0.txt");
+	blondie24.loadFromFile("blondie_NN_0");
 
 	NN copy = blondie24;
 	copy.generation+=1;
 	copy.saveToFile();
 
-	ifstream file("blondie_NN_0.txt");
-	ifstream file1("blondie_NN_1.txt");
+	ifstream file("NeuralNetworkFiles/blondie_NN_0.bin", std::ios::binary);
+	ifstream file1("NeuralNetworkFiles/blondie_NN_1.bin", std::ios::binary);
+
+	REQUIRE(file); 
+	REQUIRE(file1); 
+	//REQUIRE(file==file1); 
 
 	REQUIRE(checkIfFilesAreEqual(file, file1)==0);
+}
+
+TEST_CASE("Test Loading NN file.", "{32, 40, 10, 1}"){
+	
+	vector<int> nodes{32, 40, 10, 1};
+	NN blondie24(nodes, "blondie");
+
+	NN copy = blondie24; 
+
+	//Check saving files & loading
+	blondie24.saveToFile();
+	blondie24.becomeOffspring(); //change the NN 
+	blondie24.saveToFile(); 
+	blondie24.loadFromFile("blondie_NN_0");
+
+	//Check the NN loading 
+	REQUIRE(blondie24!=copy); 
+
+	ifstream file("NeuralNetworkFiles/blondie_NN_0.bin", std::ios::binary); 
+	ifstream file2("NeuralNetworkFiles/blondie_NN_1.bin", std::ios::binary); 
+
+	REQUIRE(file); 
+	REQUIRE(file2); 
+
+	REQUIRE(checkIfFilesAreEqual(file, file2)!=0); 
+
 }
 
 
