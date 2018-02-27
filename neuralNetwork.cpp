@@ -268,6 +268,11 @@ int NN::loadFromFile(string filename){
   }
   
   file.close();
+
+  //update nodeSizes
+  for(int i=0; i<sigmas.size(); ++i){
+    nodeSizes[i] = sigmas[i].size(); 
+  }
   return 0;
 }
 
