@@ -291,7 +291,14 @@ void NN::becomeOffspring(){
   //(mean, standard deviation)
   //Our numbers will generate bet -1 and 1 
   std::normal_distribution<double> nDis(0.0, 1.0);
+ 
+ //get the total weights in this NN 
+  double totalWeights = 0; 
+  for(int i=0; i<network.size(); ++i){
+    totalWeights+=network[i].size(); 
+  }
 
+  //Randomize the weights to become a child 
   for(size_t i=0; i<sigmas.size(); ++i){
     for(size_t j=0; j<sigmas[i].size(); ++j){
 
@@ -303,10 +310,12 @@ void NN::becomeOffspring(){
         rand = nDis(gen);
       }
 
-      //newSig = oldsig^(1/sqrt(2*sqrt(n)) * random)
-
+      //newSig = oldsig*e^(1/sqrt(2*sqrt(n)) * random)
+      double tau = (1.0/sqrt(2.0*sqrt(totalWeights))); 
+     // cout << "computation: tau: " << tau << endl;
+     // cout << "rand: " << rand << endl; 
       //Compute our new sigma
-      sigmas[i][j] = pow(sigmas[i][j], (1.0/sqrt(2.0*sqrt(sigmas[i].size())))*rand);
+      sigmas[i][j] = sigmas[i][j]*exp(tau*rand);
 
       //randomize the weights using new sigmas
       rand = nDis(gen);

@@ -493,6 +493,12 @@ TEST_CASE("Testing child generation.", "{32, 40, 10, 1}"){
 
 	child.becomeOffspring(); 
 
+	//find the total weights 
+	double totalWeights = 0; 
+	for(int i=0; i<child.network.size(); ++i){
+		totalWeights+=child.network[i].size(); 
+	}
+
 	//test if each one is just an operation
 	for(int i=0; i<child.network.size(); ++i){
 		for(int j=0; j<child.network[i].size(); ++j){
@@ -502,18 +508,18 @@ TEST_CASE("Testing child generation.", "{32, 40, 10, 1}"){
 			double newSig = child.sigmas[i][j];
 
 			//Calculate tau
-			double tau = (1.0/sqrt(2*sqrt(oldSigmas[i].size()))); 
+			double tau = (1.0/sqrt(2*sqrt(totalWeights))); 
 
 			//Get what random numbers were 
-			double randSigNum = log(newSig) / (tau*log(oldSigmas[i][j])); 
+			double randSigNum = (log(newSig) - log(oldSigmas[i][j])) / tau ; // log(newSig) / (tau*log(oldSigmas[i][j])); 
 			double randWeightNum = (newWeight - oldWeights[i][j])/newSig;
 
 			//calculate it to see if we get the same thing
-			double testNewSig = pow(oldSigmas[i][j], tau*randSigNum); 
+			double testNewSig = oldSigmas[i][j]*exp(tau*randSigNum); 
 			double testNewWeight = 	oldWeights[i][j] + testNewSig *randWeightNum;
 
 			int placeValue = 1000; 
-			//Round to int (hundredth's place) for checking (doubles aren't accurate)
+			//Round to int (thousandths place) for checking (doubles aren't accurate)
 			REQUIRE((int)(child.network[i][j]*placeValue)==(int)(testNewWeight*placeValue));
 			REQUIRE((int)(child.sigmas[i][j]*placeValue)==(int)(testNewSig*placeValue));  
 		}
