@@ -493,11 +493,18 @@ TEST_CASE("Testing child generation.", "{32, 40, 10, 1}"){
 
 	child.becomeOffspring(); 
 
+	ofstream file("testGeneratedFiles/childNormalDist.txt");
+
+	REQUIRE(file); 
+
 	//find the total weights 
 	double totalWeights = 0; 
 	for(int i=0; i<child.network.size(); ++i){
 		totalWeights+=child.network[i].size(); 
 	}
+
+	//10 different buckets from 0.0 to 1.0 
+	vector<int> buckets(20, 0); 
 
 	//test if each one is just an operation
 	for(int i=0; i<child.network.size(); ++i){
@@ -514,6 +521,18 @@ TEST_CASE("Testing child generation.", "{32, 40, 10, 1}"){
 			double randSigNum = (log(newSig) - log(oldSigmas[i][j])) / tau ; // log(newSig) / (tau*log(oldSigmas[i][j])); 
 			double randWeightNum = (newWeight - oldWeights[i][j])/newSig;
 
+			//Print the randomly normal generated nums to file for graphing
+			int index = (int)((randSigNum*10)); 
+
+			//If negative 
+			if(index<=0){
+				index = (-index - 9)*-1;
+			}
+			else{//number is positive
+				index = index + 9; 
+			}
+			++buckets[index]; 	
+
 			//calculate it to see if we get the same thing
 			double testNewSig = oldSigmas[i][j]*exp(tau*randSigNum); 
 			double testNewWeight = 	oldWeights[i][j] + testNewSig *randWeightNum;
@@ -524,6 +543,11 @@ TEST_CASE("Testing child generation.", "{32, 40, 10, 1}"){
 			REQUIRE((int)(child.sigmas[i][j]*placeValue)==(int)(testNewSig*placeValue));  
 		}
 	}
+
+	for(int i=0; i<buckets.size(); i++){
+		file << buckets[i] << endl; 
+	}
+	file.close(); 
 }
 
 
@@ -561,6 +585,25 @@ TEST_CASE("Testing child generation, with plotting random numbers.",
 		for(int j=0; j<blondie24.network[i].size(); ++j){
 			weightDifferencesFile <<  blondie24.network[i][j] - child.network[i][j] << endl;
 		} 
+	}
+
+}
+
+TEST_CASE("Testing Child sigma distribution.", 
+	"{32, 40, 10, 1}"){
+	vector<int> nodes{32, 40, 10, 1};
+	NN blondie24(nodes, "blondie_child_gen_test3");
+	NN child = blondie24; 
+	child.becomeOffspring(); 
+
+	ofstream childSigmaFile("testGeneratedFiles/childSigmaDist.txt") ; 
+
+	REQUIRE(childSigmaFile); 
+
+	for(int i=0; i<child.sigmas.size(); ++i){
+		for(int j=0; j<child.sigmas[i].size(); ++j){
+			childSigmaFile << child.sigmas[i][j] << endl;
+		}
 	}
 
 }
