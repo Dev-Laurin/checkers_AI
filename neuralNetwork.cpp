@@ -80,22 +80,25 @@ sNN AIPlayer::beta(stdBoard & board, int depth) {
 
 stdBoard AIPlayer::alphabeta(stdBoard board, unsigned int side) {
 
-  unsigned int movesA, movesB;
-  sNN moveValA[MAXMOVES];
-  sNN moveValB[MAXMOVES];
+    unsigned int movesA, movesB;
+    sNN moveValA[MAXMOVES];
+    sNN moveValB[MAXMOVES];
 
-  stdBoard Br[MAXMOVES];
-  unsigned int i = 0;
-  unsigned int numMoves;
-  int boardsGenerated[10] = {0};
-  unsigned int maxMove = 0;
+    stdBoard Br[MAXMOVES];
+    unsigned int i = 0;
+    unsigned int numMoves;
+    int boardsGenerated[10] = {0};
+    unsigned int maxMove = 0;
+    sNN maxMoveVal = 0;
 
-  numMoves = board.genMoves(Br,side);
-  if (numMoves == 0) {
-    return stdboard(0,0,0,0);  //We have lost!  Return a blank board to signal
-  }
-
-  return board;
+    numMoves = board.genMoves(Br,side);
+    if (numMoves == 0) {//We have lost!  Return a blank board to signal
+    return stdboard(0,0,0,0);
+    }
+    for(i = 0;i<numMoves;++i) {
+        maxMove = max()
+    }
+    return board;
 }
 
 
