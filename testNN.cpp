@@ -1,5 +1,6 @@
 //testNN.cpp
-//2-10-18
+//2-10-18 Created
+//3-5-18 Modified 
 //To test our neural network implementation.
 #include <iostream>
 #include "neuralNetwork.h"
@@ -9,6 +10,8 @@ using std::endl;
 #include "board.h"
 #include <ctime>
 #include <random>
+//Boost library for writing folders/directories
+#include <boost/filesystem.hpp> 
 
 //Tells catch to provide a main (one file only)
 #define CATCH_CONFIG_MAIN
@@ -33,8 +36,10 @@ int checkIfFilesAreEqual(ifstream & file1, ifstream & file2){
   file1.read(reinterpret_cast<char *>(&kingVal), sizeof(kingVal));
   file2.read(reinterpret_cast<char *>(&kingVal2), sizeof(kingVal2)); 
 
-  if((int)(kingVal*placeValue)!=(int)(kingVal2*placeValue))
-  	return -1; 
+  if((int)(kingVal*placeValue)!=(int)(kingVal2*placeValue)){
+  	return -1;
+  }
+  	 
 
   //read in the overall size of the weights
   int weightSize, weightSize2; 
@@ -361,19 +366,22 @@ TEST_CASE("Saving and Loading NN from file. ",
 
 	vector<int> nodes{32, 40, 10, 1};
 	NN blondie24(nodes, "blondie");
-	blondie24.saveToFile();
-	blondie24.loadFromFile("blondie_NN_0");
+	blondie24.saveToFile("testGeneratedFiles/" + 
+		blondie24.familyName + "/GEN" + to_string(blondie24.generation) + 
+		+"/NN" + to_string(blondie24.generation) + ".bin");
+	blondie24.loadFromFile("testGeneratedFiles/blondie/GEN0/NN0.bin");
 
 	NN copy = blondie24;
 	copy.generation+=1;
-	copy.saveToFile();
+	copy.saveToFile("testGeneratedFiles/" + 
+		copy.familyName + "/GEN" + to_string(copy.generation) + 
+		+"/NN" + to_string(copy.generation) + ".bin");
 
-	ifstream file("NeuralNetworkFiles/blondie_NN_0.bin", std::ios::binary);
-	ifstream file1("NeuralNetworkFiles/blondie_NN_1.bin", std::ios::binary);
+	ifstream file("testGeneratedFiles/blondie/GEN0/NN0.bin", std::ios::binary);
+	ifstream file1("testGeneratedFiles/blondie/GEN1/NN1.bin", std::ios::binary);
 
 	REQUIRE(file); 
 	REQUIRE(file1); 
-	//REQUIRE(file==file1); 
 
 	REQUIRE(checkIfFilesAreEqual(file, file1)==0);
 }
@@ -386,22 +394,25 @@ TEST_CASE("Test Loading NN file.", "{32, 40, 10, 1}"){
 	NN copy = blondie24; 
 
 	//Check saving files & loading
-	blondie24.saveToFile();
+	blondie24.saveToFile("testGeneratedFiles/" + 
+		blondie24.familyName + "/GEN" + to_string(blondie24.generation) + 
+		+"/NN" + to_string(blondie24.generation) + ".bin");
 	blondie24.becomeOffspring(); //change the NN 
-	blondie24.saveToFile(); 
-	blondie24.loadFromFile("blondie_NN_0");
+	blondie24.saveToFile("testGeneratedFiles/" + 
+		blondie24.familyName + "/GEN" + to_string(blondie24.generation) + 
+		+"/NN" + to_string(blondie24.generation) + ".bin"); 
+	blondie24.loadFromFile("testGeneratedFiles/blondie/GEN0/NN0.bin");
 
 	//Check the NN loading 
-	REQUIRE(blondie24!=copy); 
+	REQUIRE(blondie24==copy); 
 
-	ifstream file("NeuralNetworkFiles/blondie_NN_0.bin", std::ios::binary); 
-	ifstream file2("NeuralNetworkFiles/blondie_NN_1.bin", std::ios::binary); 
+	ifstream file("testGeneratedFiles/blondie/GEN0/NN0.bin", std::ios::binary); 
+	ifstream file2("testGeneratedFiles/blondie/GEN1/NN1.bin", std::ios::binary); 
 
 	REQUIRE(file); 
 	REQUIRE(file2); 
 
 	REQUIRE(checkIfFilesAreEqual(file, file2)!=0); 
-
 }
 
 
@@ -608,3 +619,13 @@ TEST_CASE("Testing Child sigma distribution.",
 
 }
 
+TEST_CASE("Make Directory via boost library test."){
+
+	boost::filesystem::path full_path(boost::filesystem::current_path()); 
+	string folder = "/testGeneratedFiles/temp1";
+	full_path += folder.c_str(); 
+	boost::filesystem::path dir(full_path);
+
+	boost::filesystem::create_directories(dir); 
+	REQUIRE(boost::filesystem::is_directory(dir));
+}

@@ -182,13 +182,13 @@ void NN::sigmoid(double & num){
 }
 
 //Save this NN to a file
-int NN::saveToFile(){
+int NN::saveToFile(string filename){
 
-  ofstream file("NeuralNetworkFiles/" + familyName + "_NN_" + to_string(generation) + ".bin", 
+  ofstream file(filename, 
     std::ios::binary);
 
   if(!file){
-    cout << "Unable to open file." << endl;
+    cout << "Unable to open file: " << filename << endl;
     return -1;
   }
 
@@ -206,7 +206,7 @@ int NN::saveToFile(){
   for(int i=0; i<network.size(); ++i){
     int size = network[i].size(); 
     file.write((char*)&size, sizeof(int)); 
-  }
+  } 
 
   //Write weights to file
   for(int i=0; i<network.size(); ++i){
@@ -227,8 +227,10 @@ int NN::saveToFile(){
 }
 
 //Load NN from file
+//Filename = FamilyName/GEN#
+//EX:  Blondie24/GEN100/NNpp
 int NN::loadFromFile(string filename){
-  ifstream file("NeuralNetworkFiles/" + filename + ".bin", std::ios::binary);
+  ifstream file(filename, std::ios::binary);
 
   if(!file){
     cout << "Error opening file.";
@@ -333,41 +335,44 @@ bool operator!=(const NN & lhs, const NN & rhs){
 
   //Check the weights 
   if(lhs.network.size()!=rhs.network.size())
-    return false; 
+    return true; 
+    
 
     for(int i=0; i<lhs.network.size(); ++i){
 
       if(lhs.network[i].size()!=rhs.network[i].size())
-        return false; 
+        return true; 
+        
 
         for(int j=0; j<lhs.network[i].size(); ++j){
           if(lhs.network[i][j]!=rhs.network[i][j])
-            return false; 
+            return true; 
         }        
     } 
 
   //Check the sigmas 
   if(lhs.sigmas.size()!=rhs.sigmas.size())
-    return false; 
+    return true; 
 
   for(int i=0; i<lhs.sigmas.size(); ++i){
 
     if(lhs.sigmas[i].size()!=rhs.sigmas[i].size())
-      return false; 
+      return true; 
+      
 
       for(int j=0; j<lhs.sigmas[i].size(); ++j){
         if(lhs.sigmas[i][j]!=rhs.sigmas[i][j])
-          return false; 
+          return true; 
       }        
   } 
 
   //family name
   if(lhs.familyName!=rhs.familyName)
-    return false; 
+    return true; 
 
-  //King value 
-  if(lhs.kingVal!=rhs.kingVal)
-    return false; 
+  return false; 
+}
 
-  return true; 
+bool operator==(const NN & lhs, const NN & rhs){
+  return !(lhs!=rhs); 
 }

@@ -1,5 +1,6 @@
 //neuralNetwork.h
 //Neural Network
+
 #ifndef NEURAL_NETWORK_H
 #define NEURAL_NETWORK_H
 
@@ -94,7 +95,7 @@ public:
 	//Given a number, calculate a sigmoid function output
 	void sigmoid(double & num);
 	//Save this NN to a file
-	int saveToFile(); 
+	int saveToFile(string filename); 
 	//Load NN from file
 	int loadFromFile(string filename);
 	//generate offspring, randomize this NN
@@ -112,6 +113,7 @@ public:
 
 //Operator != for NN's for testing 
 bool operator!=(const NN & lhs, const NN & rhs); 
+bool operator==(const NN & lhs, const NN & rhs); 
 
 #endif /* NEURAL_NETWORK_H */
 
