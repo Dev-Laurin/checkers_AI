@@ -86,25 +86,26 @@ class NN: public AIPlayer
 {
 public:
 	//Constructor setting a new neural network to random weights
-	NN(std::vector<int>& nS, string familyname); 
+	NN(std::vector<int>& nS, string familyname);
 	//Given a board, calculate the output of the NN
 	double calculateBoard(stdBoard & board);
 	//Puts board input into nodes vector in user specified index
-	void getBoardInput(stdBoard & board); 
-	double boardCount(stdBoard board); 
+	void getBoardInput(stdBoard & board);
+	double boardCount(stdBoard & board);
 	//Given a number, calculate a sigmoid function output
 	void sigmoid(double & num);
 	//Save this NN to a file
 	int saveToFile(string filename); 
+
 	//Load NN from file
 	int loadFromFile(string filename);
 	//generate offspring, randomize this NN
 		//(assuming this is a copy of the original)
-	void becomeOffspring(); 
+	void becomeOffspring();
 
 	//Data Members
 	std::vector<std::vector<double>> network;
-    std::mt19937_64 gen; 
+    std::mt19937_64 gen;
     std::vector<std::vector<double>> nodes; //Count of nodes per layer
     std::vector<int> nodeSizes;
     std::vector<vector<double>> sigmas; //the change in weights
@@ -114,6 +115,12 @@ public:
 //Operator != for NN's for testing 
 bool operator!=(const NN & lhs, const NN & rhs); 
 bool operator==(const NN & lhs, const NN & rhs); 
+
+class NN2: public NN
+{
+public:
+  void getBoardInput(stdBoard & board);
+};
 
 #endif /* NEURAL_NETWORK_H */
 

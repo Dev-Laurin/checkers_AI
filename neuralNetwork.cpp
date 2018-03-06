@@ -78,26 +78,31 @@ sNN AIPlayer::beta(stdBoard & board, int depth) {
   }
 }
 
-sNN AIPlayer::alphabeta(stdBoard board, unsigned int side) {
-  stdBoard boardA[MAXMOVES];
-  stdBoard boardB[MAXMOVES];
-  unsigned int movesA, movesB;
-  sNN moveValA[MAXMOVES];
-  sNN moveValB[MAXMOVES];
+stdBoard AIPlayer::alphabeta(stdBoard board, unsigned int side) {
 
-  movesA = board.genMoves(boardA,1-side);
-  for(unsigned int i=0;i<movesA;++i) {
-    movesB = boardA[i].genMoves(boardB,side);
-    for(unsigned int j=0;j<movesB;++j) {
-      moveValB[j] = calculateBoard(boardB[j]);
+    unsigned int movesA, movesB;
+    sNN moveValA[MAXMOVES];
+    sNN moveValB[MAXMOVES];
+
+    stdBoard Br[MAXMOVES];
+    unsigned int i = 0;
+    unsigned int numMoves;
+    int boardsGenerated[10] = {0};
+    unsigned int maxMove = 0;
+    sNN maxMoveVal = 0;
+
+    numMoves = board.genMoves(Br,side);
+    if (numMoves == 0) {//We have lost!  Return a blank board to signal
+    return stdboard(0,0,0,0);
     }
-    moveValA[i] = *std::max_element(moveValB,moveValB+movesB);
-  }
-  return *std::min_element(moveValA,moveValA+movesA);
+    for(i = 0;i<numMoves;++i) {
+        maxMove = max()
+    }
+    return board;
 }
 
 
-//The NN 
+//The NN
 //Set weights to random values
 NN::NN(std::vector<int>& nS, string familyname)
 {
@@ -168,7 +173,16 @@ void NN::getBoardInput(stdBoard & board){
   }
 }
 
-double NN::boardCount(stdBoard board) {
+void NN2::getBoardInput(stdBoard & board){
+  for(int i=0; i<32; ++i){
+          nodes[0][i] = board.pieces[0][i];
+          nodes[0][i+32] = board.pieces[1][i];
+          nodes[0][i+64] = board.pieces[2][i];
+          nodes[0][i+96] = board.pieces[3][i];
+  }
+}
+
+double NN::boardCount(stdBoard & board) {
     double count =
       (int)(board.pieces[0].count() - board.pieces[1].count()) +
       (int)(board.pieces[2].count() - board.pieces[3].count()) *
@@ -192,15 +206,15 @@ int NN::saveToFile(string filename){
     return -1;
   }
 
-  //Write generation number 
+  //Write generation number
   file.write((char*)&generation, sizeof(generation));
 
-  //write the king value 
-  file.write((char*)&kingVal, sizeof(kingVal)); 
- 
+  //write the king value
+  file.write((char*)&kingVal, sizeof(kingVal));
+
   //write the weight vector sizes
-  int size = network.size(); 
-  file.write((char*)&size, sizeof(int)); 
+  int size = network.size();
+  file.write((char*)&size, sizeof(int));
 
   //write the multiple vector sizes
   for(int i=0; i<network.size(); ++i){
@@ -211,14 +225,14 @@ int NN::saveToFile(string filename){
   //Write weights to file
   for(int i=0; i<network.size(); ++i){
     for(int j=0; j<network[i].size(); ++j){
-      file.write((char*)&network[i][j], sizeof(double)); 
+      file.write((char*)&network[i][j], sizeof(double));
     }
   }
 
-  //Write sigmas 
+  //Write sigmas
   for(int i=0; i<sigmas.size(); ++i){
     for(int j=0; j<sigmas[i].size(); ++j){
-      file.write((char*)&sigmas[i][j], sizeof(double)); 
+      file.write((char*)&sigmas[i][j], sizeof(double));
     }
   }
 
@@ -238,42 +252,42 @@ int NN::loadFromFile(string filename){
     return -1;
   }
 
-  //read in the generation number 
-  file.read(reinterpret_cast<char *>(&generation), sizeof(generation)); 
+  //read in the generation number
+  file.read(reinterpret_cast<char *>(&generation), sizeof(generation));
 
-  //read in the kingvalue 
+  //read in the kingvalue
   file.read(reinterpret_cast<char *>(&kingVal), sizeof(kingVal));
 
   //read in the overall size of the weights
-  int weightSize; 
-  file.read(reinterpret_cast<char *>(&weightSize), sizeof(int)); 
+  int weightSize;
+  file.read(reinterpret_cast<char *>(&weightSize), sizeof(int));
 
   network.resize(weightSize);
-  sigmas.resize(weightSize); 
+  sigmas.resize(weightSize);
 
   //read in size of individual vectors (2D)
   for(int i=0; i<weightSize; ++i){
-    int size; 
+    int size;
     file.read(reinterpret_cast<char *>(&size), sizeof(int));
-    network[i].resize(size); 
-    sigmas[i].resize(size); 
+    network[i].resize(size);
+    sigmas[i].resize(size);
   }
 
-  //read in the actual weights 
+  //read in the actual weights
   for(int i=0; i<network.size(); ++i){
-    file.read((char *)network[i].data(), network[i].size()*sizeof(double)); 
+    file.read((char *)network[i].data(), network[i].size()*sizeof(double));
   }
 
-  //read in sigmas 
+  //read in sigmas
   for(int i=0; i<sigmas.size(); ++i){
-    file.read((char *)sigmas[i].data(), sigmas[i].size()*sizeof(double)); 
+    file.read((char *)sigmas[i].data(), sigmas[i].size()*sizeof(double));
   }
-  
+
   file.close();
 
   //update nodeSizes
   for(int i=0; i<sigmas.size(); ++i){
-    nodeSizes[i] = sigmas[i].size(); 
+    nodeSizes[i] = sigmas[i].size();
   }
   return 0;
 }
@@ -291,16 +305,16 @@ void NN::becomeOffspring(){
 
   //randomize the sigmas
   //(mean, standard deviation)
-  //Our numbers will generate bet -1 and 1 
+  //Our numbers will generate bet -1 and 1
   std::normal_distribution<double> nDis(0.0, 1.0);
- 
- //get the total weights in this NN 
-  double totalWeights = 0; 
+
+ //get the total weights in this NN
+  double totalWeights = 0;
   for(int i=0; i<network.size(); ++i){
-    totalWeights+=network[i].size(); 
+    totalWeights+=network[i].size();
   }
 
-  //Randomize the weights to become a child 
+  //Randomize the weights to become a child
   for(size_t i=0; i<sigmas.size(); ++i){
     for(size_t j=0; j<sigmas[i].size(); ++j){
 
@@ -313,9 +327,9 @@ void NN::becomeOffspring(){
       }
 
       //newSig = oldsig*e^(1/sqrt(2*sqrt(n)) * random)
-      double tau = (1.0/sqrt(2.0*sqrt(totalWeights))); 
+      double tau = (1.0/sqrt(2.0*sqrt(totalWeights)));
      // cout << "computation: tau: " << tau << endl;
-     // cout << "rand: " << rand << endl; 
+     // cout << "rand: " << rand << endl;
       //Compute our new sigma
       sigmas[i][j] = sigmas[i][j]*exp(tau*rand);
 
@@ -330,13 +344,12 @@ void NN::becomeOffspring(){
   }
 }
 
-//check if NN is the same or not 
+//check if NN is the same or not
 bool operator!=(const NN & lhs, const NN & rhs){
 
-  //Check the weights 
+  //Check the weights
   if(lhs.network.size()!=rhs.network.size())
     return true; 
-    
 
     for(int i=0; i<lhs.network.size(); ++i){
 
@@ -350,7 +363,7 @@ bool operator!=(const NN & lhs, const NN & rhs){
         }        
     } 
 
-  //Check the sigmas 
+  //Check the sigmas
   if(lhs.sigmas.size()!=rhs.sigmas.size())
     return true; 
 
@@ -376,3 +389,4 @@ bool operator!=(const NN & lhs, const NN & rhs){
 bool operator==(const NN & lhs, const NN & rhs){
   return !(lhs!=rhs); 
 }
+
