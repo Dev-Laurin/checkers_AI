@@ -82,7 +82,11 @@ public:
       board = board.flip();
     }
     int moveCount = board.genMoves(possibleBoards,0);
+    if (moveCount == 0) {
+        return stdBoard(0,0,0,0);
+    }
     int moveSelect = int(distro(gen)*moveCount);
+
     if(side) {
       board = board.flip();
       possibleBoards[moveSelect] = possibleBoards[moveSelect].flip();

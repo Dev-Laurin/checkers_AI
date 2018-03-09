@@ -22,7 +22,7 @@
 	"board.h"
 	"gui.h"
 
-1518050196 c:\cygwin64\home\jason\checkers_ai\board.h
+1520562395 c:\cygwin64\home\jason\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -134,7 +134,7 @@
 	<random>
 	"Catch2.hpp"
 
-1519351102 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
+1520556838 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -149,7 +149,7 @@
 1520553789 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
-1519174589 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
+1520564826 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
 1519174137 c:\cygwin64\home\jason\checkers_ai\catch2.hpp
@@ -544,6 +544,12 @@
 	<algorithm>
 
 1520553119 source:c:\cygwin64\home\firethorn\checkers_ai\playgame.cpp
+	<iostream>
+	<vector>
+	"board.h"
+	"neuralNetwork.h"
+
+1520564685 source:c:\cygwin64\home\jason\checkers_ai\playgame.cpp
 	<iostream>
 	<vector>
 	"board.h"

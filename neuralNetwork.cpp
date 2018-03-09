@@ -1,28 +1,33 @@
 #include "neuralNetwork.h"
 
 stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
-      stdBoard possibleBoards[16];
-      if(side) {
+    stdBoard possibleBoards[16];
+    static const int searchDepth = 5;
+    if(side) {
+    board = board.flip();
+    }
+    int moves = board.genMoves(possibleBoards,0);
+    if (moves == 0) {
+    return stdBoard(0,0,0,0);
+    }
+    int selectMove = 0;
+    sNN moveVal = beta(possibleBoards[0],searchDepth);
+    sNN tempMove;
+    for (int i = 1;i<moves;++i) {
+            tempMove = beta(possibleBoards[i],searchDepth);
+            //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
+            //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
+            if (tempMove > moveVal) {
+                //better move found
+                moveVal = tempMove;
+                selectMove = i;
+            }
+    }
+    if (side) {
         board = board.flip();
-      }
-      int moves = board.genMoves(possibleBoards,0);
-      int selectMove = 0;
-      sNN moveVal = beta(possibleBoards[0],7);
-      sNN tempMove;
-      for (int i = 1;i<moves;++i) {
-                tempMove = beta(possibleBoards[i],7);
-                //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
-                //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
-                if (tempMove > moveVal) {
-                    //better move found
-                    moveVal = tempMove;
-                    selectMove = i;
-                }
-      }
-      if (side) {
-          possibleBoards[selectMove].flip();
-      }
-      return possibleBoards[selectMove];
+        possibleBoards[selectMove] = possibleBoards[selectMove].flip();
+    }
+    return possibleBoards[selectMove];
 }
 
 /*
