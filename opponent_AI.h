@@ -3,7 +3,8 @@
 
 #include <random>
 #include <string>
-#include "alphabeta.h"
+#include <chrono>
+#include "neuralNetwork.h"
 
 class Opponent{
 public:
@@ -100,7 +101,7 @@ public:
 		}
 		default:
 			cout << "That AI Doesn't exist" << endl;
-			stdBoard error; 
+			stdBoard error;
 			return error;
 		}
 	}

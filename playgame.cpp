@@ -1,38 +1,37 @@
-//playgame.cpp 
-//3-6-18 Revised 
+//playgame.cpp
+//3-6-18 Revised
 //Play a game of NN's
 
 #include <iostream>
-#include "neuralNetwork.h"
-#include <vector> 
-using std::vector; 
+#include <vector>
+using std::vector;
 #include "board.h"
-#include "opponent_AI.h"
+//#include "opponent_AI.h"
+#include "neuralNetwork.h"
 
 int main(){
 	vector<int> nodes{32, 40, 10, 1};
 	NN blondie24(nodes, "blondie24");
 
-	vector<int> nodes2{32, 91, 50, 1}; 
-	NN other(nodes2, "other"); 
+	vector<int> nodes2{32, 91, 50, 1};
+	NN other(nodes2, "other");
 
-	//start a new game 
-	stdBoard b; 
+	//start a new game
+	stdBoard b;
 
 	//First 3 ply are random
-	Opponent random('r'); 
+	RandomPlayer RPlayer;
 
-	//200 moves max 
+	//200 moves max
+	b.draw();
+  b = RPlayer.getMove(b,0);
+  b.draw();
+  b = RPlayer.getMove(b,1);
+  b.draw();
+  b = RPlayer.getMove(b,0);
+  b.draw();
+
 	for(int i=0; i<200; ++i){
-
-		//other start first 
-		if(i<3){
-			//random moves first 
-			b = random.getBoardMove(b); 
-		}
-
-		
-
 	}
-	return 0; 
+	return 0;
 }

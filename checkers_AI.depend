@@ -7,7 +7,7 @@
 	"gui.h"
 	<random>
 
-1518059905 c:\cygwin64\home\firethorn\checkers_ai\board.h
+1520553594 c:\cygwin64\home\firethorn\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -55,12 +55,14 @@
 	<random>
 	<chrono>
 
-1517825437 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
+1519440536 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
 	<iostream>
 	"board.h"
 	"alphabeta.h"
 	"old_movegenerator.h"
 	"testboard.h"
+	<random>
+	<chrono>
 
 1517802896 c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.h
 	<string>
@@ -79,7 +81,7 @@
 1517814236 source:c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.cpp
 	"old_movegenerator.h"
 
-1519067843 c:\cygwin64\home\firethorn\checkers_ai\alphabeta.h
+1519440536 c:\cygwin64\home\firethorn\checkers_ai\alphabeta.h
 	<bitset>
 	<random>
 	<algorithm>
@@ -111,7 +113,7 @@
 	<random>
 	"Catch2.hpp"
 
-1519561006 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1520554122 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -144,7 +146,7 @@
 	<algorithm>
 	"board.h"
 
-1519440536 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
+1520553789 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
 1519174589 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
@@ -540,4 +542,10 @@
 	<sstream>
 	<ctime>
 	<algorithm>
+
+1520553119 source:c:\cygwin64\home\firethorn\checkers_ai\playgame.cpp
+	<iostream>
+	<vector>
+	"board.h"
+	"neuralNetwork.h"
 

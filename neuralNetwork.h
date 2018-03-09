@@ -60,15 +60,46 @@ public:
     //  Alpha side of the board
     sNN alpha(stdBoard & board, int depth);
     // Handles starting up the alpha-beta search
-    sNN alphabeta(stdBoard board, unsigned int side = 0);
+//    sNN alphabeta(stdBoard board, unsigned int side = 0);
+};
+
+class RandomPlayer: public AIPlayer {
+public:
+  RandomPlayer() {
+    distro = std::uniform_real_distribution<double>(0.0,1.0);
+    gen.seed(time(0));
+  }
+  std::mt19937_64 gen;
+  std::uniform_real_distribution<double> distro;
+
+  sNN calculateBoard(stdBoard & board) {
+    sNN count = distro(gen);
+    return count;
+  }
+  stdBoard getMove(stdBoard & board, bool side=false) {
+    stdBoard possibleBoards[16];
+    if(side) {
+      board = board.flip();
+    }
+    int moveCount = board.genMoves(possibleBoards,0);
+    int moveSelect = int(distro(gen)*moveCount);
+    if(side) {
+      board = board.flip();
+      possibleBoards[moveSelect] = possibleBoards[moveSelect].flip();
+    }
+    return possibleBoards[moveSelect];
+  }
 };
 
 class PieceCount: public AIPlayer
 {
+public:
   PieceCount() {
     distro = std::uniform_real_distribution<double>(0.0,1.0);
+    gen.seed(time(0));
+
   }
-  std::default_random_engine gen;
+  std::mt19937_64 gen;
   std::uniform_real_distribution<double> distro;
 
   sNN calculateBoard(stdBoard & board) {
@@ -95,7 +126,7 @@ public:
 	//Given a number, calculate a sigmoid function output
 	void sigmoid(double & num);
 	//Save this NN to a file
-	int saveToFile(string filename); 
+	int saveToFile(string filename);
 
 	//Load NN from file
 	int loadFromFile(string filename);
@@ -112,9 +143,9 @@ public:
 
 };
 
-//Operator != for NN's for testing 
-bool operator!=(const NN & lhs, const NN & rhs); 
-bool operator==(const NN & lhs, const NN & rhs); 
+//Operator != for NN's for testing
+bool operator!=(const NN & lhs, const NN & rhs);
+bool operator==(const NN & lhs, const NN & rhs);
 
 class NN2: public NN
 {

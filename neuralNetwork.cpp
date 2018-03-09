@@ -1,7 +1,7 @@
 #include "neuralNetwork.h"
 
 stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
-      stdBoard possibleBoards[32];
+      stdBoard possibleBoards[16];
       if(side) {
         board = board.flip();
       }
@@ -77,7 +77,7 @@ sNN AIPlayer::beta(stdBoard & board, int depth) {
     return HIGHEST;
   }
 }
-
+/*
 stdBoard AIPlayer::alphabeta(stdBoard board, unsigned int side) {
 
     unsigned int movesA, movesB;
@@ -100,7 +100,7 @@ stdBoard AIPlayer::alphabeta(stdBoard board, unsigned int side) {
     }
     return board;
 }
-
+*/
 
 //The NN
 //Set weights to random values
@@ -198,7 +198,7 @@ void NN::sigmoid(double & num){
 //Save this NN to a file
 int NN::saveToFile(string filename){
 
-  ofstream file(filename, 
+  ofstream file(filename,
     std::ios::binary);
 
   if(!file){
@@ -218,9 +218,9 @@ int NN::saveToFile(string filename){
 
   //write the multiple vector sizes
   for(int i=0; i<network.size(); ++i){
-    int size = network[i].size(); 
-    file.write((char*)&size, sizeof(int)); 
-  } 
+    int size = network[i].size();
+    file.write((char*)&size, sizeof(int));
+  }
 
   //Write weights to file
   for(int i=0; i<network.size(); ++i){
@@ -348,45 +348,46 @@ void NN::becomeOffspring(){
 bool operator!=(const NN & lhs, const NN & rhs){
 
   //Check the weights
-  if(lhs.network.size()!=rhs.network.size())
-    return true; 
+  if(lhs.network.size()!=rhs.network.size()) {
+    return true;
+  }
 
-    for(int i=0; i<lhs.network.size(); ++i){
+  for(int i=0; i<lhs.network.size(); ++i){
 
-      if(lhs.network[i].size()!=rhs.network[i].size())
-        return true; 
-        
+    if(lhs.network[i].size()!=rhs.network[i].size())
+      return true;
 
-        for(int j=0; j<lhs.network[i].size(); ++j){
-          if(lhs.network[i][j]!=rhs.network[i][j])
-            return true; 
-        }        
-    } 
+
+    for(int j=0; j<lhs.network[i].size(); ++j){
+      if(lhs.network[i][j]!=rhs.network[i][j])
+        return true;
+    }
+  }
 
   //Check the sigmas
   if(lhs.sigmas.size()!=rhs.sigmas.size())
-    return true; 
+    return true;
 
   for(int i=0; i<lhs.sigmas.size(); ++i){
 
     if(lhs.sigmas[i].size()!=rhs.sigmas[i].size())
-      return true; 
-      
+      return true;
 
-      for(int j=0; j<lhs.sigmas[i].size(); ++j){
-        if(lhs.sigmas[i][j]!=rhs.sigmas[i][j])
-          return true; 
-      }        
-  } 
+
+    for(int j=0; j<lhs.sigmas[i].size(); ++j){
+      if(lhs.sigmas[i][j]!=rhs.sigmas[i][j])
+        return true;
+    }
+  }
 
   //family name
   if(lhs.familyName!=rhs.familyName)
-    return true; 
+    return true;
 
-  return false; 
+  return false;
 }
 
 bool operator==(const NN & lhs, const NN & rhs){
-  return !(lhs!=rhs); 
+  return !(lhs!=rhs);
 }
 
