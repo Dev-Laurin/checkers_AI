@@ -2,7 +2,7 @@
 
 stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     stdBoard possibleBoards[16];
-    static const int searchDepth = 5;
+    static const int searchDepth = 7;
     if(side) {
     board = board.flip();
     }
@@ -222,21 +222,21 @@ int NN::saveToFile(string filename){
   file.write((char*)&size, sizeof(int));
 
   //write the multiple vector sizes
-  for(int i=0; i<network.size(); ++i){
+  for(unsigned int i=0; i<network.size(); ++i){
     int size = network[i].size();
     file.write((char*)&size, sizeof(int));
   }
 
   //Write weights to file
-  for(int i=0; i<network.size(); ++i){
-    for(int j=0; j<network[i].size(); ++j){
+  for(unsigned int i=0; i<network.size(); ++i){
+    for(unsigned int j=0; j<network[i].size(); ++j){
       file.write((char*)&network[i][j], sizeof(double));
     }
   }
 
   //Write sigmas
-  for(int i=0; i<sigmas.size(); ++i){
-    for(int j=0; j<sigmas[i].size(); ++j){
+  for(unsigned int i=0; i<sigmas.size(); ++i){
+    for(unsigned int j=0; j<sigmas[i].size(); ++j){
       file.write((char*)&sigmas[i][j], sizeof(double));
     }
   }
@@ -279,19 +279,19 @@ int NN::loadFromFile(string filename){
   }
 
   //read in the actual weights
-  for(int i=0; i<network.size(); ++i){
+  for(unsigned int i=0; i<network.size(); ++i){
     file.read((char *)network[i].data(), network[i].size()*sizeof(double));
   }
 
   //read in sigmas
-  for(int i=0; i<sigmas.size(); ++i){
+  for(unsigned int i=0; i<sigmas.size(); ++i){
     file.read((char *)sigmas[i].data(), sigmas[i].size()*sizeof(double));
   }
 
   file.close();
 
   //update nodeSizes
-  for(int i=0; i<sigmas.size(); ++i){
+  for(unsigned int i=0; i<sigmas.size(); ++i){
     nodeSizes[i] = sigmas[i].size();
   }
   return 0;
@@ -315,7 +315,7 @@ void NN::becomeOffspring(){
 
  //get the total weights in this NN
   double totalWeights = 0;
-  for(int i=0; i<network.size(); ++i){
+  for(unsigned int i=0; i<network.size(); ++i){
     totalWeights+=network[i].size();
   }
 
@@ -357,13 +357,13 @@ bool operator!=(const NN & lhs, const NN & rhs){
     return true;
   }
 
-  for(int i=0; i<lhs.network.size(); ++i){
+  for(unsigned int i=0; i<lhs.network.size(); ++i){
 
     if(lhs.network[i].size()!=rhs.network[i].size())
       return true;
 
 
-    for(int j=0; j<lhs.network[i].size(); ++j){
+    for(unsigned int j=0; j<lhs.network[i].size(); ++j){
       if(lhs.network[i][j]!=rhs.network[i][j])
         return true;
     }
@@ -373,13 +373,13 @@ bool operator!=(const NN & lhs, const NN & rhs){
   if(lhs.sigmas.size()!=rhs.sigmas.size())
     return true;
 
-  for(int i=0; i<lhs.sigmas.size(); ++i){
+  for(unsigned int i=0; i<lhs.sigmas.size(); ++i){
 
     if(lhs.sigmas[i].size()!=rhs.sigmas[i].size())
       return true;
 
 
-    for(int j=0; j<lhs.sigmas[i].size(); ++j){
+    for(unsigned int j=0; j<lhs.sigmas[i].size(); ++j){
       if(lhs.sigmas[i][j]!=rhs.sigmas[i][j])
         return true;
     }

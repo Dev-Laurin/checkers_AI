@@ -7,6 +7,26 @@
 			<Cursor1 position="296" topLine="1" />
 		</Cursor>
 	</File>
+	<File name="board.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="10342" topLine="284" />
+		</Cursor>
+	</File>
+	<File name="neuralNetwork.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1828" topLine="70" />
+		</Cursor>
+	</File>
+	<File name="guiMain.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="91" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="playgame.cpp" open="1" top="1" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1054" topLine="7" />
+		</Cursor>
+	</File>
 	<File name="alphabeta.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="386" topLine="0" />
@@ -17,34 +37,14 @@
 			<Cursor1 position="1458" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="neuralNetwork.h" open="1" top="1" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1828" topLine="70" />
-		</Cursor>
-	</File>
-	<File name="guiMain.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="91" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="board.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="10342" topLine="309" />
-		</Cursor>
-	</File>
 	<File name="neuralNetwork.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="933" topLine="6" />
-		</Cursor>
-	</File>
-	<File name="playgame.cpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="904" topLine="24" />
+			<Cursor1 position="159" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="testBoard.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="12267" topLine="56" />
+			<Cursor1 position="12385" topLine="390" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
