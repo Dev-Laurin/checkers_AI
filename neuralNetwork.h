@@ -35,7 +35,7 @@ using std::min;
 #include "board.h"
 
 
-unsigned const static int MAXMOVES = 16;
+unsigned const static int MAXMOVES = 32;
 typedef double sNN;
 constexpr sNN LOWEST = std::numeric_limits<sNN>::lowest();
 constexpr sNN HIGHEST = std::numeric_limits<sNN>::max();
@@ -77,7 +77,7 @@ public:
     return count;
   }
   stdBoard getMove(stdBoard & board, bool side=false) {
-    stdBoard possibleBoards[16];
+    stdBoard possibleBoards[MAXMOVES];
     if(side) {
       board = board.flip();
     }
