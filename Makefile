@@ -10,3 +10,6 @@ testNN: testNN.cpp neuralNetwork.cpp
 train: training.cpp
 	g++ -std=c++17 training.cpp -o train.o
 	./train.o 
+playgame: playgame.cpp
+	g++ -std=c++17 playgame.cpp -o playgame.o
+	./playgame.o 
