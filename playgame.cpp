@@ -1,14 +1,14 @@
 //playgame.cpp
-//3-6-18 Revised
+//3-12-18 Revised
 //Play a game of NN's
 
 #include <iostream>
 #include <vector>
 using std::vector;
 #include "board.h"
-//#include "opponent_AI.h"
 #include "neuralNetwork.h"
 
+//Play a game using tournament rules with 2 AIPlayers
 int playGame(AIPlayer & player1, AIPlayer & player2){
     //start a new game
     stdBoard b;
@@ -33,45 +33,22 @@ int playGame(AIPlayer & player1, AIPlayer & player2){
     while(i < 200){
         b = player1.getMove(b,true);
         if (b == loser) {
-            cout << "Player 1 wins in " << i << " moves!" << endl;
+            ++player1.wins; 
+            ++player2.losses; 
             return 1;
         }
 
-        b.draw();
-
         b = player2.getMove(b,false);
-            if (b == loser) {
-              cout << "Player 2 wins in " << i << " moves." << endl;
+        if (b == loser) {
+            ++player2.wins; 
+            ++player1.losses;
             return -1;
         }
-
-        b.draw();
     }
 
-    //Count up the remaining pieces to see who won
-    cout << "draw" << endl;
+    //a draw 
+    ++player1.draws; 
+    ++player2.draws; 
     return 0; 
 
-}
-
-int main(){
-    vector<int> nodes{32, 40, 10, 1};
-    NN blondie24(nodes, "blondie24");
-
-    vector<int> nodes2{32, 91, 50, 1};
-    NN other(nodes2, "other");
-
-    int results = playGame(blondie24, other); 
-    if(results>0){
-        cout << "Player 1 won" << endl;
-    }
-    else if(results<0){
-        cout << "Player 2 won" << endl;
-    }
-    else{
-        cout << "Tie" << endl;
-    }
-
-    cout << "It turned out a draw!" << endl;
-	return 0;
 }
