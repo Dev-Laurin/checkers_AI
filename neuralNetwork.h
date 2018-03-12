@@ -51,10 +51,10 @@ public:
     string familyName = "";
     // Returns the value of the board given.
     // A virtual function to be implimented by the specific AI.
-    virtual sNN calculateBoard(stdBoard & board) = 0; 
+    sNN calculateBoard(stdBoard & board) {return 0.0;}
 
     // Returns a move given a board and a side.
-    virtual stdBoard getMove(stdBoard & board, bool side=false) = 0;
+    stdBoard getMove(stdBoard & board, bool side=false);
     // Beta side of the board
     sNN beta(stdBoard & board, int depth);
     //  Alpha side of the board
