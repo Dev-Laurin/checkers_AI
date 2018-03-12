@@ -51,7 +51,7 @@ public:
     string familyName = "";
     // Returns the value of the board given.
     // A virtual function to be implimented by the specific AI.
-    sNN calculateBoard(stdBoard & board) {return 0.0;}
+    virtual sNN calculateBoard(stdBoard & board) = 0 ;
 
     // Returns a move given a board and a side.
     stdBoard getMove(stdBoard & board, bool side=false);
