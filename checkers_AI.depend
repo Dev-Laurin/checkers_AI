@@ -7,7 +7,7 @@
 	"gui.h"
 	<random>
 
-1520565269 c:\cygwin64\home\firethorn\checkers_ai\board.h
+1520832811 c:\cygwin64\home\firethorn\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -113,7 +113,7 @@
 	<random>
 	"Catch2.hpp"
 
-1520565269 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1520899943 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -146,7 +146,7 @@
 	<algorithm>
 	"board.h"
 
-1520572900 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
+1520899767 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
 1520564826 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
