@@ -48,14 +48,17 @@ int main(){
 		 
 	}
 
+	int tournamentNum = 0;  
 	while(true){
-
+		
 		//For choosing random opponent within NNs 
 		std::mt19937_64 gen(time(0));
 		std::uniform_int_distribution<int> dis(0,NeuralNets.size());
 
 		//150 game tournament = 30 NNs * 5 games each 
+		++tournamentNum;
 		int gamesPerNetwork = 5; 
+		int gameNum = 0; 
 		for(int i=0; i<NeuralNets.size(); ++i){
 			//Each NN playes 5 games as Red selecting 
 				//random NN opponent
@@ -64,7 +67,26 @@ int main(){
 				//Choose random opponent
 				int randIndex = dis(gen); 
 				//Play a game 
-				playGame(NeuralNets[i], NeuralNets[randIndex]); 
+				boost::filesystem::path allPath = current_path;
+				string gameDirectory = parentDirectory + "TOUR" +
+					to_string(tournamentNum) + "/GAME" + to_string(gameNum);
+				string slash = "/" + gameDirectory; 
+				allPath += slash.c_str(); 
+				//Make the path 
+				boost::filesystem::path dir(allPath);
+				boost::filesystem::create_directories(dir);
+				if(boost::filesystem::is_directory(dir)){
+					++gameNum; 
+					playGame(NeuralNets[i], NeuralNets[randIndex], 
+						gameDirectory); 
+				}
+				else{
+					cout << "Game DIR not correct." << endl;
+					cout << gameDirectory << endl; 
+					cout << allPath << endl;
+				}
+
+				
 			}
 
 		}

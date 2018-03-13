@@ -8,4 +8,5 @@ using std::vector;
 #include "board.h"
 #include "neuralNetwork.h"
 
-int playGame(AIPlayer & player1, AIPlayer & player2);
+int playGame(AIPlayer & player1, AIPlayer & player2,
+    string directory);

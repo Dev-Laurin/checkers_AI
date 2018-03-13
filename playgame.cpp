@@ -9,7 +9,7 @@ using std::vector;
 #include "neuralNetwork.h"
 
 //Play a game using tournament rules with 2 AIPlayers
-int playGame(AIPlayer & player1, AIPlayer & player2){
+int playGame(AIPlayer & player1, AIPlayer & player2, string directory){
     //start a new game
     stdBoard b;
 
@@ -18,13 +18,13 @@ int playGame(AIPlayer & player1, AIPlayer & player2){
 
     //200 moves max
     int i = 0;
-    b.draw();
+//    b.draw();
     b = RPlayer.getMove(b,false);
-    b.draw();
+//    b.draw();
     b = RPlayer.getMove(b,true);
-    b.draw();
+//    b.draw();
     b = RPlayer.getMove(b,false);
-    b.draw();
+//    b.draw();
     i += 3;
 
     //To tell who lost, and if the game is over
