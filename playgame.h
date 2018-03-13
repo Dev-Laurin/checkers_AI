@@ -9,4 +9,4 @@ using std::vector;
 #include "neuralNetwork.h"
 
 int playGame(AIPlayer & player1, AIPlayer & player2,
-    string directory);
+    vector<stdBoard> & boards);
