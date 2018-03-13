@@ -13,3 +13,6 @@ train: training.cpp
 playgame: playgame.cpp
 	g++ -std=c++17 playgame.cpp neuralNetwork.cpp -o playgame.o
 	./playgame.o 
+blondie: blondieExperiment1SpringBreak.cpp
+	g++ -std=c++17 blondieExperiment1SpringBreak.cpp neuralNetwork.cpp playgame.cpp -lboost_system -lboost_filesystem -o blondie.o
+	./blondie.o 
