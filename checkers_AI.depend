@@ -113,7 +113,7 @@
 	<random>
 	"Catch2.hpp"
 
-1520899943 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1520900092 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -543,7 +543,7 @@
 	<ctime>
 	<algorithm>
 
-1520577668 source:c:\cygwin64\home\firethorn\checkers_ai\playgame.cpp
+1520899767 source:c:\cygwin64\home\firethorn\checkers_ai\playgame.cpp
 	<iostream>
 	<vector>
 	"board.h"
