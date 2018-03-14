@@ -9,8 +9,7 @@ using std::vector;
 #include "neuralNetwork.h"
 
 //Play a game using tournament rules with 2 AIPlayers
-int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & boards){
-
+int playGame(AIPlayer & player1, AIPlayer & player2, string directory){
     //start a new game
     stdBoard b;
 
@@ -28,33 +27,30 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & boards){
 //    b.draw();
     i += 3;
 
-    int index = 0; 
     //To tell who lost, and if the game is over
     stdBoard loser(0,0,0,0);
 
-    while(i < 100){
+    while(i < 200){
         b = player1.getMove(b,true);
-        boards[index] = b;  
-        ++index; 
         if (b == loser) {
-            ++player1.wins; 
-            ++player2.losses; 
+            ++player1.wins;
+            ++player2.losses;
             return 1;
         }
+        ++i;
 
         b = player2.getMove(b,false);
-        boards[index] = b; 
-        ++index; 
         if (b == loser) {
-            ++player2.wins; 
+            ++player2.wins;
             ++player1.losses;
             return -1;
         }
+        ++i;
     }
 
-    //a draw 
-    ++player1.draws; 
-    ++player2.draws; 
-    return 0; 
+    //a draw
+    ++player1.draws;
+    ++player2.draws;
+    return 0;
 
 }
