@@ -44,12 +44,12 @@ int main(){
 			cout << "Error, directory not created in ";
 			cout << "before-tournament." << endl;
 			cout << path << endl;
-			return -1; 
+			return -1;
 		}
 
 	}
 
-	int tournamentNum = -1;  
+	int tournamentNum = -1;
 
 	while(true){
 
@@ -81,62 +81,61 @@ int main(){
 				boost::filesystem::path dir(allPath);
 				boost::filesystem::create_directories(dir);
 
-				vector<stdBoard> gameBoards(200); 
+				vector<stdBoard> gameBoards(200);
 				if(boost::filesystem::is_directory(dir)){
 
-					++gameNum; 
+					++gameNum;
 
-					int results = playGame(NeuralNets[i], NeuralNets[randIndex], 
-						gameBoards); 
+					int results = playGame(NeuralNets[i], NeuralNets[randIndex], gameBoards);
 
 					ofstream file(gameDirectory + ".txt");
 					if(!file){
-						cout << "Game File Error." << endl; 
-						return -1; 
+						cout << "Game File Error." << endl;
+						return -1;
 					}
 					if(results>0){
-						//NeuralNets[i] won 
-						file << "winner: " << NeuralNets[i].familyName; 
-						file << " " << NeuralNets[i].generation; 
-						file << " " << i << endl; 
+						//NeuralNets[i] won
+						file << "winner: " << NeuralNets[i].familyName;
+						file << " " << NeuralNets[i].generation;
+						file << " " << i << endl;
 
-						file << NeuralNets[randIndex].familyName; 
-						file << " " << NeuralNets[randIndex].generation; 
+						file << NeuralNets[randIndex].familyName;
+						file << " " << NeuralNets[randIndex].generation;
 						file << " " << randIndex << endl;
 					}
 					else if(results<0){
 						//NeuralNets[randIndex]
-						file << "winner: " << NeuralNets[randIndex].familyName; 
-						file << " " << NeuralNets[randIndex].generation; 
+						file << "winner: " << NeuralNets[randIndex].familyName;
+						file << " " << NeuralNets[randIndex].generation;
 						file << " " << randIndex << endl;
 
-						file << NeuralNets[i].familyName; 
-						file << " " << NeuralNets[i].generation; 
+						file << NeuralNets[i].familyName;
+						file << " " << NeuralNets[i].generation;
 						file << " " << i << endl;
 					}
 					else{
-						//draw 
-						file << NeuralNets[randIndex].familyName; 
-						file << " " << NeuralNets[randIndex].generation; 
+						//draw
+						file << NeuralNets[randIndex].familyName;
+						file << " " << NeuralNets[randIndex].generation;
 						file << " " << randIndex << endl;
 
-						file << NeuralNets[i].familyName; 
-						file << " " << NeuralNets[i].generation; 
+						file << NeuralNets[i].familyName;
+						file << " " << NeuralNets[i].generation;
 						file << " " << i << endl;
 					}
 
 					//Save all the boards in the game into a file
 					for(int k=0; k<gameBoards.size(); ++k){
-						file << gameBoards[k].str() << endl; 
-						file << endl; 
+						file << gameBoards[k].str() << endl;
+						file << endl;
 					}
-					file.close(); 
+					file.close();
 				}
 				else{
 					cout << "Game DIR not correct." << endl;
 					cout << gameDirectory << endl;
 					cout << allPath << endl;
-					return -1; 
+					return -1;
 				}
 
 
@@ -173,7 +172,7 @@ int main(){
 			else{
 				cout << "Path making failed." << endl;
 				cout << path << endl;
-				return -1; 
+				return -1;
 			}
 
 			//make loser network a child of this parent

@@ -55,6 +55,11 @@
 					<Add option="-flto" />
 				</Linker>
 			</Target>
+			<Target title="blondietourn">
+				<Option output="checkers_AI" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
@@ -64,7 +69,16 @@
 			<Option target="Release" />
 			<Option target="Test" />
 		</Unit>
-		<Unit filename="board.h" />
+		<Unit filename="blondieExperiment1SpringBreak.cpp">
+			<Option target="blondietourn" />
+		</Unit>
+		<Unit filename="board.h">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
+			<Option target="testNN" />
+			<Option target="playgame" />
+		</Unit>
 		<Unit filename="gui.h">
 			<Option target="Debug" />
 			<Option target="Release" />
@@ -86,6 +100,7 @@
 		</Unit>
 		<Unit filename="playgame.cpp">
 			<Option target="playgame" />
+			<Option target="blondietourn" />
 		</Unit>
 		<Unit filename="testBoard.cpp">
 			<Option target="Test" />
