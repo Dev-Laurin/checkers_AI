@@ -1,7 +1,7 @@
 #include "neuralNetwork.h"
 
 stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
-    stdBoard possibleBoards[16];
+    stdBoard possibleBoards[MAXMOVES];
     static const int searchDepth = 7;
 
     if(side) {
@@ -200,7 +200,7 @@ double NN::boardCount(stdBoard & board) {
 
 //Given a number, calculate a sigmoid function output
 void NN::sigmoid(double & num){
-  num = num/(1+std::abs(num));
+  num = num/(.16667+std::abs(num));
 }
 
 //Save this NN to a file

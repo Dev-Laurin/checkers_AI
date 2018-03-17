@@ -43,7 +43,7 @@
 				</Compiler>
 			</Target>
 			<Target title="playgame">
-				<Option output="checkers_AI" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/testplaygame" prefix_auto="1" extension_auto="1" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -57,13 +57,20 @@
 			</Target>
 			<Target title="blondietourn">
 				<Option output="checkers_AI" prefix_auto="1" extension_auto="1" />
-				<Option type="0" />
+				<Option type="1" />
 				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+				</Compiler>
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-O2" />
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Test/testplaygame.cpp">
+			<Option target="playgame" />
+		</Unit>
 		<Unit filename="alphabeta.h">
 			<Option target="Debug" />
 			<Option target="Release" />

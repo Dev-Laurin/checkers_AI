@@ -3864,3 +3864,10 @@
 	<boost/config/abi_prefix.hpp>
 	<boost/config/abi_suffix.hpp>
 
+1521285128 source:c:\cygwin64\home\firethorn\checkers_ai\test\testplaygame.cpp
+	<iostream>
+	<vector>
+	"../board.h"
+	"../neuralNetwork.h"
+	"../playgame.h"
+
