@@ -29,27 +29,42 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
 //    b.draw();
     b = RPlayer.getMove(b,false);
     gameBoards[++i] = b;
-//    b.draw();
+    cout << "The starting random board: " << endl;
+    b.draw();
 
     //To tell who lost, and if the game is over
     stdBoard loser(0,0,0,0);
 
+    auto tStart = std::chrono::high_resolution_clock::now();
+    auto tStop = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed;
+
     while(i < 199){
+        tStart = std::chrono::high_resolution_clock::now();
         b = player1.getMove(b,true);
         if (b == loser) {
             ++player1.wins;
             ++player2.losses;
             return 1;
         }
+        tStop = std::chrono::high_resolution_clock::now();
         gameBoards[++i] = b;
+        elapsed = tStop - tStart;
+        cout << "Player 1 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
+        b.draw();
 
+        tStart = std::chrono::high_resolution_clock::now();
         b = player2.getMove(b,false);
         if (b == loser) {
             ++player2.wins;
             ++player1.losses;
             return -1;
         }
+        tStop = std::chrono::high_resolution_clock::now();
         gameBoards[++i] = b;
+        elapsed = tStop - tStart;
+        cout << "Player 2 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
+        b.draw();
     }
 
     //a draw

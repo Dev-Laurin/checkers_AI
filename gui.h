@@ -1,15 +1,16 @@
 #ifndef GUI_INCLUDED_H
 #define GUI_INCLUDED_H
+
 #include <random>
-#include <string> 
+#include <string>
 #include "board.h"
 #include <SFML/Graphics.hpp>
-#include <vector> 
+#include <vector>
 
-//helper functions 
+//helper functions
 int findCheckerMove(std::string newBoard, std::string oldBoard);
 
-void highlightMoves(std::vector<sf::RectangleShape>&tiles, stdBoard boards[], 
+void highlightMoves(std::vector<sf::RectangleShape>&tiles, stdBoard boards[],
 	int moves, stdBoard oldBoard);
 
 void unhighlightMoves(std::vector<sf::RectangleShape>&tiles);
@@ -19,14 +20,14 @@ public:
 	Checker(const float R, const int pos, const sf::Color col,
 		sf::RenderWindow * win, bool king);
 
-	void updateBoardPosition(const int posBoard, sf::Color col, 
+	void updateBoardPosition(const int posBoard, sf::Color col,
 		bool king);
 
 	void convertBoardIndexIntoXYPositions(const int positionOnBoard);
 
 	void draw()const;
 
-	//variables 
+	//variables
 	sf::CircleShape piece;
 	sf::Color color;
 	sf::RenderWindow * window;
@@ -45,7 +46,7 @@ public:
 	//redraw checkers board based on string
 	void reDrawBoard(std::string newBoard);
 
-	//variables 
+	//variables
 	stdBoard b;
 	bool waitForOpponent;
 	Checker * selected_piece;

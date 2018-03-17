@@ -50,7 +50,7 @@ int main(){
 	}
 
 	int tournamentNum = -1;
-
+  cout << "Starting Tournament!" << endl;
 	while(true){
 
 		//For choosing random opponent within NNs
@@ -61,16 +61,18 @@ int main(){
 		++tournamentNum;
 		int gamesPerNetwork = 5;
 		int gameNum = 0;
-		for(int i=0; i<NeuralNets.size(); ++i){
+		for(unsigned int i=0; i<NeuralNets.size(); ++i){
 			//Each NN playes 5 games as Red selecting
 				//random NN opponent
 
 			for(int games=0; games<gamesPerNetwork; ++games){
 				//Choose random opponent
-				int randIndex;
+				unsigned int randIndex;
 				do { //Prevent the AI from playing itself.
           randIndex = dis(gen);
 				} while (randIndex == i);
+
+				cout << "NN " << i << " vs NN " << randIndex << "!" << endl;
 				//Play a game
 				boost::filesystem::path allPath = current_path;
 				string gameDirectory = parentDirectory + "TOUR" +
@@ -85,7 +87,7 @@ int main(){
 				if(boost::filesystem::is_directory(dir)){
 
 					++gameNum;
-
+          cout << "The Game begins!" << endl;
 					int results = playGame(NeuralNets[i], NeuralNets[randIndex], gameBoards);
 
 					ofstream file(gameDirectory + ".txt");
@@ -125,7 +127,7 @@ int main(){
 					}
 
 					//Save all the boards in the game into a file
-					for(int k=0; k<gameBoards.size(); ++k){
+					for(unsigned int k=0; k<gameBoards.size(); ++k){
 						file << gameBoards[k].str() << endl;
 						file << endl;
 					}

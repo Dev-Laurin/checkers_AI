@@ -7,7 +7,7 @@
 	"gui.h"
 	<random>
 
-1520832811 c:\cygwin64\home\firethorn\checkers_ai\board.h
+1521282616 c:\cygwin64\home\firethorn\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -543,7 +543,7 @@
 	<ctime>
 	<algorithm>
 
-1521193283 source:c:\cygwin64\home\firethorn\checkers_ai\playgame.cpp
+1521283824 source:c:\cygwin64\home\firethorn\checkers_ai\playgame.cpp
 	<iostream>
 	<vector>
 	"board.h"
@@ -555,7 +555,7 @@
 	"board.h"
 	"neuralNetwork.h"
 
-1521193322 source:c:\cygwin64\home\firethorn\checkers_ai\blondieexperiment1springbreak.cpp
+1521283709 source:c:\cygwin64\home\firethorn\checkers_ai\blondieexperiment1springbreak.cpp
 	<iostream>
 	<vector>
 	"neuralNetwork.h"
@@ -563,7 +563,7 @@
 	"playgame.h"
 	<algorithm>
 
-1521193272 c:\cygwin64\home\firethorn\checkers_ai\playgame.h
+1521282512 c:\cygwin64\home\firethorn\checkers_ai\playgame.h
 	<iostream>
 	<vector>
 	"board.h"

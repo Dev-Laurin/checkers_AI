@@ -1,5 +1,5 @@
-#ifndef RANDOM_CHECKERS_INCLUDED
-#define RANDOM_CHECKERS_INCLUDED
+#ifndef BOARD_INCLUDED
+#define BOARD_INCLUDED
 
 #include <stdint.h>
 #include <string>
