@@ -1,6 +1,6 @@
 //testNN.cpp
 //2-10-18 Created
-//3-5-18 Modified 
+//3-5-18 Modified
 //To test our neural network implementation.
 #include <iostream>
 #include "neuralNetwork.h"
@@ -11,7 +11,7 @@ using std::endl;
 #include <ctime>
 #include <random>
 //Boost library for writing folders/directories
-#include <boost/filesystem.hpp> 
+#include <boost/filesystem.hpp>
 
 //Tells catch to provide a main (one file only)
 #define CATCH_CONFIG_MAIN
@@ -22,76 +22,76 @@ using std::endl;
 
 
 //Check's if two NN save files are equal (binary)
-	//disregarding generation numbers 
+	//disregarding generation numbers
 int checkIfFilesAreEqual(ifstream & file1, ifstream & file2){
 
   //read in generation number, but ignore it
-  int gen, gen2; 
-  file1.read(reinterpret_cast<char *>(&gen), sizeof(gen)); 
+  int gen, gen2;
+  file1.read(reinterpret_cast<char *>(&gen), sizeof(gen));
   file2.read(reinterpret_cast<char *>(&gen2), sizeof(gen2));
 
-  int placeValue = 1000; 
-  //read in the kingvalue 
-  double kingVal, kingVal2; 
+  int placeValue = 1000;
+  //read in the kingvalue
+  double kingVal, kingVal2;
   file1.read(reinterpret_cast<char *>(&kingVal), sizeof(kingVal));
-  file2.read(reinterpret_cast<char *>(&kingVal2), sizeof(kingVal2)); 
+  file2.read(reinterpret_cast<char *>(&kingVal2), sizeof(kingVal2));
 
   if((int)(kingVal*placeValue)!=(int)(kingVal2*placeValue)){
   	return -1;
   }
-  	 
+
 
   //read in the overall size of the weights
-  int weightSize, weightSize2; 
-  file1.read(reinterpret_cast<char *>(&weightSize), sizeof(int)); 
+  int weightSize, weightSize2;
+  file1.read(reinterpret_cast<char *>(&weightSize), sizeof(int));
   file2.read(reinterpret_cast<char *>(&weightSize2), sizeof(int));
- 
+
   if(weightSize!=weightSize2)
-  	return -1; 
+  	return -1;
 
-  vector<vector<double>> network(weightSize2); 
-  vector<vector<double>> network2(weightSize2); 
+  vector<vector<double>> network(weightSize2);
+  vector<vector<double>> network2(weightSize2);
 
-  vector<vector<double>> sigmas(weightSize2); 
-  vector<vector<double>> sigmas2(weightSize2); 
+  vector<vector<double>> sigmas(weightSize2);
+  vector<vector<double>> sigmas2(weightSize2);
 
   //read in size of individual vectors (2D)
   for(int i=0; i<weightSize; ++i){
-    int size, size2; 
+    int size, size2;
     file1.read(reinterpret_cast<char *>(&size), sizeof(int));
     file2.read(reinterpret_cast<char *>(&size2), sizeof(int));
 
     if(size!=size2)
-    	return -1; 
+    	return -1;
 
-    network.resize(size); 
-    network2.resize(size); 
-    sigmas.resize(size); 
-    sigmas2.resize(size); 
+    network.resize(size);
+    network2.resize(size);
+    sigmas.resize(size);
+    sigmas2.resize(size);
   }
 
 
-  //read in the actual weights 
-  for(int i=0; i<network.size(); ++i){
-    file1.read((char *)network[i].data(), network[i].size()*sizeof(double)); 
-  	file2.read((char *)network2[i].data(), network2[i].size()*sizeof(double)); 
-  	
+  //read in the actual weights
+  for(unsigned int i=0; i<network.size(); ++i){
+    file1.read((char *)network[i].data(), network[i].size()*sizeof(double));
+  	file2.read((char *)network2[i].data(), network2[i].size()*sizeof(double));
+
   	if(network[i]!=network2[i])
-  		return -1; 
+  		return -1;
   }
 
-  //read in sigmas 
-  for(int i=0; i<sigmas.size(); ++i){
-    file1.read((char *)sigmas[i].data(), sigmas[i].size()*sizeof(double)); 
- 	file2.read((char *)sigmas2[i].data(), sigmas2[i].size()*sizeof(double)); 
+  //read in sigmas
+  for(unsigned int i=0; i<sigmas.size(); ++i){
+    file1.read((char *)sigmas[i].data(), sigmas[i].size()*sizeof(double));
+ 	file2.read((char *)sigmas2[i].data(), sigmas2[i].size()*sizeof(double));
   	if(sigmas[i]!=sigmas2[i])
-  		return -1; 
+  		return -1;
   }
-  
-  file1.close();
-  file2.close(); 
 
-  return 0; 
+  file1.close();
+  file2.close();
+
+  return 0;
 }
 
 //Check if vector is full of same number
@@ -366,199 +366,199 @@ TEST_CASE("Saving and Loading NN from file. ",
 
 	vector<int> nodes{32, 40, 10, 1};
 	NN blondie24(nodes, "blondie");
-	blondie24.saveToFile("testGeneratedFiles/" + 
-		blondie24.familyName + "/GEN" + to_string(blondie24.generation) + 
+	blondie24.saveToFile("testGeneratedFiles/" +
+		blondie24.familyName + "/GEN" + to_string(blondie24.generation) +
 		+"/NN" + to_string(blondie24.generation) + ".bin");
 	blondie24.loadFromFile("testGeneratedFiles/blondie/GEN0/NN0.bin");
 
 	NN copy = blondie24;
 	copy.generation+=1;
-	copy.saveToFile("testGeneratedFiles/" + 
-		copy.familyName + "/GEN" + to_string(copy.generation) + 
+	copy.saveToFile("testGeneratedFiles/" +
+		copy.familyName + "/GEN" + to_string(copy.generation) +
 		+"/NN" + to_string(copy.generation) + ".bin");
 
 	ifstream file("testGeneratedFiles/blondie/GEN0/NN0.bin", std::ios::binary);
 	ifstream file1("testGeneratedFiles/blondie/GEN1/NN1.bin", std::ios::binary);
 
-	REQUIRE(file); 
-	REQUIRE(file1); 
+	REQUIRE(file);
+	REQUIRE(file1);
 
 	REQUIRE(checkIfFilesAreEqual(file, file1)==0);
 }
 
 TEST_CASE("Test Loading NN file.", "{32, 40, 10, 1}"){
-	
+
 	vector<int> nodes{32, 40, 10, 1};
 	NN blondie24(nodes, "blondie");
 
-	NN copy = blondie24; 
+	NN copy = blondie24;
 
 	//Check saving files & loading
-	blondie24.saveToFile("testGeneratedFiles/" + 
-		blondie24.familyName + "/GEN" + to_string(blondie24.generation) + 
+	blondie24.saveToFile("testGeneratedFiles/" +
+		blondie24.familyName + "/GEN" + to_string(blondie24.generation) +
 		+"/NN" + to_string(blondie24.generation) + ".bin");
-	blondie24.becomeOffspring(); //change the NN 
-	blondie24.saveToFile("testGeneratedFiles/" + 
-		blondie24.familyName + "/GEN" + to_string(blondie24.generation) + 
-		+"/NN" + to_string(blondie24.generation) + ".bin"); 
+	blondie24.becomeOffspring(); //change the NN
+	blondie24.saveToFile("testGeneratedFiles/" +
+		blondie24.familyName + "/GEN" + to_string(blondie24.generation) +
+		+"/NN" + to_string(blondie24.generation) + ".bin");
 	blondie24.loadFromFile("testGeneratedFiles/blondie/GEN0/NN0.bin");
 
-	//Check the NN loading 
-	REQUIRE(blondie24==copy); 
+	//Check the NN loading
+	REQUIRE(blondie24==copy);
 
-	ifstream file("testGeneratedFiles/blondie/GEN0/NN0.bin", std::ios::binary); 
-	ifstream file2("testGeneratedFiles/blondie/GEN1/NN1.bin", std::ios::binary); 
+	ifstream file("testGeneratedFiles/blondie/GEN0/NN0.bin", std::ios::binary);
+	ifstream file2("testGeneratedFiles/blondie/GEN1/NN1.bin", std::ios::binary);
 
-	REQUIRE(file); 
-	REQUIRE(file2); 
+	REQUIRE(file);
+	REQUIRE(file2);
 
-	REQUIRE(checkIfFilesAreEqual(file, file2)!=0); 
+	REQUIRE(checkIfFilesAreEqual(file, file2)!=0);
 }
 
 
 TEST_CASE("Testing Normal Distribution Random Number Generator.",
 	"std::normal_distribution<double> nDis(0, 1);"){
 
-	std::mt19937_64 gen(time(0)); 
-	//Mean = 0, StdDev = 1 
+	std::mt19937_64 gen(time(0));
+	//Mean = 0, StdDev = 1
 	std::normal_distribution<double> nDis(0, 1.0);
 	//-1.0 -0.9 -0.8 -0.7 -0.6...
-	//0 	1 	  2    3    4   
-	//10 different buckets from 0.0 to 1.0 
-	vector<int> buckets(20, 0); 
+	//0 	1 	  2    3    4
+	//10 different buckets from 0.0 to 1.0
+	vector<int> buckets(20, 0);
 
-	//For a 1000 normal distributed random numbers 
-	int runs = 100000; 
+	//For a 1000 normal distributed random numbers
+	int runs = 100000;
 	for(int i=0; i<runs; ++i){
 
 		double rand = nDis(gen);
 
 		//If within our range
-		if(rand>-1.0 and rand<1.0){ 
+		if(rand>-1.0 and rand<1.0){
 
-			int index = (int)((rand*10)); 
+			int index = (int)((rand*10));
 
-			//If negative 
+			//If negative
 			if(index<=0){
 				index = (-index - 9)*-1;
 			}
 			else{//number is positive
-				index = index + 9; 
+				index = index + 9;
 			}
-			++buckets[index]; 			
+			++buckets[index];
 		}
-	} 
-
-	//Write numbers to a file 
-
-	ofstream file("testGeneratedFiles/normalDistributionNumbers.txt", std::ios::out); 
-	
-	REQUIRE(file); 
-	
-	for(int i=0; i<buckets.size(); i++){
-		file << buckets[i] << endl; 
 	}
-	file.close(); 
+
+	//Write numbers to a file
+
+	ofstream file("testGeneratedFiles/normalDistributionNumbers.txt", std::ios::out);
+
+	REQUIRE(file);
+
+	for(unsigned int i=0; i<buckets.size(); i++){
+		file << buckets[i] << endl;
+	}
+	file.close();
 
 	//Test sum all the numbers and see if they are in the correct percentage
-	//for a standard deviation. 
-	double sum =0; 
-	for(int i=0; i<buckets.size(); ++i){
-		sum+=buckets[i]; 
+	//for a standard deviation.
+	double sum =0;
+	for(unsigned int i=0; i<buckets.size(); ++i){
+		sum+=buckets[i];
 	}
 	double percentage = sum/runs;
-	REQUIRE(percentage>0.67); 
-	REQUIRE(percentage<0.7); //should be around 68% 
+	REQUIRE(percentage>0.67);
+	REQUIRE(percentage<0.7); //should be around 68%
 
 }
 
 
 //Calculate the new weights based on oldweights + random number
-	//re-created with new weights 
+	//re-created with new weights
 TEST_CASE("Testing child generation.", "{32, 40, 10, 1}"){
 	vector<int> nodes{32, 40, 10, 1};
-	NN blondie24(nodes, "blondie_child_gen_test"); 
-	NN child = blondie24; 
+	NN blondie24(nodes, "blondie_child_gen_test");
+	NN child = blondie24;
 
 
 	//save the old weights
-	vector<vector<double>> oldWeights(child.network.size()); 
- 
-	for(int i=0; i<child.network.size(); ++i){
-		oldWeights[i].resize(child.network[i].size()); 
+	vector<vector<double>> oldWeights(child.network.size());
 
-		for(int j=0; j<child.network[i].size(); ++j){
-			oldWeights[i][j] = child.network[i][j]; 
+	for(unsigned int i=0; i<child.network.size(); ++i){
+		oldWeights[i].resize(child.network[i].size());
+
+		for(unsigned int j=0; j<child.network[i].size(); ++j){
+			oldWeights[i][j] = child.network[i][j];
 		}
 	}
 
-	//save the old sigmas 
-	vector<vector<double>> oldSigmas(child.sigmas.size()); 
+	//save the old sigmas
+	vector<vector<double>> oldSigmas(child.sigmas.size());
 
-	for(int i=0; i<child.sigmas.size(); ++i){
-		oldSigmas[i].resize(child.sigmas[i].size()); 
-		for(int j=0; j<child.sigmas[i].size(); ++j){
-			oldSigmas[i][j] = child.sigmas[i][j]; 
+	for(unsigned int i=0; i<child.sigmas.size(); ++i){
+		oldSigmas[i].resize(child.sigmas[i].size());
+		for(unsigned int j=0; j<child.sigmas[i].size(); ++j){
+			oldSigmas[i][j] = child.sigmas[i][j];
 		}
 	}
 
-	child.becomeOffspring(); 
+	child.becomeOffspring();
 
 	ofstream file("testGeneratedFiles/childNormalDist.txt");
 
-	REQUIRE(file); 
+	REQUIRE(file);
 
-	//find the total weights 
-	double totalWeights = 0; 
-	for(int i=0; i<child.network.size(); ++i){
-		totalWeights+=child.network[i].size(); 
+	//find the total weights
+	double totalWeights = 0;
+	for(unsigned int i=0; i<child.network.size(); ++i){
+		totalWeights+=child.network[i].size();
 	}
 
-	//10 different buckets from 0.0 to 1.0 
-	vector<int> buckets(20, 0); 
+	//10 different buckets from 0.0 to 1.0
+	vector<int> buckets(20, 0);
 
 	//test if each one is just an operation
-	for(int i=0; i<child.network.size(); ++i){
-		for(int j=0; j<child.network[i].size(); ++j){
-			
-			//Get new values 
-			double newWeight = child.network[i][j]; 
+	for(unsigned int i=0; i<child.network.size(); ++i){
+		for(unsigned int j=0; j<child.network[i].size(); ++j){
+
+			//Get new values
+			double newWeight = child.network[i][j];
 			double newSig = child.sigmas[i][j];
 
 			//Calculate tau
-			double tau = (1.0/sqrt(2*sqrt(totalWeights))); 
+			double tau = (1.0/sqrt(2*sqrt(totalWeights)));
 
-			//Get what random numbers were 
-			double randSigNum = (log(newSig) - log(oldSigmas[i][j])) / tau ; // log(newSig) / (tau*log(oldSigmas[i][j])); 
+			//Get what random numbers were
+			double randSigNum = (log(newSig) - log(oldSigmas[i][j])) / tau ; // log(newSig) / (tau*log(oldSigmas[i][j]));
 			double randWeightNum = (newWeight - oldWeights[i][j])/newSig;
 
 			//Print the randomly normal generated nums to file for graphing
-			int index = (int)((randSigNum*10)); 
+			int index = (int)((randSigNum*10));
 
-			//If negative 
+			//If negative
 			if(index<=0){
 				index = (-index - 9)*-1;
 			}
 			else{//number is positive
-				index = index + 9; 
+				index = index + 9;
 			}
-			++buckets[index]; 	
+			++buckets[index];
 
 			//calculate it to see if we get the same thing
-			double testNewSig = oldSigmas[i][j]*exp(tau*randSigNum); 
+			double testNewSig = oldSigmas[i][j]*exp(tau*randSigNum);
 			double testNewWeight = 	oldWeights[i][j] + testNewSig *randWeightNum;
 
-			int placeValue = 1000; 
+			int placeValue = 1000;
 			//Round to int (thousandths place) for checking (doubles aren't accurate)
 			REQUIRE((int)(child.network[i][j]*placeValue)==(int)(testNewWeight*placeValue));
-			REQUIRE((int)(child.sigmas[i][j]*placeValue)==(int)(testNewSig*placeValue));  
+			REQUIRE((int)(child.sigmas[i][j]*placeValue)==(int)(testNewSig*placeValue));
 		}
 	}
 
-	for(int i=0; i<buckets.size(); i++){
-		file << buckets[i] << endl; 
+	for(unsigned int i=0; i<buckets.size(); i++){
+		file << buckets[i] << endl;
 	}
-	file.close(); 
+	file.close();
 }
 
 
@@ -568,51 +568,51 @@ TEST_CASE("Testing child generation, with plotting random numbers.",
 	"{32, 40, 10, 1}"){
 
 	vector<int> nodes{32, 40, 10, 1};
-	NN blondie24(nodes, "blondie_child_gen_test2"); 
-	NN child = blondie24; 
+	NN blondie24(nodes, "blondie_child_gen_test2");
+	NN child = blondie24;
 
-	child.becomeOffspring(); 
+	child.becomeOffspring();
 
 	//Subtract parent values by child values to get difference
 
-	//sigma difference 
-	ofstream sigmaDifferencesFile("testGeneratedFiles/sigmaDiff_childGenerationTest2.txt"); 
+	//sigma difference
+	ofstream sigmaDifferencesFile("testGeneratedFiles/sigmaDiff_childGenerationTest2.txt");
 
-	REQUIRE(sigmaDifferencesFile); 
+	REQUIRE(sigmaDifferencesFile);
 
-	for(int i=0; i<blondie24.sigmas.size(); ++i){
-		for(int j=0; j<blondie24.sigmas[i].size(); ++j){
+	for(unsigned int i=0; i<blondie24.sigmas.size(); ++i){
+		for(unsigned int j=0; j<blondie24.sigmas[i].size(); ++j){
 			sigmaDifferencesFile << blondie24.sigmas[i][j] - child.sigmas[i][j] << endl;
 		}
 	}
 
-	//weight difference 
-	//write to file for graphing into excel 
-	ofstream weightDifferencesFile("testGeneratedFiles/weightDifferences_childGenerationTest2.txt"); 
-	
-	REQUIRE(weightDifferencesFile); 
+	//weight difference
+	//write to file for graphing into excel
+	ofstream weightDifferencesFile("testGeneratedFiles/weightDifferences_childGenerationTest2.txt");
 
-	for(int i=0; i<blondie24.network.size(); ++i){
-		for(int j=0; j<blondie24.network[i].size(); ++j){
+	REQUIRE(weightDifferencesFile);
+
+	for(unsigned int i=0; i<blondie24.network.size(); ++i){
+		for(unsigned int j=0; j<blondie24.network[i].size(); ++j){
 			weightDifferencesFile <<  blondie24.network[i][j] - child.network[i][j] << endl;
-		} 
+		}
 	}
 
 }
 
-TEST_CASE("Testing Child sigma distribution.", 
+TEST_CASE("Testing Child sigma distribution.",
 	"{32, 40, 10, 1}"){
 	vector<int> nodes{32, 40, 10, 1};
 	NN blondie24(nodes, "blondie_child_gen_test3");
-	NN child = blondie24; 
-	child.becomeOffspring(); 
+	NN child = blondie24;
+	child.becomeOffspring();
 
-	ofstream childSigmaFile("testGeneratedFiles/childSigmaDist.txt") ; 
+	ofstream childSigmaFile("testGeneratedFiles/childSigmaDist.txt") ;
 
-	REQUIRE(childSigmaFile); 
+	REQUIRE(childSigmaFile);
 
-	for(int i=0; i<child.sigmas.size(); ++i){
-		for(int j=0; j<child.sigmas[i].size(); ++j){
+	for(unsigned int i=0; i<child.sigmas.size(); ++i){
+		for(unsigned int j=0; j<child.sigmas[i].size(); ++j){
 			childSigmaFile << child.sigmas[i][j] << endl;
 		}
 	}
@@ -621,11 +621,17 @@ TEST_CASE("Testing Child sigma distribution.",
 
 TEST_CASE("Make Directory via boost library test."){
 
-	boost::filesystem::path full_path(boost::filesystem::current_path()); 
+	boost::filesystem::path full_path(boost::filesystem::current_path());
 	string folder = "/testGeneratedFiles/temp1";
-	full_path += folder.c_str(); 
+	full_path += folder.c_str();
 	boost::filesystem::path dir(full_path);
 
-	boost::filesystem::create_directories(dir); 
+	boost::filesystem::create_directories(dir);
 	REQUIRE(boost::filesystem::is_directory(dir));
+}
+TEST_CASE("Testing Iterative Deepening Search") {
+  vector<int> blond{32, 40, 10, 1};
+  NN testIDS(blond, "blondie");
+  stdBoard board;
+  testIDS.IntDeepSearch(board, false);
 }

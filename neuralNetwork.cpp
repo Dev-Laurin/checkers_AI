@@ -1,23 +1,64 @@
 #include "neuralNetwork.h"
 
-stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
-    stdBoard possibleBoards[MAXMOVES];
-    static const int searchDepth = 7;
+//Searches until it runs out of time.
+stdBoard AIPlayer::IntDeepSearch(stdBoard & board, bool side) {
+  stdBoard moveList[MAXMOVES];
+  int selectMove = 0;
+  std::time(&timeStart);
+  if(side) {
+    board = board.flip();
+  }
+  //Work first layer.
+  int moves = board.genMoves(moveList,0);
+  if (moves == 0) {
+      return stdBoard(0,0,0,0);
+  }
+  //Score the list.
+  for(int i = 0; i < moves; ++i) {
+    moveList[i].score = calculateBoard(moveList[i]);
+  }
+  std::sort(moveList,moveList+moves);
+  selectMove = moves -1;  //It's sorted, the best move is the last one.
+  //Find opponent moves
+  stdBoard oppMoveList[moves][MAXMOVES];
+  for(int i = moves-1; i >= 0; --i) {
+    int moveCount = moveList[i].genMoves(oppMoveList[i],1);
+    if (moveCount == 0) { //Enemy has no moves, win.
+      selectMove = i;
+      i = -1;
+    }
+  }
 
+
+
+  if(side) {
+    board = board.flip();
+    moveList[selectMove] = moveList[selectMove].flip();
+  }
+  return moveList[selectMove];
+}
+
+
+stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
+    stdBoard moveList[MAXMOVES];
+    static const int searchDepth = 7;
+    std::time(&timeStart);
     if(side) {
         board = board.flip();
     }
-
-    int moves = board.genMoves(possibleBoards,0);
+    int moves = board.genMoves(moveList,0);
     if (moves == 0) {
         return stdBoard(0,0,0,0);
     }
-
-    int selectMove = 0;
-    sNN moveVal = beta(possibleBoards[0],searchDepth);
+    for(int i = 0; i < moves; ++i) {
+      moveList[i].score = calculateBoard(moveList[i]);
+    }
+    std::sort(moveList,moveList+moves);
+    int selectMove = moves - 1;
+    sNN moveVal = beta(moveList[0],searchDepth);
     sNN tempMove;
-    for (int i = 1;i<moves;++i) {
-        tempMove = beta(possibleBoards[i],searchDepth);
+    for (int i = moves -1; i>=0;--i) {
+        tempMove = beta(moveList[i],searchDepth);
         //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
         //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
         if (tempMove > moveVal) {
@@ -28,9 +69,9 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     }
     if (side) {
         board = board.flip();
-        possibleBoards[selectMove] = possibleBoards[selectMove].flip();
+        moveList[selectMove] = moveList[selectMove].flip();
     }
-    return possibleBoards[selectMove];
+    return moveList[selectMove];
 }
 
 /*
@@ -43,23 +84,29 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
   //Beta is the MINIMUM value selector.
   //Always assumed to be red.
 */
+
+
 sNN AIPlayer::alpha(stdBoard & board, int depth) {
   stdBoard moveList[MAXMOVES];
   int moveCount;
   moveCount = board.genMoves(moveList,0);
   if (moveCount) {
-      sNN rVal=LOWEST;
-      if (depth>1) {
-        for (int i = 0;i<moveCount;++i) {
-          rVal = max(rVal,beta(moveList[i],depth-1));
-        }
-      } else {
-        for (int i = 0;i<moveCount;++i) {
-            rVal = max(rVal,calculateBoard(moveList[i]));
-        }
-      }
-      //Take the highest value move.
+    for(int i = 0; i < moveCount; ++i) {
+      moveList[i].score = calculateBoard(moveList[i]);
+    }
+    std::sort(moveList,moveList+moveCount);
+    sNN rVal=moveList[moveCount-1].score;
+    if (std::difftime(time(nullptr),timeStart) > MOVETIME) { //Out of time, return!
       return rVal;
+    }
+    if (depth <= 1) {
+      return rVal;
+    }
+    for (int i = moveCount - 1;i >= 0; --i) {
+      rVal = max(rVal,beta(moveList[i],depth-1));
+    }
+    //Take the highest value move.
+    return rVal;
   } else {
     //No moves available.  We lose!
     //We don't like this, obviously.
@@ -85,6 +132,12 @@ sNN AIPlayer::beta(stdBoard & board, int depth) {
     return HIGHEST;
   }
 }
+
+double AIPlayer::clmp(double x, double a, double b)
+{
+    return x < a ? a : (x > b ? b : x);
+}
+
 /*
 stdBoard AIPlayer::alphabeta(stdBoard board, unsigned int side) {
 
@@ -138,8 +191,10 @@ NN::NN(std::vector<int>& nS, string familyname)
     }
   }
   //Generate a random king value U(1.0, 3.0)
-  std::uniform_real_distribution<double> kingDis(1.0, 3.0);
+  std::uniform_real_distribution<double> kingDis(0.0, 1.0);
   kingVal = kingDis(gen);
+  pieceWeight = kingDis(gen);
+  montyWeight = kingDis(gen);
 
   //Save the beg sigmas of the weights
   sigmas.resize(network.size());
@@ -149,7 +204,7 @@ NN::NN(std::vector<int>& nS, string familyname)
 }
 
 //Given a board, calculate the output of the NN
-double NN::calculateBoard(stdBoard & board){
+sNN NN::calculateBoard(stdBoard & board){
   for(size_t i = 0;i < nodes.size();++i) {
           std::fill(nodes[i].begin(),nodes[i].end(),0.0);
   }
@@ -167,21 +222,21 @@ double NN::calculateBoard(stdBoard & board){
           }
   }
   //Add other modifiers
-  return nodes[nodes.size()-1][0];
+  return nodes[nodes.size()-1][0] + boardCount(board)* pieceWeight;
   //nodes[nodes.size()-1][0] + boardCount(board)* pieceWeight;
 }
 
 //Puts board input into nodes vector in user specified index
 void NN::getBoardInput(stdBoard & board){
-
   for(int i=0; i<32; ++i){
           nodes[0][i] =
-              (int)(board.pieces[0][i] - board.pieces[1][i]) +
-              (int)(board.pieces[2][i] - board.pieces[3][i]) * kingVal;
+              (double)board.pieces[0][i] - (double)board.pieces[1][i] +
+              ((double)board.pieces[2][i] - (double)board.pieces[3][i]) * kingVal;
   }
 }
 
-void NN2::getBoardInput(stdBoard & board){
+
+void NN2::getBoardInput(stdBoard & board) {
   for(int i=0; i<32; ++i){
           nodes[0][i] = board.pieces[0][i];
           nodes[0][i+32] = board.pieces[1][i];
@@ -191,15 +246,15 @@ void NN2::getBoardInput(stdBoard & board){
 }
 
 double NN::boardCount(stdBoard & board) {
-    double count =
-      (int)(board.pieces[0].count() - board.pieces[1].count()) +
-      (int)(board.pieces[2].count() - board.pieces[3].count()) *
-      kingVal;
-    return count;
-  }
+  double count =
+    (double)board.pieces[0].count() - (double)board.pieces[1].count() +
+    ((double)board.pieces[2].count() - (double)board.pieces[3].count()) *
+    kingVal;
+  return count;
+}
 
 //Given a number, calculate a sigmoid function output
-void NN::sigmoid(double & num){
+void AIPlayer::sigmoid(double & num){
   num = num/(.16667+std::abs(num));
 }
 
@@ -307,10 +362,11 @@ void NN::becomeOffspring(){
   //change generation #
   ++generation;
 
-  //Randomize king value
-  std::uniform_real_distribution<double> kingDis(-0.1,0.1);
-  kingVal = kingVal + kingDis(gen);
-
+  //Randomize king, piececount, and monty values
+  std::normal_distribution<double> kingDis(0.0,0.1);
+  kingVal = clmp(kingVal + kingDis(gen),0.0,1.0);
+  pieceWeight = clmp(pieceWeight + kingDis(gen),0.0,1.0);
+  montyWeight = clmp(montyWeight + kingDis(gen),0.0,1.0);
   //randomize the sigmas
   //(mean, standard deviation)
   //Our numbers will generate bet -1 and 1
@@ -351,6 +407,8 @@ void NN::becomeOffspring(){
     }
   }
 }
+
+
 
 //check if NN is the same or not
 bool operator!=(const NN & lhs, const NN & rhs){

@@ -7,7 +7,7 @@
 	"gui.h"
 	<random>
 
-1521282616 c:\cygwin64\home\firethorn\checkers_ai\board.h
+1521380937 c:\cygwin64\home\firethorn\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -104,16 +104,17 @@
 	<limits>
 	"board.h"
 
-1519547433 source:c:\cygwin64\home\firethorn\checkers_ai\testnn.cpp
+1521384658 source:c:\cygwin64\home\firethorn\checkers_ai\testnn.cpp
 	<iostream>
 	"neuralNetwork.h"
 	<vector>
 	"board.h"
 	<ctime>
 	<random>
+	<boost/filesystem.hpp>
 	"Catch2.hpp"
 
-1520926825 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1521385851 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -146,7 +147,7 @@
 	<algorithm>
 	"board.h"
 
-1520899767 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
+1521388814 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
 1520564826 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
@@ -351,7 +352,7 @@
 	<cstring>
 	<algorithm>
 
-1519171394 c:\cygwin64\home\firethorn\checkers_ai\catch2.hpp
+1519174994 c:\cygwin64\home\firethorn\checkers_ai\catch2.hpp
 	<TargetConditionals.h>
 	<iosfwd>
 	<string>
@@ -3864,10 +3865,9 @@
 	<boost/config/abi_prefix.hpp>
 	<boost/config/abi_suffix.hpp>
 
-1521285128 source:c:\cygwin64\home\firethorn\checkers_ai\test\testplaygame.cpp
+1521388932 source:c:\cygwin64\home\firethorn\checkers_ai\test\testplaygame.cpp
 	<iostream>
 	<vector>
-	"../board.h"
 	"../neuralNetwork.h"
 	"../playgame.h"
 

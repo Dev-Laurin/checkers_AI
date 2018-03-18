@@ -18,9 +18,13 @@ typedef bitset<32> i32;
 //changed the defining of individual board sections as indepedent ints
 //to an array. By using defines, I maintain compatibility
 
+class cmpBoard;
+
 class stdBoard {
 public:
 	i32 pieces[4];
+  double score;
+	//Constructors
 	stdBoard() {
 	  pieces[0] = 0xFFF00000;//Initial regular board
 		pieces[1] = 0x00000FFF;
@@ -353,11 +357,17 @@ public:
 	}
 
 };
+
 inline bool operator==(const stdBoard & lhs, const stdBoard & rhs){ /* do actual comparison */
     return lhs.pieces[0] == rhs.pieces[0] &&
         lhs.pieces[1] == rhs.pieces[1] &&
         lhs.pieces[2] == rhs.pieces[2] &&
         lhs.pieces[3] == rhs.pieces[3];
+}
+
+//Used to enable sort.
+inline bool operator< (const stdBoard & lhs, const stdBoard & rhs){
+  return (lhs.score < rhs.score);
 }
 
 #endif /* RANDOM_CHECKERS_INCLUDED */

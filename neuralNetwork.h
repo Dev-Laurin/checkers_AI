@@ -13,6 +13,7 @@ using std::vector;
 
 #include <chrono>
 using std::time;
+using std::time_t;
 
 #include <iostream>
 using std::cout;
@@ -35,8 +36,10 @@ using std::min;
 #include "board.h"
 
 
-unsigned const static int MAXMOVES = 32;
 typedef double sNN;
+
+unsigned const static int MAXMOVES = 32;
+const static double MOVETIME = 14.0;  //Seconds.
 constexpr sNN LOWEST = std::numeric_limits<sNN>::lowest();
 constexpr sNN HIGHEST = std::numeric_limits<sNN>::max();
 
@@ -49,11 +52,13 @@ public:
     int montyK = 1; // (w-l)/(w+l+k)
     int generation = 0; //Starts out as parent
     string familyName = "";
+    time_t timeStart;
+    bool timeExceeded = false;
 
-    //For pruning during tournament 
-    int wins = 0; 
-    int losses = 0; 
-    int draws = 0; 
+    //For pruning during tournament
+    int wins = 0;
+    int losses = 0;
+    int draws = 0;
 
     // Returns the value of the board given.
     // A virtual function to be implimented by the specific AI.
@@ -67,6 +72,13 @@ public:
     sNN alpha(stdBoard & board, int depth);
     // Handles starting up the alpha-beta search
 //    sNN alphabeta(stdBoard board, unsigned int side = 0);
+
+    //iterative  deepening search, time limited.
+    stdBoard IntDeepSearch(stdBoard & board, bool side=false);
+    // Clamp function, not part of C++ until 18!
+    double clmp(double x, double a, double b);
+    //Given a number, calculate a sigmoid function output
+    void sigmoid(double & num);
 };
 
 class RandomPlayer: public AIPlayer {
@@ -133,8 +145,8 @@ public:
 	//Puts board input into nodes vector in user specified index
 	void getBoardInput(stdBoard & board);
 	double boardCount(stdBoard & board);
-	//Given a number, calculate a sigmoid function output
-	void sigmoid(double & num);
+
+
 	//Save this NN to a file
 	int saveToFile(string filename);
 
