@@ -320,9 +320,11 @@ public:
 				mask = mask << 1;
 			}
 		}
+		/*
 		if (moveCount > 16) {
       cout << "High MoveCount! Moves = " << moveCount << endl;
 		}
+		*/
 		return moveCount;
 	}
 	stdBoard flip() {

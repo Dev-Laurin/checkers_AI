@@ -1,7 +1,13 @@
 SFML/
 bin/
+NeuralNetworkFiles/
+test/
+chinook/
+testGeneratedFiles/
 *.exe
 *.NN
 *.out
 *.stackdump
 *.o
+*.bin
+

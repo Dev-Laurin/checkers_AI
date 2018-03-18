@@ -51,6 +51,10 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
         gameBoards[++i] = b;
         elapsed = tStop - tStart;
         cout << "Player 1 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
+        if (player1.timeExceeded) {
+          cout << "Move search was time limited" << endl;
+        }
+
         b.draw();
 
         tStart = std::chrono::high_resolution_clock::now();
@@ -64,6 +68,9 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
         gameBoards[++i] = b;
         elapsed = tStop - tStart;
         cout << "Player 2 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
+        if (player2.timeExceeded) {
+          cout << "Move search was time limited" << endl;
+        }
         b.draw();
     }
 

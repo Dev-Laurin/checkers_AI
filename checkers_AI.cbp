@@ -35,7 +35,7 @@
 			</Target>
 			<Target title="testNN">
 				<Option output="checknn" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="bin/test" />
+				<Option working_dir="" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -63,11 +63,20 @@
 					<Add option="-O3" />
 				</Compiler>
 			</Target>
+			<Target title="Chinook">
+				<Option output="chinook" prefix_auto="1" extension_auto="1" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-O2" />
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Chinook.c">
+			<Option compilerVar="CC" />
+			<Option target="Chinook" />
+		</Unit>
 		<Unit filename="Test/testplaygame.cpp">
 			<Option target="playgame" />
 		</Unit>
@@ -83,8 +92,6 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 			<Option target="Test" />
-			<Option target="testNN" />
-			<Option target="playgame" />
 		</Unit>
 		<Unit filename="gui.h">
 			<Option target="Debug" />
@@ -94,10 +101,16 @@
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="neuralNetwork.cpp" />
-		<Unit filename="neuralNetwork.h">
+		<Unit filename="neuralNetwork.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
+			<Option target="Test" />
 			<Option target="testNN" />
 			<Option target="playgame" />
+			<Option target="blondietourn" />
+		</Unit>
+		<Unit filename="neuralNetwork.h">
+			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="old_movegenerator.cpp">
 			<Option target="Test" />

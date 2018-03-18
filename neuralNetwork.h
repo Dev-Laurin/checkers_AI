@@ -40,8 +40,8 @@ typedef double sNN;
 
 unsigned const static int MAXMOVES = 32;
 const static double MOVETIME = 14.0;  //Seconds.
-constexpr sNN LOWEST = std::numeric_limits<sNN>::lowest();
-constexpr sNN HIGHEST = std::numeric_limits<sNN>::max();
+constexpr sNN LOWEST = -10000;
+constexpr sNN HIGHEST = 10000;
 
 class AIPlayer{
 public:
@@ -53,7 +53,9 @@ public:
     int generation = 0; //Starts out as parent
     string familyName = "";
     time_t timeStart;
+    time_t timeLimit;
     bool timeExceeded = false;
+    int depthReached = 0;
 
     //For pruning during tournament
     int wins = 0;

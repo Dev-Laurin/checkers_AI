@@ -40,9 +40,15 @@ stdBoard AIPlayer::IntDeepSearch(stdBoard & board, bool side) {
 
 
 stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
+    static const int searchDepth = 4;
     stdBoard moveList[MAXMOVES];
-    static const int searchDepth = 7;
+    int selectMove;
     std::time(&timeStart);
+    struct tm * timeInfo;
+    timeInfo = localtime(&timeStart);
+    timeInfo->tm_sec += MOVETIME;
+    timeLimit = mktime(timeInfo);
+    timeExceeded = false;
     if(side) {
         board = board.flip();
     }
@@ -53,19 +59,23 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     for(int i = 0; i < moves; ++i) {
       moveList[i].score = calculateBoard(moveList[i]);
     }
-    std::sort(moveList,moveList+moves);
-    int selectMove = moves - 1;
-    sNN moveVal = beta(moveList[0],searchDepth);
-    sNN tempMove;
-    for (int i = moves -1; i>=0;--i) {
-        tempMove = beta(moveList[i],searchDepth);
-        //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
-        //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
-        if (tempMove > moveVal) {
-            //better move found
-            moveVal = tempMove;
-            selectMove = i;
-        }
+    if (moves > 1) {
+      std::sort(moveList,moveList+moves);
+      selectMove = moves - 1;
+      sNN moveVal = beta(moveList[moves-1],searchDepth);
+      sNN tempMove;
+      for (int i = moves-2; i >= 0; --i) {
+          tempMove = beta(moveList[i],searchDepth);
+          //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
+          //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
+          if (tempMove > moveVal) {
+              //better move found
+              moveVal = tempMove;
+              selectMove = i;
+          }
+      }
+    } else { // Only one move, no need to calc!
+      selectMove = 0;
     }
     if (side) {
         board = board.flip();
@@ -95,14 +105,15 @@ sNN AIPlayer::alpha(stdBoard & board, int depth) {
       moveList[i].score = calculateBoard(moveList[i]);
     }
     std::sort(moveList,moveList+moveCount);
-    sNN rVal=moveList[moveCount-1].score;
-    if (std::difftime(time(nullptr),timeStart) > MOVETIME) { //Out of time, return!
-      return rVal;
+    if (time(nullptr) > timeLimit) {
+      timeExceeded = true;
+      return moveList[moveCount-1].score;
     }
-    if (depth <= 1) {
-      return rVal;
+    if (depth <= 1) { //Out of depth, return!)
+      return moveList[moveCount-1].score;
     }
-    for (int i = moveCount - 1;i >= 0; --i) {
+    sNN rVal = beta(moveList[moveCount-1],depth-1);
+    for (int i = moveCount - 2;i >= 0; --i) {
       rVal = max(rVal,beta(moveList[i],depth-1));
     }
     //Take the highest value move.
@@ -110,7 +121,7 @@ sNN AIPlayer::alpha(stdBoard & board, int depth) {
   } else {
     //No moves available.  We lose!
     //We don't like this, obviously.
-    return LOWEST;
+    return LOWEST - depth; //more depth means we are losing quicker, avoid.
   }
 
 }
@@ -123,13 +134,13 @@ sNN AIPlayer::beta(stdBoard & board, int depth) {
   if (moveCount) {
       sNN rVal=HIGHEST;
       for (int i = 0;i<moveCount;++i) {
-        rVal = min(rVal,alpha(moveList[i],depth-1));
+        rVal = min(rVal,alpha(moveList[i],depth));
       }
       return rVal;
   } else {
     //No moves available.  We win!
     //We like this, obviously.
-    return HIGHEST;
+    return HIGHEST+depth; //more depth means it is losing quicker, prefer.
   }
 }
 
