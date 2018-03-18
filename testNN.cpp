@@ -17,6 +17,8 @@ using std::endl;
 #define CATCH_CONFIG_MAIN
 #include "Catch2.hpp" //C++ Testing Framework
 
+#include<unordered_map>
+
 // #include <chrono> <- Doesn't work on Laurin's machine
 	//Issue with new 5.4.1 g++ version on Ubuntu 16.06?
 
@@ -242,27 +244,29 @@ TEST_CASE("Blondie24", "{32, 40, 10, 1}"){
 
 TEST_CASE("Timing Blondie24.", "{32, 40, 10, 1}"){
 
+	std::mt19937_64 gen(time(0));
+
+  uint32_t max32 = 0;
+  max32 = ~max32;
+  std::uniform_int_distribution<uint32_t> dis32(0,~((uint32_t)0));
 	//Timing
 	stdBoard b; //Default
-	stdBoard b1;
-	b1.updateBoard("           r       b            ");
-	stdBoard b2;
-	b2.updateBoard("rrrrrrrrrr r  r  b  bb bbbbbbbbb");
-	stdBoard b3;
-	b3.updateBoard("rrrrr    r       r    b bbbbbbbb");
-	std::vector<stdBoard> boards{b, b1, b2, b3};
+	std::vector<stdBoard> boards{b};
+	for(int i = 0; i < 100; ++i) {
+    boards.push_back(stdBoard(dis32(gen),dis32(gen),dis32(gen),dis32(gen)));
+	}
+	std::uniform_int_distribution<int> dis(0,boards.size()-1);
 
 	std::vector<int> nodes{ 32, 40, 10, 1};
 
-	std::mt19937 gen(time(0));
-	std::uniform_int_distribution<int> dis(0,boards.size()-1);
 
 	clock_t start;
 	double duration;
 	NN blondie(nodes, "blondie24");
 
 	int runs = 100000;
-	int boardsel[100000];
+	int boardsel[runs];
+	std::unordered_map<stdBoard, double> boardHist(runs*10);
 	for (int i=0; i<runs;++i) {
         boardsel[i] = dis(gen);
 	}
@@ -273,18 +277,33 @@ TEST_CASE("Timing Blondie24.", "{32, 40, 10, 1}"){
 	for(int i=0; i<runs; ++i){
 		outputTotal += blondie.calculateBoard(boards[boardsel[i]]);
 	}
-
 	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
-	cout << "To not compiler optimize: " << outputTotal << endl;
-	cout << "Blondie24 Time Difference: " << duration << endl;
-
 	double timePerBoard = duration/runs;
+
+  cout << "To not compiler optimize: " << outputTotal << endl;
+	cout << "Blondie24 Time Difference: " << duration << endl;
 	cout << "Time per board: " << timePerBoard << endl;
 	cout << "Board Evals per second: " << runs/duration << endl;
 	cout << endl;
+  start = clock();
+  for (int i = 0; i < runs; ++i) {
+		boardHist.insert({boards[boardsel[i]],blondie.calculateBoard(boards[boardsel[i]])});
+  }
+	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
+	cout << "Storing hashes: " << duration << endl;
+	start = clock();
+	for(int i = 0;i<runs;++i) {
+    outputTotal += boardHist.at(boards[boardsel[i]]);
+	}
+	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
+
+	cout << "Recalling hashes: " << duration << endl << endl;
+	cout << "Recalling starting board:" << ~((uint32_t)0) << endl;
 	//We should have at least 12,000 boards per second
-	REQUIRE(runs/duration > 10000);
+	REQUIRE((1.0/timePerBoard) > 10000);
+	REQUIRE(boardHist.at(b) == blondie.calculateBoard(b));
 }
+
 
 
 TEST_CASE("Construction of Big Neural Network.",

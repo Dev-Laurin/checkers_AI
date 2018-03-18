@@ -11,11 +11,13 @@ using std::min;
 
 #include "board.h"
 
-unsigned const static int MAXMOVES = 16;
+#ifndef CONSTS
+#define CONSTS
+unsigned const static int MAXMOVES = 32;
 typedef double sNN;
-
-constexpr sNN LOWEST = std::numeric_limits<sNN>::lowest();
-constexpr sNN HIGHEST = std::numeric_limits<sNN>::max();
+constexpr sNN LOWEST = -10000;
+constexpr sNN HIGHEST = 10000;
+#endif
 
 std::default_random_engine gen;
 std::uniform_real_distribution<sNN> distro(0.0,1.0);

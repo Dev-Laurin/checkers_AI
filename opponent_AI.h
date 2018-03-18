@@ -5,6 +5,7 @@
 #include <string>
 #include <chrono>
 #include "neuralNetwork.h"
+#include "alphabeta.h"
 
 class Opponent{
 public:

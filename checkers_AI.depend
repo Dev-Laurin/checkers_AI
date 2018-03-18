@@ -1,21 +1,23 @@
 # depslib dependency file v1.0
-1517551661 source:c:\cygwin64\home\firethorn\checkers_ai\guimain.cpp
+1518002456 source:c:\cygwin64\home\firethorn\checkers_ai\guimain.cpp
 	<iostream>
 	"board.h"
-	<SFML/Graphics.hpp>
-	<vector>
 	"gui.h"
-	<random>
 
-1521389524 c:\cygwin64\home\firethorn\checkers_ai\board.h
+1521415357 c:\cygwin64\home\firethorn\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
 	<array>
 	<bitset>
+	<boost/functional/hash.hpp>
 
-1517551661 c:\cygwin64\home\firethorn\checkers_ai\gui.h
+1521282576 c:\cygwin64\home\firethorn\checkers_ai\gui.h
 	<random>
+	<string>
+	"board.h"
+	<SFML/Graphics.hpp>
+	<vector>
 
 1517964442 source:c:\cygwin64\home\jason\checkers_ai\guimain.cpp
 	<iostream>
@@ -81,7 +83,7 @@
 1517814236 source:c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.cpp
 	"old_movegenerator.h"
 
-1519440536 c:\cygwin64\home\firethorn\checkers_ai\alphabeta.h
+1521400993 c:\cygwin64\home\firethorn\checkers_ai\alphabeta.h
 	<bitset>
 	<random>
 	<algorithm>
@@ -104,7 +106,7 @@
 	<limits>
 	"board.h"
 
-1521384658 source:c:\cygwin64\home\firethorn\checkers_ai\testnn.cpp
+1521412716 source:c:\cygwin64\home\firethorn\checkers_ai\testnn.cpp
 	<iostream>
 	"neuralNetwork.h"
 	<vector>
@@ -113,8 +115,9 @@
 	<random>
 	<boost/filesystem.hpp>
 	"Catch2.hpp"
+	<unordered_map>
 
-1521397277 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1521400992 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -3878,4 +3881,18 @@
 	<alloc.h>
 	<io.h>
 	<sys\stat.h>
+
+1521401013 source:c:\cygwin64\home\firethorn\checkers_ai\gui.cpp
+	"gui.h"
+	"opponent_AI.h"
+	<thread>
+	<future>
+	<chrono>
+
+1521400831 c:\cygwin64\home\firethorn\checkers_ai\opponent_ai.h
+	<random>
+	<string>
+	<chrono>
+	"neuralNetwork.h"
+	"alphabeta.h"
 

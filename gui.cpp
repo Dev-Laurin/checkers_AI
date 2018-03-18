@@ -1,9 +1,9 @@
 #include "gui.h"
 #include "opponent_AI.h"
-#include <thread> 
+#include <thread>
 #include <future>
-#include <chrono> 
-using namespace std::chrono_literals; 
+#include <chrono>
+//using namespace std::chrono_literals;
 
 //used alot
 float tile_width = 62.5;
@@ -201,7 +201,7 @@ std::string checkerBoardGUI::run(){
 					//turn this board into std::string
 					stdBoard possibleBoards[30];
 					int movesFound = b.genMoves(possibleBoards, 0);//black
-				 
+
 					if(movesFound<=0){
 						std::string results;
 						//there are no moves, count pieces to see who won
@@ -295,7 +295,7 @@ std::string checkerBoardGUI::run(){
 							selected_piece->piece.setFillColor(sf::Color::Blue);
 						else if(piece_selected)
 							selected_piece->piece.setFillColor(sf::Color::Black);
-						
+
 						//check if there are moves left
 						stdBoard possibleBoards[30];
 						int moves = b.genMoves(possibleBoards,1); //red
@@ -319,21 +319,21 @@ std::string checkerBoardGUI::run(){
 						}
 
 						//parameters
-						char opponentAIType = 'g'; 
-						std::string move; 
+						char opponentAIType = 'g';
+						std::string move;
 
 						//atomic flag to determine if thread is finished
-						std::atomic<bool> done(false); 
- 
-						stdBoard bCopy = b; 
+						std::atomic<bool> done(false);
+
+						stdBoard bCopy = b;
 						//thread to compute enemy move while main draws
-						std::thread enemy([&done, &bCopy, 
+						std::thread enemy([&done, &bCopy,
 							&move, &opponentAIType]{
 
-							Opponent opp(opponentAIType); 
-							move = opp.getMove(bCopy); 
-							done = true;  
-						}); 
+							Opponent opp(opponentAIType);
+							move = opp.getMove(bCopy);
+							done = true;
+						});
 
 						//if main thread, keep drawing until enemy thread joins
 						while(!done and window.isOpen()){

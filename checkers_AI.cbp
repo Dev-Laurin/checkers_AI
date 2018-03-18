@@ -12,6 +12,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-std=c++1z" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
@@ -22,6 +23,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++1z" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -32,14 +34,17 @@
 				<Option working_dir="bin/test" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++1z" />
+				</Compiler>
 			</Target>
 			<Target title="testNN">
 				<Option output="checknn" prefix_auto="1" extension_auto="1" />
-				<Option working_dir="" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++1z" />
 				</Compiler>
 			</Target>
 			<Target title="playgame">
@@ -49,29 +54,31 @@
 				<Compiler>
 					<Add option="-flto" />
 					<Add option="-O2" />
-					<Add option="-std=c++14" />
+					<Add option="-std=c++1z" />
 				</Compiler>
 				<Linker>
 					<Add option="-flto" />
 				</Linker>
 			</Target>
 			<Target title="blondietourn">
-				<Option output="checkers_AI" prefix_auto="1" extension_auto="1" />
+				<Option output="blondietourn" prefix_auto="1" extension_auto="1" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O3" />
+					<Add option="-std=c++1z" />
 				</Compiler>
 			</Target>
 			<Target title="Chinook">
 				<Option output="chinook" prefix_auto="1" extension_auto="1" />
-				<Option type="0" />
+				<Option type="1" />
 				<Option compiler="gcc" />
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-O2" />
 			<Add option="-Wall" />
+			<Add option="-std=c++1z" />
 		</Compiler>
 		<Unit filename="Chinook.c">
 			<Option compilerVar="CC" />
@@ -82,7 +89,6 @@
 		</Unit>
 		<Unit filename="alphabeta.h">
 			<Option target="Debug" />
-			<Option target="Release" />
 			<Option target="Test" />
 		</Unit>
 		<Unit filename="blondieExperiment1SpringBreak.cpp">
@@ -90,12 +96,14 @@
 		</Unit>
 		<Unit filename="board.h">
 			<Option target="Debug" />
-			<Option target="Release" />
 			<Option target="Test" />
+		</Unit>
+		<Unit filename="gui.cpp">
+			<Option target="Debug" />
+			<Option target="Release" />
 		</Unit>
 		<Unit filename="gui.h">
 			<Option target="Debug" />
-			<Option target="Release" />
 		</Unit>
 		<Unit filename="guiMain.cpp">
 			<Option target="Debug" />
@@ -121,6 +129,7 @@
 		<Unit filename="playgame.cpp">
 			<Option target="playgame" />
 			<Option target="blondietourn" />
+			<Option target="Release" />
 		</Unit>
 		<Unit filename="testBoard.cpp">
 			<Option target="Test" />

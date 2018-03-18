@@ -36,12 +36,17 @@ using std::min;
 #include "board.h"
 
 
-typedef double sNN;
 
+#ifndef CONSTS
+#define CONSTS
+typedef double sNN;
 unsigned const static int MAXMOVES = 32;
-const static double MOVETIME = 14.0;  //Seconds.
 constexpr sNN LOWEST = -10000;
 constexpr sNN HIGHEST = 10000;
+#endif // CONSTS
+
+const static double MOVETIME = 14.0;  //Seconds.
+
 
 class AIPlayer{
 public:
