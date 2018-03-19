@@ -547,7 +547,7 @@
 	<ctime>
 	<algorithm>
 
-1521392755 source:c:\cygwin64\home\firethorn\checkers_ai\playgame.cpp
+1521420554 source:c:\cygwin64\home\firethorn\checkers_ai\playgame.cpp
 	<iostream>
 	<vector>
 	"board.h"

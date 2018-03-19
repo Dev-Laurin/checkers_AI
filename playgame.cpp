@@ -12,6 +12,7 @@ using std::vector;
 int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoards){
     //start a new game
     stdBoard b;
+    vector<stdBoard> playerMoves[2];
 
 
     //First 3 ply are random
@@ -48,14 +49,19 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
             return 1;
         }
         tStop = std::chrono::high_resolution_clock::now();
-        gameBoards[++i] = b;
         elapsed = tStop - tStart;
-        cout << "Player 1 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
+        cout << "CPlayer 1 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
         if (player1.timeExceeded) {
           cout << "Move search was time limited" << endl;
         }
 
         b.draw();
+        if (std::find(playerMoves[0].begin(),playerMoves[0].end(),b) < playerMoves[0].end()) {
+          cout << "Cycle Detected, draw!" << endl;
+          break; //cycle detected, tie!
+        }
+        gameBoards[++i] = b;
+        playerMoves[0].push_back(b);
 
         tStart = std::chrono::high_resolution_clock::now();
         b = player2.getMove(b,false);
@@ -65,13 +71,20 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
             return -1;
         }
         tStop = std::chrono::high_resolution_clock::now();
-        gameBoards[++i] = b;
+
         elapsed = tStop - tStart;
-        cout << "Player 2 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
+        cout << "CPlayer 2 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
         if (player2.timeExceeded) {
           cout << "Move search was time limited" << endl;
         }
         b.draw();
+        if (std::find(playerMoves[1].begin(),playerMoves[1].end(),b) < playerMoves[1].end()) {
+          cout << "Cycle Detected, draw!" << endl;
+          break; //cycle detected, tie!
+        }
+        gameBoards[++i] = b;
+        playerMoves[1].push_back(b);
+
     }
 
     //a draw
