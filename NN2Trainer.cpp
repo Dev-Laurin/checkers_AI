@@ -1,7 +1,6 @@
-//blondieExperiment1SpringBreak
-//To run the first blondie24 experiment over spring break
-	//to get errors early rather than later with NN.
-//3-12-18
+//BiggExperiment
+//To run the first Bigg24 experiment over spring break
+//
 
 #include <iostream>
 using std::cout;
@@ -14,8 +13,8 @@ using std::vector;
 #include <algorithm>
 
 int main(){
-	vector<int> nodes{32, 40, 10, 1};
-	NN blondie24(nodes, "blondie");
+	vector<int> nodes{128, 128, 40, 1};
+	NN2 Bigg(nodes, "Bigg");
 
 	//file variables
 	string parentDirectory = "NeuralNetworkFiles/";
@@ -24,9 +23,9 @@ int main(){
 
 	//Population = 30
 	int population = 30;
-	vector<NN> NeuralNets(population, blondie24);
+	vector<NN2> NeuralNets(population, Bigg);
 	for(int i=0; i<population; ++i){
-		NeuralNets[i] = NN(nodes, "blondie");
+		NeuralNets[i] = NN2(nodes, "Bigg");
 
 		//First generation
 		string initialPath = parentDirectory + NeuralNets[i].familyName +
@@ -38,7 +37,7 @@ int main(){
 		boost::filesystem::path dir(path);
 		boost::filesystem::create_directories(dir);
 		if(boost::filesystem::is_directory(dir)){
-			NeuralNets[i].saveToFile(initialPath + "NN" + to_string(i));
+			NeuralNets[i].saveToFile(initialPath + "NN2" + to_string(i));
 		}
 		else{
 			cout << "Error, directory not created in ";
@@ -72,7 +71,7 @@ int main(){
           randIndex = dis(gen);
 				} while (randIndex == i);
 
-				cout << "NN " << i << " vs NN " << randIndex << "!" << endl;
+				cout << "NN2 " << i << " vs NN2 " << randIndex << "!" << endl;
 				//Play a game
 				boost::filesystem::path allPath = current_path;
 				string gameDirectory = parentDirectory + "TOUR" +
@@ -149,7 +148,7 @@ int main(){
 			//will generate children
 		//Sort the vector by wins
 		std::sort(NeuralNets.begin(), NeuralNets.end(),
-			[](const NN & a, const NN & b) -> bool{
+			[](const NN2 & a, const NN2 & b) -> bool{
 				return a.wins < b.wins;
 			});
 
@@ -168,7 +167,7 @@ int main(){
 			boost::filesystem::create_directories(dir);
 
 			if(boost::filesystem::is_directory(dir)){
-				path += "NN" + i;
+				path += "NN2" + i;
 				NeuralNets[i].saveToFile(path);
 			}
 			else{

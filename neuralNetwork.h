@@ -59,6 +59,7 @@ public:
     int montyK = 1; // (w-l)/(w+l+k)
     int generation = 0; //Starts out as parent
     string familyName = "";
+    unsigned int searchDepth = 6;
     time_t timeStart;
     time_t timeLimit;
     bool timeExceeded = false;
@@ -66,6 +67,7 @@ public:
     std::unordered_map<stdBoard, double> boardMem;
     unsigned int cacheHit = 0;
     unsigned int cacheMiss = 0;
+    unsigned int trimTotal = 0;
 
     //For pruning during tournament
     int wins = 0;
@@ -77,13 +79,15 @@ public:
     virtual sNN calculateBoard(stdBoard & board) = 0 ;
 
     // Returns a move given a board and a side.
-    stdBoard getMove(stdBoard & board, bool side=false);
+    virtual stdBoard getMove(stdBoard & board, bool side=false);
     // Beta side of the board
-    sNN beta(stdBoard & board, int depth);
+    sNN beta(stdBoard & board, int depth, sNN a, sNN b);
     //  Alpha side of the board
-    sNN alpha(stdBoard & board, int depth);
+    sNN alpha(stdBoard & board, int depth, sNN a, sNN b);
     // Handles starting up the alpha-beta search
-//    sNN alphabeta(stdBoard board, unsigned int side = 0);
+    // sNN alphabeta(stdBoard board, unsigned int side = 0);
+
+    void prntStats();
 
     //iterative  deepening search, time limited.
     stdBoard IntDeepSearch(stdBoard & board, bool side=false);
@@ -104,25 +108,10 @@ public:
 
   sNN calculateBoard(stdBoard & board) {
     sNN count = distro(gen);
+    cout << "I'm Random!" << endl;
     return count;
   }
-  stdBoard getMove(stdBoard & board, bool side=false) {
-    stdBoard possibleBoards[MAXMOVES];
-    if(side) {
-      board = board.flip();
-    }
-    int moveCount = board.genMoves(possibleBoards,0);
-    if (moveCount == 0) {
-        return stdBoard(0,0,0,0);
-    }
-    int moveSelect = int(distro(gen)*moveCount);
-
-    if(side) {
-      board = board.flip();
-      possibleBoards[moveSelect] = possibleBoards[moveSelect].flip();
-    }
-    return possibleBoards[moveSelect];
-  }
+  virtual stdBoard getMove(stdBoard & board, bool side=false);
 };
 
 class PieceCount: public AIPlayer
@@ -184,9 +173,12 @@ bool operator==(const NN & lhs, const NN & rhs);
 class NN2: public NN
 {
 public:
+  NN2(std::vector<int>& nS, string familyname) : NN(nS, familyname){}
   void getBoardInput(stdBoard & board);
 };
 
+bool operator!=(const NN2 & lhs, const NN2 & rhs);
+bool operator==(const NN2 & lhs, const NN2 & rhs);
 #endif /* NEURAL_NETWORK_H */
 
 

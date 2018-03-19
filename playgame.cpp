@@ -42,7 +42,7 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
 
     while(i < 199){
         tStart = std::chrono::high_resolution_clock::now();
-        b = player1.getMove(b,true);
+        b = player2.getMove(b,true);
         if (b == loser) {
             ++player1.wins;
             ++player2.losses;
@@ -50,13 +50,14 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
         }
         tStop = std::chrono::high_resolution_clock::now();
         elapsed = tStop - tStart;
-        cout << "CPlayer 1 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
-        if (player1.timeExceeded) {
+        cout << "CPlayer 2 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
+        if (player2.timeExceeded) {
           cout << "Move search was time limited" << endl;
         }
+        player2.prntStats();
         b.draw();
-        cout << "Cache Effectiveness: " << player1.cacheHit << "/" << player1.cacheHit+player1.cacheMiss;
-        cout << " Cache size: " << player1.boardMem.size() << endl;
+
+
         if (std::find(playerMoves[0].begin(),playerMoves[0].end(),b) < playerMoves[0].end()) {
           cout << "Cycle Detected, draw!" << endl;
           break; //cycle detected, tie!
@@ -65,22 +66,21 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
         playerMoves[0].push_back(b);
 
         tStart = std::chrono::high_resolution_clock::now();
-        b = player2.getMove(b,false);
+        b = player1.getMove(b,false);
         if (b == loser) {
             ++player2.wins;
             ++player1.losses;
             return -1;
         }
         tStop = std::chrono::high_resolution_clock::now();
-
         elapsed = tStop - tStart;
-        cout << "CPlayer 2 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
-        if (player2.timeExceeded) {
+
+        cout << "CPlayer 1 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
+        player1.prntStats();
+        if (player1.timeExceeded) {
           cout << "Move search was time limited" << endl;
         }
         b.draw();
-        cout << "Cache Effectiveness: " << player2.cacheHit << "/" << player2.cacheHit+player2.cacheMiss;
-        cout << " Cache size: " << player2.boardMem.size() << endl;
 
         if (std::find(playerMoves[1].begin(),playerMoves[1].end(),b) < playerMoves[1].end()) {
           cout << "Cycle Detected, draw!" << endl;

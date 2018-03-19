@@ -40,7 +40,6 @@ stdBoard AIPlayer::IntDeepSearch(stdBoard & board, bool side) {
 
 
 stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
-    static const int searchDepth = 4;
     stdBoard moveList[MAXMOVES];
     int selectMove;
     std::time(&timeStart);
@@ -49,6 +48,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     timeInfo->tm_sec += MOVETIME;
     timeLimit = mktime(timeInfo);
     timeExceeded = false;
+    trimTotal = 0;
     if(side) {
         board = board.flip();
     }
@@ -56,23 +56,23 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     if (moves == 0) {
         return stdBoard(0,0,0,0);
     }
-    for(int i = 0; i < moves; ++i) {
-      if (boardMem.count(moveList[i])) {
-        moveList[i].score = boardMem.at(moveList[i]);
-        ++cacheHit;
-      } else {
-        moveList[i].score = calculateBoard(moveList[i]);
-        boardMem.insert({moveList[i],moveList[i].score});
-        ++cacheMiss;
-      }
-    }
     if (moves > 1) {
+      for(int i = 0; i < moves; ++i) {
+        if (boardMem.count(moveList[i])) {
+          moveList[i].score = boardMem.at(moveList[i]);
+          ++cacheHit;
+        } else {
+          moveList[i].score = calculateBoard(moveList[i]);
+          boardMem.insert({moveList[i],moveList[i].score});
+          ++cacheMiss;
+        }
+      }
       std::sort(moveList,moveList+moves);
       selectMove = moves - 1;
-      sNN moveVal = beta(moveList[moves-1],searchDepth);
+      sNN moveVal = beta(moveList[moves-1],searchDepth, LOWEST*2, HIGHEST*2);
       sNN tempMove;
       for (int i = moves-2; i >= 0; --i) {
-          tempMove = beta(moveList[i],searchDepth);
+          tempMove = beta(moveList[i],searchDepth, LOWEST * 2, HIGHEST * 2);
           //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
           //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
           if (tempMove > moveVal) {
@@ -103,7 +103,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
 */
 
 
-sNN AIPlayer::alpha(stdBoard & board, int depth) {
+sNN AIPlayer::alpha(stdBoard & board, int depth, sNN a, sNN b) {
   stdBoard moveList[MAXMOVES];
   int moves;
   moves = board.genMoves(moveList,0);
@@ -126,9 +126,14 @@ sNN AIPlayer::alpha(stdBoard & board, int depth) {
     if (depth <= 1) { //Out of depth, return!)
       return moveList[moves-1].score;
     }
-    sNN rVal = beta(moveList[moves-1],depth-1);
+    sNN rVal = beta(moveList[moves-1],depth-1, a, b);
     for (int i = moves - 2;i >= 0; --i) {
-      rVal = max(rVal,beta(moveList[i],depth-1));
+      a = std::max(rVal, a);
+      if (b <= a) {  //I can force a better move than the worse the opponent can, so he won't pick this.
+        ++trimTotal;
+        return rVal;
+      }
+      rVal = max(rVal,beta(moveList[i],depth-1, a, b));
     }
     //Take the highest value move.
     return rVal;
@@ -141,14 +146,19 @@ sNN AIPlayer::alpha(stdBoard & board, int depth) {
 }
 
 
-sNN AIPlayer::beta(stdBoard & board, int depth) {
+sNN AIPlayer::beta(stdBoard & board, int depth, sNN a, sNN b) {
   stdBoard moveList[MAXMOVES];
   int moveCount;
   moveCount = board.genMoves(moveList,1);
   if (moveCount) {
-      sNN rVal=HIGHEST;
-      for (int i = 0;i<moveCount;++i) {
-        rVal = min(rVal,alpha(moveList[i],depth));
+      sNN rVal = alpha(moveList[0],depth, a, b);
+      for (int i = 1;i<moveCount;++i) {
+        b = std::min(rVal, b);
+        if (b <= a) { //I can force a worse move than the best found, stop looking.
+          ++trimTotal;
+          return rVal;
+        }
+        rVal = min(rVal,alpha(moveList[i],depth, a, b));
       }
       return rVal;
   } else {
@@ -162,6 +172,12 @@ double AIPlayer::clmp(double x, double a, double b)
 {
     return x < a ? a : (x > b ? b : x);
 }
+void AIPlayer::prntStats() {
+  cout << "Cache Effectiveness: " << cacheHit << "/" << cacheHit+cacheMiss;
+  cout << " Cache size: " << boardMem.size() << endl;
+  cout << "Pruning Trims: " << trimTotal << endl;
+}
+
 
 /*
 stdBoard AIPlayer::alphabeta(stdBoard board, unsigned int side) {
@@ -482,3 +498,68 @@ bool operator==(const NN & lhs, const NN & rhs){
   return !(lhs!=rhs);
 }
 
+//check if NN2 is the same or not
+bool operator!=(const NN2 & lhs, const NN2 & rhs){
+
+  //Check the weights
+  if(lhs.network.size()!=rhs.network.size()) {
+    return true;
+  }
+
+  for(unsigned int i=0; i<lhs.network.size(); ++i){
+
+    if(lhs.network[i].size()!=rhs.network[i].size())
+      return true;
+
+
+    for(unsigned int j=0; j<lhs.network[i].size(); ++j){
+      if(lhs.network[i][j]!=rhs.network[i][j])
+        return true;
+    }
+  }
+
+  //Check the sigmas
+  if(lhs.sigmas.size()!=rhs.sigmas.size())
+    return true;
+
+  for(unsigned int i=0; i<lhs.sigmas.size(); ++i){
+
+    if(lhs.sigmas[i].size()!=rhs.sigmas[i].size())
+      return true;
+
+
+    for(unsigned int j=0; j<lhs.sigmas[i].size(); ++j){
+      if(lhs.sigmas[i][j]!=rhs.sigmas[i][j])
+        return true;
+    }
+  }
+
+  //family name
+  if(lhs.familyName!=rhs.familyName)
+    return true;
+
+  return false;
+}
+
+bool operator==(const NN2 & lhs, const NN2 & rhs){
+  return !(lhs!=rhs);
+}
+
+stdBoard RandomPlayer::getMove(stdBoard & board, bool side) {
+    stdBoard possibleBoards[MAXMOVES];
+    if(side) {
+      board = board.flip();
+    }
+    int moveCount = board.genMoves(possibleBoards,0);
+    if (moveCount == 0) {
+        return stdBoard(0,0,0,0);
+    }
+    int moveSelect = int(distro(gen)*moveCount);
+
+    if(side) {
+      board = board.flip();
+      possibleBoards[moveSelect] = possibleBoards[moveSelect].flip();
+    }
+    cout << "Hehe, I'm Random!" << endl;
+    return possibleBoards[moveSelect];
+  }
