@@ -95,6 +95,7 @@ public:
     double clmp(double x, double a, double b);
     //Given a number, calculate a sigmoid function output
     void sigmoid(double & num);
+    virtual ~AIPlayer()=default; //base class, needs to have virtual destructor.
 };
 
 class RandomPlayer: public AIPlayer {
@@ -159,11 +160,11 @@ public:
 
 	//Data Members
 	std::vector<std::vector<double>> network;
-    std::mt19937_64 gen;
-    std::vector<std::vector<double>> nodes; //Count of nodes per layer
-    std::vector<int> nodeSizes;
-    std::vector<vector<double>> sigmas; //the change in weights
-
+  std::mt19937_64 gen;
+  std::vector<std::vector<double>> nodes; //Count of nodes per layer
+  std::vector<int> nodeSizes;
+  std::vector<vector<double>> sigmas; //the change in weights
+  virtual ~NN()=default;
 };
 
 //Operator != for NN's for testing
