@@ -33,6 +33,8 @@ using std::ifstream;
 using std::max;
 using std::min;
 
+#include<unordered_map>
+
 #include "board.h"
 
 
@@ -61,6 +63,9 @@ public:
     time_t timeLimit;
     bool timeExceeded = false;
     int depthReached = 0;
+    std::unordered_map<stdBoard, double> boardMem;
+    unsigned int cacheHit = 0;
+    unsigned int cacheMiss = 0;
 
     //For pruning during tournament
     int wins = 0;

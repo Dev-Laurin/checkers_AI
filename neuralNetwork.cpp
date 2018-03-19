@@ -57,7 +57,14 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
         return stdBoard(0,0,0,0);
     }
     for(int i = 0; i < moves; ++i) {
-      moveList[i].score = calculateBoard(moveList[i]);
+      if (boardMem.count(moveList[i])) {
+        moveList[i].score = boardMem.at(moveList[i]);
+        ++cacheHit;
+      } else {
+        moveList[i].score = calculateBoard(moveList[i]);
+        boardMem.insert({moveList[i],moveList[i].score});
+        ++cacheMiss;
+      }
     }
     if (moves > 1) {
       std::sort(moveList,moveList+moves);
@@ -98,22 +105,29 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
 
 sNN AIPlayer::alpha(stdBoard & board, int depth) {
   stdBoard moveList[MAXMOVES];
-  int moveCount;
-  moveCount = board.genMoves(moveList,0);
-  if (moveCount) {
-    for(int i = 0; i < moveCount; ++i) {
-      moveList[i].score = calculateBoard(moveList[i]);
+  int moves;
+  moves = board.genMoves(moveList,0);
+  if (moves) {
+    for(int i = 0; i < moves; ++i) {
+      if (boardMem.count(moveList[i])) {
+          moveList[i].score = boardMem.at(moveList[i]);
+          ++cacheHit;
+      } else {
+          moveList[i].score = calculateBoard(moveList[i]);
+          boardMem.insert({moveList[i],moveList[i].score});
+          ++cacheMiss;
+      }
     }
-    std::sort(moveList,moveList+moveCount);
+    std::sort(moveList,moveList+moves);
     if (time(nullptr) > timeLimit) {
       timeExceeded = true;
-      return moveList[moveCount-1].score;
+      return moveList[moves-1].score;
     }
     if (depth <= 1) { //Out of depth, return!)
-      return moveList[moveCount-1].score;
+      return moveList[moves-1].score;
     }
-    sNN rVal = beta(moveList[moveCount-1],depth-1);
-    for (int i = moveCount - 2;i >= 0; --i) {
+    sNN rVal = beta(moveList[moves-1],depth-1);
+    for (int i = moves - 2;i >= 0; --i) {
       rVal = max(rVal,beta(moveList[i],depth-1));
     }
     //Take the highest value move.

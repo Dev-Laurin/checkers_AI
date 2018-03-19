@@ -4,13 +4,14 @@
 	"board.h"
 	"gui.h"
 
-1521415357 c:\cygwin64\home\firethorn\checkers_ai\board.h
+1521423132 c:\cygwin64\home\firethorn\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
 	<array>
 	<bitset>
 	<boost/functional/hash.hpp>
+	<unordered_map>
 
 1521282576 c:\cygwin64\home\firethorn\checkers_ai\gui.h
 	<random>
@@ -106,7 +107,7 @@
 	<limits>
 	"board.h"
 
-1521412716 source:c:\cygwin64\home\firethorn\checkers_ai\testnn.cpp
+1521417269 source:c:\cygwin64\home\firethorn\checkers_ai\testnn.cpp
 	<iostream>
 	"neuralNetwork.h"
 	<vector>
@@ -117,7 +118,7 @@
 	"Catch2.hpp"
 	<unordered_map>
 
-1521400992 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1521424311 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -127,6 +128,7 @@
 	<string>
 	<sstream>
 	<algorithm>
+	<unordered_map>
 	"board.h"
 
 1519350420 source:c:\cygwin64\home\jason\checkers_ai\testnn.cpp
@@ -547,7 +549,7 @@
 	<ctime>
 	<algorithm>
 
-1521420554 source:c:\cygwin64\home\firethorn\checkers_ai\playgame.cpp
+1521425014 source:c:\cygwin64\home\firethorn\checkers_ai\playgame.cpp
 	<iostream>
 	<vector>
 	"board.h"

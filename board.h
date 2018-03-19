@@ -12,6 +12,8 @@ using std::endl;
 using std::bitset;
 
 #include <boost/functional/hash.hpp>
+#include<unordered_map>
+
 
 
 //typedef uint32_t i32; //unsigned 32bit int.  Used to store checkers board.
@@ -360,12 +362,6 @@ public:
 		}
 		cout << endl;
 	}
-	size_t hash() {
-    return boost::hash_range((uint32_t*)pieces, (uint32_t*)pieces+4);
-	}
-  size_t operator()(const stdBoard & b) const {
-    return boost::hash_range((uint32_t*)pieces, (uint32_t*)pieces+4);
-  }
 };
 
 inline bool operator==(const stdBoard & lhs, const stdBoard & rhs){ /* do actual comparison */
@@ -392,16 +388,6 @@ namespace std
       }
     };
 }
-struct stdBoardKey
-{
 
-};
-struct stdBoardHash
-{
-  std::size_t operator()(stdBoard const & b) const noexcept
-  {
-    return boost::hash_range((uint32_t*)b.pieces, (uint32_t*)b.pieces+4);
-  }
-};
 
 #endif /* RANDOM_CHECKERS_INCLUDED */

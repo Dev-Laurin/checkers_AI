@@ -54,8 +54,9 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
         if (player1.timeExceeded) {
           cout << "Move search was time limited" << endl;
         }
-
         b.draw();
+        cout << "Cache Effectiveness: " << player1.cacheHit << "/" << player1.cacheHit+player1.cacheMiss;
+        cout << " Cache size: " << player1.boardMem.size() << endl;
         if (std::find(playerMoves[0].begin(),playerMoves[0].end(),b) < playerMoves[0].end()) {
           cout << "Cycle Detected, draw!" << endl;
           break; //cycle detected, tie!
@@ -78,6 +79,9 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
           cout << "Move search was time limited" << endl;
         }
         b.draw();
+        cout << "Cache Effectiveness: " << player2.cacheHit << "/" << player2.cacheHit+player2.cacheMiss;
+        cout << " Cache size: " << player2.boardMem.size() << endl;
+
         if (std::find(playerMoves[1].begin(),playerMoves[1].end(),b) < playerMoves[1].end()) {
           cout << "Cycle Detected, draw!" << endl;
           break; //cycle detected, tie!
