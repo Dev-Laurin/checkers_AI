@@ -96,6 +96,11 @@ public:
     //Given a number, calculate a sigmoid function output
     void sigmoid(double & num);
     virtual ~AIPlayer()=default; //base class, needs to have virtual destructor.
+
+    //serialization
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+    }
 };
 
 class RandomPlayer: public AIPlayer {
