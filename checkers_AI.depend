@@ -4,7 +4,7 @@
 	"board.h"
 	"gui.h"
 
-1521423132 c:\cygwin64\home\firethorn\checkers_ai\board.h
+1521638279 c:\cygwin64\home\firethorn\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -58,7 +58,7 @@
 	<random>
 	<chrono>
 
-1519440536 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
+1521638665 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
 	<iostream>
 	"board.h"
 	"alphabeta.h"
@@ -67,21 +67,21 @@
 	<random>
 	<chrono>
 
-1517802896 c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.h
+1517806496 c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.h
 	<string>
 	<vector>
 	<iostream>
 	<cstring>
 	<algorithm>
 
-1517816973 c:\cygwin64\home\firethorn\checkers_ai\testboard.h
+1517820573 c:\cygwin64\home\firethorn\checkers_ai\testboard.h
 	<string>
 	<vector>
 	<iostream>
 	<cstring>
 	<algorithm>
 
-1517814236 source:c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.cpp
+1517817836 source:c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.cpp
 	"old_movegenerator.h"
 
 1521400993 c:\cygwin64\home\firethorn\checkers_ai\alphabeta.h
@@ -118,7 +118,7 @@
 	"Catch2.hpp"
 	<unordered_map>
 
-1521458370 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1521638799 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -129,6 +129,7 @@
 	<sstream>
 	<algorithm>
 	<unordered_map>
+	<boost/serialization/base_object.hpp>
 	"board.h"
 
 1519350420 source:c:\cygwin64\home\jason\checkers_ai\testnn.cpp
@@ -3870,7 +3871,7 @@
 	<boost/config/abi_prefix.hpp>
 	<boost/config/abi_suffix.hpp>
 
-1521455162 source:c:\cygwin64\home\firethorn\checkers_ai\test\testplaygame.cpp
+1521475949 source:c:\cygwin64\home\firethorn\checkers_ai\test\testplaygame.cpp
 	<iostream>
 	<vector>
 	"../neuralNetwork.h"
@@ -7289,4 +7290,1835 @@
 	<fstream>
 	<boost/config/abi_prefix.hpp>
 	<boost/config/abi_suffix.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\base_object.hpp
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/int.hpp>
+	<boost/mpl/identity.hpp>
+	<boost/type_traits/is_base_and_derived.hpp>
+	<boost/type_traits/is_pointer.hpp>
+	<boost/type_traits/is_const.hpp>
+	<boost/type_traits/is_polymorphic.hpp>
+	<boost/static_assert.hpp>
+	<boost/serialization/access.hpp>
+	<boost/serialization/force_include.hpp>
+	<boost/serialization/void_cast_fwd.hpp>
+
+1521452707 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\is_base_and_derived.hpp
+	<boost/type_traits/intrinsics.hpp>
+	<boost/type_traits/integral_constant.hpp>
+	<boost/type_traits/is_class.hpp>
+	<boost/type_traits/is_same.hpp>
+	<boost/type_traits/is_convertible.hpp>
+	<boost/config.hpp>
+	<boost/static_assert.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/type_traits/is_same.hpp>
+
+1521452692 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\access.hpp
+	<boost/config.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\force_include.hpp
+	<boost/config.hpp>
+
+1521452695 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\void_cast_fwd.hpp
+	<cstddef>
+	<boost/serialization/force_include.hpp>
+
+1521452695 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\utility.hpp
+	<utility>
+	<boost/config.hpp>
+	<boost/type_traits/remove_const.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/is_bitwise_serializable.hpp>
+	<boost/mpl/and.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\nvp.hpp
+	<utility>
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/serialization/level.hpp>
+	<boost/serialization/tracking.hpp>
+	<boost/serialization/split_member.hpp>
+	<boost/serialization/base_object.hpp>
+	<boost/serialization/traits.hpp>
+	<boost/serialization/wrapper.hpp>
+	<boost/core/addressof.hpp>
+	<boost/preprocessor/stringize.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\level.hpp
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/type_traits/is_fundamental.hpp>
+	<boost/type_traits/is_enum.hpp>
+	<boost/type_traits/is_array.hpp>
+	<boost/type_traits/is_class.hpp>
+	<boost/type_traits/is_base_and_derived.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/int.hpp>
+	<boost/mpl/integral_c.hpp>
+	<boost/mpl/integral_c_tag.hpp>
+	<boost/serialization/level_enum.hpp>
+
+1521452707 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\is_fundamental.hpp
+	<boost/type_traits/is_arithmetic.hpp>
+	<boost/type_traits/is_void.hpp>
+
+1521452670 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\integral_c.hpp
+	<boost/mpl/integral_c_fwd.hpp>
+	<boost/mpl/aux_/config/ctps.hpp>
+	<boost/mpl/aux_/config/static_constant.hpp>
+	<boost/mpl/aux_/config/workaround.hpp>
+	<boost/mpl/aux_/integral_wrapper.hpp>
+
+1521452670 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\integral_c_fwd.hpp
+	<boost/mpl/aux_/config/workaround.hpp>
+	<boost/mpl/aux_/adl_barrier.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\level_enum.hpp
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\tracking.hpp
+	<boost/config.hpp>
+	<boost/static_assert.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/identity.hpp>
+	<boost/mpl/int.hpp>
+	<boost/mpl/equal_to.hpp>
+	<boost/mpl/greater.hpp>
+	<boost/mpl/integral_c_tag.hpp>
+	<boost/type_traits/is_base_and_derived.hpp>
+	<boost/type_traits/is_pointer.hpp>
+	<boost/serialization/level.hpp>
+	<boost/serialization/tracking_enum.hpp>
+	<boost/serialization/type_info_implementation.hpp>
+
+1521452668 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\equal_to.hpp
+	<boost/mpl/aux_/comparison_op.hpp>
+
+1521452818 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\aux_\comparison_op.hpp
+	<boost/mpl/bool.hpp>
+	<boost/mpl/aux_/value_wknd.hpp>
+	<boost/mpl/aux_/numeric_op.hpp>
+	<boost/mpl/aux_/config/static_constant.hpp>
+	<boost/mpl/aux_/config/use_preprocessed.hpp>
+	<boost/mpl/aux_/include_preprocessed.hpp>
+	<boost/mpl/aux_/config/integral.hpp>
+	<boost/preprocessor/cat.hpp>
+
+1521452820 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\aux_\numeric_op.hpp
+	<boost/mpl/numeric_cast.hpp>
+	<boost/mpl/apply_wrap.hpp>
+	<boost/mpl/if.hpp>
+	<boost/mpl/tag.hpp>
+	<boost/mpl/aux_/numeric_cast_utils.hpp>
+	<boost/mpl/aux_/na.hpp>
+	<boost/mpl/aux_/na_spec.hpp>
+	<boost/mpl/aux_/lambda_support.hpp>
+	<boost/mpl/aux_/msvc_eti_base.hpp>
+	<boost/mpl/aux_/value_wknd.hpp>
+	<boost/mpl/aux_/config/eti.hpp>
+	<boost/mpl/aux_/nttp_decl.hpp>
+	<boost/mpl/aux_/config/static_constant.hpp>
+	<boost/mpl/limits/arity.hpp>
+	<boost/mpl/aux_/preprocessor/partial_spec_params.hpp>
+	<boost/mpl/aux_/preprocessor/def_params_tail.hpp>
+	<boost/mpl/aux_/preprocessor/repeat.hpp>
+	<boost/mpl/aux_/preprocessor/ext_params.hpp>
+	<boost/mpl/aux_/preprocessor/params.hpp>
+	<boost/mpl/aux_/preprocessor/enum.hpp>
+	<boost/mpl/aux_/preprocessor/add.hpp>
+	<boost/mpl/aux_/preprocessor/sub.hpp>
+	<boost/mpl/aux_/config/ctps.hpp>
+	<boost/mpl/aux_/config/eti.hpp>
+	<boost/mpl/aux_/config/msvc.hpp>
+	<boost/mpl/aux_/config/workaround.hpp>
+	<boost/preprocessor/dec.hpp>
+	<boost/preprocessor/inc.hpp>
+	<boost/preprocessor/iterate.hpp>
+	<boost/preprocessor/cat.hpp>
+
+1521452671 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\numeric_cast.hpp
+	<boost/mpl/aux_/config/msvc.hpp>
+	<boost/mpl/aux_/config/workaround.hpp>
+
+1521452672 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\tag.hpp
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/void.hpp>
+	<boost/mpl/aux_/has_tag.hpp>
+	<boost/mpl/aux_/config/eti.hpp>
+
+1521452819 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\aux_\has_tag.hpp
+	<boost/mpl/has_xxx.hpp>
+
+1521452820 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\aux_\numeric_cast_utils.hpp
+	<boost/mpl/numeric_cast.hpp>
+	<boost/mpl/apply_wrap.hpp>
+	<boost/mpl/aux_/config/forwarding.hpp>
+
+1521452944 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\aux_\config\forwarding.hpp
+	<boost/mpl/aux_/config/workaround.hpp>
+
+1521452819 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\aux_\msvc_eti_base.hpp
+	<boost/mpl/aux_/is_msvc_eti_arg.hpp>
+	<boost/mpl/aux_/config/eti.hpp>
+	<boost/mpl/aux_/config/gcc.hpp>
+	<boost/mpl/aux_/config/workaround.hpp>
+
+1521452819 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\aux_\is_msvc_eti_arg.hpp
+	<boost/mpl/aux_/yes_no.hpp>
+	<boost/mpl/aux_/config/eti.hpp>
+	<boost/mpl/aux_/config/static_constant.hpp>
+
+1521452669 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\greater.hpp
+	<boost/mpl/aux_/comparison_op.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\tracking_enum.hpp
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\type_info_implementation.hpp
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/static_assert.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/identity.hpp>
+	<boost/type_traits/is_base_and_derived.hpp>
+	<boost/serialization/traits.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\traits.hpp
+	<boost/config.hpp>
+	<boost/static_assert.hpp>
+	<boost/mpl/int.hpp>
+	<boost/mpl/bool_fwd.hpp>
+	<boost/serialization/level_enum.hpp>
+	<boost/serialization/tracking_enum.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\split_member.hpp
+	<boost/config.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/identity.hpp>
+	<boost/serialization/access.hpp>
+
+1521452695 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\wrapper.hpp
+	<boost/serialization/traits.hpp>
+	<boost/type_traits/is_base_and_derived.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/bool_fwd.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\is_bitwise_serializable.hpp
+	<boost/mpl/bool_fwd.hpp>
+	<boost/type_traits/is_arithmetic.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\list.hpp
+	<list>
+	<boost/config.hpp>
+	<boost/serialization/collections_save_imp.hpp>
+	<boost/serialization/collections_load_imp.hpp>
+	<boost/archive/detail/basic_iarchive.hpp>
+	<boost/serialization/access.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/collection_size_type.hpp>
+	<boost/serialization/item_version_type.hpp>
+	<boost/serialization/split_free.hpp>
+	<boost/serialization/collection_traits.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\collections_save_imp.hpp
+	<boost/config.hpp>
+	<boost/core/addressof.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/serialization.hpp>
+	<boost/serialization/version.hpp>
+	<boost/serialization/collection_size_type.hpp>
+	<boost/serialization/item_version_type.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\serialization.hpp
+	<boost/config.hpp>
+	<boost/serialization/strong_typedef.hpp>
+	<boost/serialization/access.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\strong_typedef.hpp
+	<boost/config.hpp>
+	<boost/operators.hpp>
+	<boost/type_traits/has_nothrow_assign.hpp>
+	<boost/type_traits/has_nothrow_constructor.hpp>
+	<boost/type_traits/has_nothrow_copy.hpp>
+
+1521452619 c:\mingw-w64\boost\include\boost-1_66\boost\operators.hpp
+	"operators_v1.hpp"
+	<cstddef>
+	<iterator>
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/core/addressof.hpp>
+
+1521452619 c:\mingw-w64\boost\include\boost-1_66\boost\operators_v1.hpp
+	<cstddef>
+	<iterator>
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+
+1521452706 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\has_nothrow_assign.hpp
+	<cstddef>
+	<boost/type_traits/integral_constant.hpp>
+	<boost/type_traits/intrinsics.hpp>
+	<boost/type_traits/has_trivial_assign.hpp>
+	<boost/type_traits/declval.hpp>
+	<boost/type_traits/is_const.hpp>
+	<boost/type_traits/is_volatile.hpp>
+	<boost/type_traits/is_reference.hpp>
+	<boost/type_traits/is_assignable.hpp>
+	<boost/type_traits/add_reference.hpp>
+	<boost/type_traits/remove_reference.hpp>
+	<boost/type_traits/is_const.hpp>
+	<boost/type_traits/is_volatile.hpp>
+	<boost/type_traits/is_assignable.hpp>
+	<boost/type_traits/is_array.hpp>
+	<boost/type_traits/is_pod.hpp>
+
+1521452706 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\has_trivial_assign.hpp
+	<cstddef>
+	<boost/type_traits/detail/config.hpp>
+	<boost/type_traits/intrinsics.hpp>
+	<boost/type_traits/integral_constant.hpp>
+	<boost/type_traits/is_pod.hpp>
+	<boost/type_traits/is_const.hpp>
+	<boost/type_traits/is_volatile.hpp>
+	<boost/type_traits/is_assignable.hpp>
+
+1521452707 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\is_assignable.hpp
+	<cstddef>
+	<boost/type_traits/integral_constant.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/type_traits/detail/yes_no_type.hpp>
+	<boost/type_traits/declval.hpp>
+	<boost/type_traits/has_trivial_assign.hpp>
+	<boost/type_traits/remove_reference.hpp>
+
+1521452706 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\has_nothrow_constructor.hpp
+	<cstddef>
+	<boost/type_traits/intrinsics.hpp>
+	<boost/type_traits/integral_constant.hpp>
+	<boost/type_traits/has_trivial_constructor.hpp>
+	<boost/type_traits/is_default_constructible.hpp>
+	<boost/type_traits/is_default_constructible.hpp>
+	<boost/type_traits/remove_all_extents.hpp>
+	<boost/type_traits/has_trivial_constructor.hpp>
+
+1521452706 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\has_trivial_constructor.hpp
+	<boost/type_traits/intrinsics.hpp>
+	<boost/type_traits/is_pod.hpp>
+	<boost/type_traits/is_default_constructible.hpp>
+	<boost/type_traits/is_same.hpp>
+	<boost/type_traits/is_volatile.hpp>
+	<boost/type_traits/is_pod.hpp>
+	<boost/type_traits/is_default_constructible.hpp>
+
+1521452707 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\is_default_constructible.hpp
+	<cstddef>
+	<boost/type_traits/integral_constant.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/type_traits/is_abstract.hpp>
+	<boost/type_traits/detail/yes_no_type.hpp>
+	<boost/type_traits/is_pod.hpp>
+
+1521452709 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\remove_all_extents.hpp
+	<boost/config.hpp>
+	<cstddef>
+	<boost/detail/workaround.hpp>
+
+1521452706 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\has_nothrow_copy.hpp
+	<boost/type_traits/intrinsics.hpp>
+	<boost/type_traits/integral_constant.hpp>
+	<boost/type_traits/is_volatile.hpp>
+	<boost/type_traits/is_copy_constructible.hpp>
+	<boost/type_traits/is_reference.hpp>
+	<boost/type_traits/is_array.hpp>
+	<boost/type_traits/is_pod.hpp>
+	<boost/type_traits/has_trivial_copy.hpp>
+	<boost/type_traits/is_array.hpp>
+	<boost/type_traits/add_lvalue_reference.hpp>
+	<boost/type_traits/add_const.hpp>
+	<boost/type_traits/declval.hpp>
+	<boost/type_traits/is_copy_constructible.hpp>
+	<boost/type_traits/has_trivial_copy.hpp>
+
+1521452707 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\is_copy_constructible.hpp
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/type_traits/is_constructible.hpp>
+	<boost/type_traits/is_base_and_derived.hpp>
+	<boost/noncopyable.hpp>
+	<boost/type_traits/detail/yes_no_type.hpp>
+	<boost/type_traits/is_base_and_derived.hpp>
+	<boost/type_traits/add_reference.hpp>
+	<boost/type_traits/is_rvalue_reference.hpp>
+	<boost/type_traits/declval.hpp>
+	<boost/type_traits/is_array.hpp>
+	<boost/type_traits/declval.hpp>
+	<boost/noncopyable.hpp>
+
+1521452707 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\is_constructible.hpp
+	<boost/type_traits/integral_constant.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/type_traits/is_destructible.hpp>
+	<boost/type_traits/is_default_constructible.hpp>
+	<boost/type_traits/detail/yes_no_type.hpp>
+	<boost/type_traits/declval.hpp>
+	<boost/type_traits/is_convertible.hpp>
+	<boost/type_traits/is_default_constructible.hpp>
+
+1521452707 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\is_destructible.hpp
+	<cstddef>
+	<boost/type_traits/integral_constant.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/type_traits/detail/yes_no_type.hpp>
+	<boost/type_traits/declval.hpp>
+	<boost/type_traits/is_pod.hpp>
+	<boost/type_traits/is_class.hpp>
+
+1521452706 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\has_trivial_copy.hpp
+	<cstddef>
+	<boost/type_traits/intrinsics.hpp>
+	<boost/type_traits/is_pod.hpp>
+	<boost/type_traits/is_reference.hpp>
+	<boost/type_traits/is_copy_constructible.hpp>
+	<boost/type_traits/add_const.hpp>
+	<boost/type_traits/add_lvalue_reference.hpp>
+
+1521452695 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\version.hpp
+	<boost/config.hpp>
+	<boost/mpl/assert.hpp>
+	<boost/mpl/int.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/identity.hpp>
+	<boost/mpl/integral_c_tag.hpp>
+	<boost/type_traits/is_base_and_derived.hpp>
+	<boost/mpl/less.hpp>
+	<boost/mpl/comparison.hpp>
+
+1521452670 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\less.hpp
+	<boost/mpl/aux_/comparison_op.hpp>
+
+1521452667 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\comparison.hpp
+	<boost/mpl/equal_to.hpp>
+	<boost/mpl/not_equal_to.hpp>
+	<boost/mpl/less.hpp>
+	<boost/mpl/greater.hpp>
+	<boost/mpl/less_equal.hpp>
+	<boost/mpl/greater_equal.hpp>
+
+1521452671 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\not_equal_to.hpp
+	<boost/mpl/aux_/comparison_op.hpp>
+
+1521452670 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\less_equal.hpp
+	<boost/mpl/aux_/comparison_op.hpp>
+
+1521452669 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\greater_equal.hpp
+	<boost/mpl/aux_/comparison_op.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\collection_size_type.hpp
+	<cstddef>
+	<boost/serialization/strong_typedef.hpp>
+	<boost/serialization/level.hpp>
+	<boost/serialization/split_free.hpp>
+	<boost/serialization/is_bitwise_serializable.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\split_free.hpp
+	<boost/config.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/identity.hpp>
+	<boost/serialization/serialization.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\item_version_type.hpp
+	<boost/cstdint.hpp>
+	<boost/integer_traits.hpp>
+	<boost/serialization/level.hpp>
+	<boost/serialization/is_bitwise_serializable.hpp>
+	<boost/assert.hpp>
+
+1521452618 c:\mingw-w64\boost\include\boost-1_66\boost\integer_traits.hpp
+	<boost/config.hpp>
+	<boost/limits.hpp>
+	<limits.h>
+	<wchar.h>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\collections_load_imp.hpp
+	<boost/assert.hpp>
+	<cstddef>
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/archive/detail/basic_iarchive.hpp>
+	<boost/serialization/access.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/detail/stack_constructor.hpp>
+	<boost/serialization/collection_size_type.hpp>
+	<boost/serialization/item_version_type.hpp>
+	<boost/serialization/detail/is_default_constructible.hpp>
+	<boost/utility/enable_if.hpp>
+	<boost/move/utility_core.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\basic_iarchive.hpp
+	<boost/config.hpp>
+	<boost/noncopyable.hpp>
+	<boost/scoped_ptr.hpp>
+	<boost/serialization/tracking_enum.hpp>
+	<boost/archive/basic_archive.hpp>
+	<boost/archive/detail/decl.hpp>
+	<boost/archive/detail/helper_collection.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452619 c:\mingw-w64\boost\include\boost-1_66\boost\scoped_ptr.hpp
+	<boost/smart_ptr/scoped_ptr.hpp>
+
+1521452697 c:\mingw-w64\boost\include\boost-1_66\boost\smart_ptr\scoped_ptr.hpp
+	<boost/config.hpp>
+	<boost/assert.hpp>
+	<boost/checked_delete.hpp>
+	<boost/smart_ptr/detail/sp_nullptr_t.hpp>
+	<boost/smart_ptr/detail/sp_disable_deprecated.hpp>
+	<boost/smart_ptr/detail/sp_noexcept.hpp>
+	<boost/detail/workaround.hpp>
+	<memory>
+	<boost/smart_ptr/detail/operator_bool.hpp>
+
+1521452621 c:\mingw-w64\boost\include\boost-1_66\boost\archive\basic_archive.hpp
+	<cstring>
+	<boost/assert.hpp>
+	<boost/config.hpp>
+	<boost/cstdint.hpp>
+	<boost/noncopyable.hpp>
+	<boost/integer_traits.hpp>
+	<boost/archive/detail/auto_link_archive.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+	<boost/serialization/level.hpp>
+	<boost/serialization/is_bitwise_serializable.hpp>
+
+1521452722 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\auto_link_archive.hpp
+	<boost/archive/detail/decl.hpp>
+	<boost/config/auto_link.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\decl.hpp
+	<boost/config.hpp>
+
+1521452722 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\abi_prefix.hpp
+	<boost/config/abi_prefix.hpp>
+
+1521452722 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\abi_suffix.hpp
+	<boost/config/abi_suffix.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\helper_collection.hpp
+	<cstddef>
+	<vector>
+	<utility>
+	<memory>
+	<algorithm>
+	<boost/config.hpp>
+	<boost/smart_ptr/shared_ptr.hpp>
+	<boost/smart_ptr/make_shared.hpp>
+
+1521452696 c:\mingw-w64\boost\include\boost-1_66\boost\smart_ptr\make_shared.hpp
+	<boost/smart_ptr/make_shared_object.hpp>
+	<boost/smart_ptr/make_shared_array.hpp>
+	<boost/smart_ptr/allocate_shared_array.hpp>
+
+1521452697 c:\mingw-w64\boost\include\boost-1_66\boost\smart_ptr\make_shared_object.hpp
+	<boost/config.hpp>
+	<boost/move/core.hpp>
+	<boost/move/utility_core.hpp>
+	<boost/smart_ptr/shared_ptr.hpp>
+	<boost/smart_ptr/detail/sp_forward.hpp>
+	<boost/smart_ptr/detail/sp_noexcept.hpp>
+	<boost/type_traits/type_with_alignment.hpp>
+	<boost/type_traits/alignment_of.hpp>
+	<cstddef>
+	<new>
+
+1521452665 c:\mingw-w64\boost\include\boost-1_66\boost\move\core.hpp
+	<boost/config.hpp>
+	<boost/move/detail/config_begin.hpp>
+	<boost/move/detail/workaround.hpp>
+	<boost/move/detail/type_traits.hpp>
+	<boost/move/detail/meta_utils.hpp>
+	<boost/move/detail/config_end.hpp>
+
+1521452816 c:\mingw-w64\boost\include\boost-1_66\boost\move\detail\config_begin.hpp
+	<boost/config.hpp>
+
+1521452816 c:\mingw-w64\boost\include\boost-1_66\boost\move\detail\workaround.hpp
+	<boost/config.hpp>
+
+1521452816 c:\mingw-w64\boost\include\boost-1_66\boost\move\detail\type_traits.hpp
+	<boost/config.hpp>
+	<boost/move/detail/config_begin.hpp>
+	<boost/move/detail/workaround.hpp>
+	<boost/move/detail/meta_utils.hpp>
+	<boost/assert.hpp>
+	<boost/static_assert.hpp>
+	<cstddef>
+	<msl_utility>
+	<boost/move/detail/config_end.hpp>
+
+1521452816 c:\mingw-w64\boost\include\boost-1_66\boost\move\detail\meta_utils.hpp
+	<boost/move/detail/config_begin.hpp>
+	<boost/move/detail/workaround.hpp>
+	<boost/move/detail/meta_utils_core.hpp>
+	<cstddef>
+	<boost/move/detail/config_end.hpp>
+
+1521452816 c:\mingw-w64\boost\include\boost-1_66\boost\move\detail\meta_utils_core.hpp
+	<boost/config.hpp>
+
+1521452816 c:\mingw-w64\boost\include\boost-1_66\boost\move\detail\config_end.hpp
+
+1521452665 c:\mingw-w64\boost\include\boost-1_66\boost\move\utility_core.hpp
+	<boost/config.hpp>
+	<boost/move/detail/config_begin.hpp>
+	<boost/move/detail/workaround.hpp>
+	<boost/move/core.hpp>
+	<boost/move/detail/meta_utils.hpp>
+	<boost/static_assert.hpp>
+	<utility>
+	<boost/move/detail/config_end.hpp>
+
+1521452863 c:\mingw-w64\boost\include\boost-1_66\boost\smart_ptr\detail\sp_forward.hpp
+	<boost/config.hpp>
+
+1521452696 c:\mingw-w64\boost\include\boost-1_66\boost\smart_ptr\make_shared_array.hpp
+	<boost/smart_ptr/allocate_shared_array.hpp>
+
+1521452696 c:\mingw-w64\boost\include\boost-1_66\boost\smart_ptr\allocate_shared_array.hpp
+	<boost/smart_ptr/shared_ptr.hpp>
+	<boost/type_traits/alignment_of.hpp>
+	<boost/type_traits/has_trivial_assign.hpp>
+	<boost/type_traits/has_trivial_constructor.hpp>
+	<boost/type_traits/has_trivial_destructor.hpp>
+	<boost/type_traits/type_with_alignment.hpp>
+
+1521452706 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\has_trivial_destructor.hpp
+	<boost/type_traits/intrinsics.hpp>
+	<boost/type_traits/integral_constant.hpp>
+	<boost/type_traits/is_pod.hpp>
+	<boost/type_traits/is_same.hpp>
+	<boost/type_traits/is_destructible.hpp>
+	<boost/type_traits/is_pod.hpp>
+
+1521452860 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\detail\stack_constructor.hpp
+	<boost/aligned_storage.hpp>
+	<boost/serialization/serialization.hpp>
+
+1521452616 c:\mingw-w64\boost\include\boost-1_66\boost\aligned_storage.hpp
+	<boost/type_traits/aligned_storage.hpp>
+
+1521452704 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\aligned_storage.hpp
+	<cstddef>
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/type_traits/alignment_of.hpp>
+	<boost/type_traits/type_with_alignment.hpp>
+	<boost/type_traits/is_pod.hpp>
+	<boost/type_traits/conditional.hpp>
+
+1521452859 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\detail\is_default_constructible.hpp
+	<boost/config.hpp>
+	<type_traits>
+	<boost/type_traits/has_trivial_constructor.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\collection_traits.hpp
+	<boost/config.hpp>
+	<boost/mpl/integral_c_tag.hpp>
+	<boost/cstdint.hpp>
+	<boost/integer_traits.hpp>
+	<climits>
+	<boost/serialization/level.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\string.hpp
+	<string>
+	<boost/config.hpp>
+	<boost/serialization/level.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\unordered_map.hpp
+	<boost/config.hpp>
+	<unordered_map>
+	<boost/serialization/utility.hpp>
+	<boost/serialization/unordered_collections_save_imp.hpp>
+	<boost/serialization/unordered_collections_load_imp.hpp>
+	<boost/serialization/archive_input_unordered_map.hpp>
+	<boost/serialization/split_free.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\unordered_collections_save_imp.hpp
+	<boost/config.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/serialization.hpp>
+	<boost/serialization/version.hpp>
+	<boost/serialization/collection_size_type.hpp>
+	<boost/serialization/item_version_type.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\unordered_collections_load_imp.hpp
+	<boost/assert.hpp>
+	<cstddef>
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/archive/detail/basic_iarchive.hpp>
+	<boost/serialization/access.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/collection_size_type.hpp>
+	<boost/serialization/item_version_type.hpp>
+
+1521452692 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\archive_input_unordered_map.hpp
+	<boost/config.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/detail/stack_constructor.hpp>
+	<boost/serialization/utility.hpp>
+	<boost/move/utility_core.hpp>
+
+1521452695 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\vector.hpp
+	<vector>
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/archive/detail/basic_iarchive.hpp>
+	<boost/serialization/access.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/collection_size_type.hpp>
+	<boost/serialization/item_version_type.hpp>
+	<boost/serialization/collections_save_imp.hpp>
+	<boost/serialization/collections_load_imp.hpp>
+	<boost/serialization/split_free.hpp>
+	<boost/serialization/array_wrapper.hpp>
+	<boost/mpl/bool_fwd.hpp>
+	<boost/mpl/if.hpp>
+	<boost/serialization/collection_traits.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\array_wrapper.hpp
+	<boost/config.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/split_member.hpp>
+	<boost/serialization/wrapper.hpp>
+	<boost/serialization/collection_size_type.hpp>
+	<boost/serialization/array_optimization.hpp>
+	<boost/mpl/always.hpp>
+	<boost/mpl/apply.hpp>
+	<boost/mpl/bool_fwd.hpp>
+	<boost/type_traits/remove_const.hpp>
+
+1521452692 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\array_optimization.hpp
+	<boost/config.hpp>
+	<boost/mpl/always.hpp>
+	<boost/mpl/apply.hpp>
+	<boost/type_traits/remove_const.hpp>
+
+1521452622 c:\mingw-w64\boost\include\boost-1_66\boost\archive\text_iarchive.hpp
+	<istream>
+	<boost/config.hpp>
+	<boost/archive/detail/auto_link_archive.hpp>
+	<boost/archive/basic_text_iprimitive.hpp>
+	<boost/archive/basic_text_iarchive.hpp>
+	<boost/archive/detail/register_archive.hpp>
+	<boost/serialization/item_version_type.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452621 c:\mingw-w64\boost\include\boost-1_66\boost\archive\basic_text_iprimitive.hpp
+	<locale>
+	<cstddef>
+	<boost/config.hpp>
+	<boost/io/ios_state.hpp>
+	<boost/static_assert.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/archive/dinkumware.hpp>
+	<boost/serialization/throw_exception.hpp>
+	<boost/archive/codecvt_null.hpp>
+	<boost/archive/archive_exception.hpp>
+	<boost/archive/basic_streambuf_locale_saver.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452622 c:\mingw-w64\boost\include\boost-1_66\boost\archive\dinkumware.hpp
+	<iterator>
+	<string>
+	<boost/config.hpp>
+	<boost/cstdint.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\throw_exception.hpp
+	<boost/config.hpp>
+	<exception>
+
+1521452622 c:\mingw-w64\boost\include\boost-1_66\boost\archive\codecvt_null.hpp
+	<locale>
+	<cstddef>
+	<cwchar>
+	<boost/config.hpp>
+	<boost/serialization/force_include.hpp>
+	<boost/archive/detail/auto_link_archive.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452621 c:\mingw-w64\boost\include\boost-1_66\boost\archive\archive_exception.hpp
+	<exception>
+	<boost/assert.hpp>
+	<string>
+	<boost/config.hpp>
+	<boost/archive/detail/decl.hpp>
+	<excpt.h>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452621 c:\mingw-w64\boost\include\boost-1_66\boost\archive\basic_streambuf_locale_saver.hpp
+	<locale>
+	<ios>
+	<streambuf>
+	<boost/config.hpp>
+	<boost/noncopyable.hpp>
+
+1521452621 c:\mingw-w64\boost\include\boost-1_66\boost\archive\basic_text_iarchive.hpp
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/archive/detail/common_iarchive.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\common_iarchive.hpp
+	<boost/config.hpp>
+	<boost/archive/detail/basic_iarchive.hpp>
+	<boost/archive/detail/basic_pointer_iserializer.hpp>
+	<boost/archive/detail/interface_iarchive.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\basic_pointer_iserializer.hpp
+	<boost/config.hpp>
+	<boost/noncopyable.hpp>
+	<boost/archive/detail/auto_link_archive.hpp>
+	<boost/archive/detail/basic_serializer.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\basic_serializer.hpp
+	<boost/assert.hpp>
+	<cstddef>
+	<boost/noncopyable.hpp>
+	<boost/config.hpp>
+	<boost/serialization/extended_type_info.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\extended_type_info.hpp
+	<cstdarg>
+	<boost/assert.hpp>
+	<cstddef>
+	<boost/config.hpp>
+	<boost/noncopyable.hpp>
+	<boost/mpl/bool.hpp>
+	<boost/serialization/config.hpp>
+	<boost/config/abi_prefix.hpp>
+	<boost/config/abi_suffix.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\config.hpp
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/config/auto_link.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\interface_iarchive.hpp
+	<cstddef>
+	<boost/cstdint.hpp>
+	<boost/mpl/bool.hpp>
+	<boost/archive/detail/auto_link_archive.hpp>
+	<boost/archive/detail/iserializer.hpp>
+	<boost/archive/detail/helper_collection.hpp>
+	<boost/serialization/singleton.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\iserializer.hpp
+	<new>
+	<cstddef>
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/static_assert.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/identity.hpp>
+	<boost/mpl/greater_equal.hpp>
+	<boost/mpl/equal_to.hpp>
+	<boost/core/no_exceptions_support.hpp>
+	<boost/serialization/extended_type_info_typeid.hpp>
+	<boost/serialization/throw_exception.hpp>
+	<boost/serialization/smart_cast.hpp>
+	<boost/serialization/static_warning.hpp>
+	<boost/type_traits/is_pointer.hpp>
+	<boost/type_traits/is_enum.hpp>
+	<boost/type_traits/is_const.hpp>
+	<boost/type_traits/remove_const.hpp>
+	<boost/type_traits/remove_extent.hpp>
+	<boost/type_traits/is_polymorphic.hpp>
+	<boost/serialization/assume_abstract.hpp>
+	<boost/type_traits/has_new_operator.hpp>
+	<boost/serialization/serialization.hpp>
+	<boost/serialization/version.hpp>
+	<boost/serialization/level.hpp>
+	<boost/serialization/tracking.hpp>
+	<boost/serialization/type_info_implementation.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/void_cast.hpp>
+	<boost/serialization/collection_size_type.hpp>
+	<boost/serialization/singleton.hpp>
+	<boost/serialization/wrapper.hpp>
+	<boost/serialization/array_wrapper.hpp>
+	<boost/archive/archive_exception.hpp>
+	<boost/archive/detail/basic_iarchive.hpp>
+	<boost/archive/detail/basic_iserializer.hpp>
+	<boost/archive/detail/basic_pointer_iserializer.hpp>
+	<boost/archive/detail/archive_serializer_map.hpp>
+	<boost/archive/detail/check.hpp>
+	<boost/core/addressof.hpp>
+
+1521452632 c:\mingw-w64\boost\include\boost-1_66\boost\core\no_exceptions_support.hpp
+	<boost/config.hpp>
+	<boost/config/workaround.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\extended_type_info_typeid.hpp
+	<typeinfo>
+	<cstdarg>
+	<boost/assert.hpp>
+	<boost/config.hpp>
+	<boost/static_assert.hpp>
+	<boost/serialization/static_warning.hpp>
+	<boost/type_traits/is_polymorphic.hpp>
+	<boost/type_traits/remove_const.hpp>
+	<boost/serialization/config.hpp>
+	<boost/serialization/singleton.hpp>
+	<boost/serialization/extended_type_info.hpp>
+	<boost/serialization/factory.hpp>
+	<boost/serialization/access.hpp>
+	<boost/mpl/if.hpp>
+	<boost/config/abi_prefix.hpp>
+	<boost/config/abi_suffix.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\static_warning.hpp
+	<boost/config.hpp>
+	<boost/mpl/bool.hpp>
+	<boost/mpl/print.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/bool_fwd.hpp>
+	<boost/static_assert.hpp>
+
+1521452671 c:\mingw-w64\boost\include\boost-1_66\boost\mpl\print.hpp
+	<boost/mpl/aux_/config/msvc.hpp>
+	<boost/mpl/identity.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\singleton.hpp
+	<boost/assert.hpp>
+	<boost/config.hpp>
+	<boost/noncopyable.hpp>
+	<boost/serialization/force_include.hpp>
+	<boost/archive/detail/auto_link_archive.hpp>
+	<boost/serialization/config.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\factory.hpp
+	<cstdarg>
+	<cstddef>
+	<boost/preprocessor/control/if.hpp>
+	<boost/preprocessor/comparison/greater.hpp>
+	<boost/assert.hpp>
+
+1521452837 c:\mingw-w64\boost\include\boost-1_66\boost\preprocessor\comparison\greater.hpp
+	<boost/preprocessor/comparison/less.hpp>
+	<boost/preprocessor/config/config.hpp>
+
+1521452837 c:\mingw-w64\boost\include\boost-1_66\boost\preprocessor\comparison\less.hpp
+	<boost/preprocessor/comparison/less_equal.hpp>
+	<boost/preprocessor/comparison/not_equal.hpp>
+	<boost/preprocessor/config/config.hpp>
+	<boost/preprocessor/control/iif.hpp>
+	<boost/preprocessor/logical/bitand.hpp>
+	<boost/preprocessor/tuple/eat.hpp>
+
+1521452837 c:\mingw-w64\boost\include\boost-1_66\boost\preprocessor\comparison\less_equal.hpp
+	<boost/preprocessor/arithmetic/sub.hpp>
+	<boost/preprocessor/config/config.hpp>
+	<boost/preprocessor/logical/not.hpp>
+
+1521452839 c:\mingw-w64\boost\include\boost-1_66\boost\preprocessor\logical\not.hpp
+	<boost/preprocessor/config/config.hpp>
+	<boost/preprocessor/logical/bool.hpp>
+	<boost/preprocessor/logical/compl.hpp>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\smart_cast.hpp
+	<exception>
+	<typeinfo>
+	<cstddef>
+	<boost/config.hpp>
+	<boost/static_assert.hpp>
+	<boost/type_traits/is_base_and_derived.hpp>
+	<boost/type_traits/is_polymorphic.hpp>
+	<boost/type_traits/is_pointer.hpp>
+	<boost/type_traits/is_reference.hpp>
+	<boost/type_traits/is_same.hpp>
+	<boost/type_traits/remove_pointer.hpp>
+	<boost/type_traits/remove_reference.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/if.hpp>
+	<boost/mpl/or.hpp>
+	<boost/mpl/and.hpp>
+	<boost/mpl/not.hpp>
+	<boost/mpl/identity.hpp>
+	<boost/serialization/throw_exception.hpp>
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\assume_abstract.hpp
+	<boost/type_traits/is_abstract.hpp>
+	<boost/mpl/bool_fwd.hpp>
+
+1521452706 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\has_new_operator.hpp
+	<new>
+	<cstddef>
+	<boost/type_traits/integral_constant.hpp>
+	<boost/type_traits/detail/yes_no_type.hpp>
+	<boost/detail/workaround.hpp>
+
+1521452695 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\void_cast.hpp
+	<cstddef>
+	<boost/config.hpp>
+	<boost/noncopyable.hpp>
+	<boost/serialization/smart_cast.hpp>
+	<boost/serialization/singleton.hpp>
+	<boost/serialization/force_include.hpp>
+	<boost/serialization/type_info_implementation.hpp>
+	<boost/serialization/extended_type_info.hpp>
+	<boost/type_traits/is_virtual_base_of.hpp>
+	<boost/serialization/void_cast_fwd.hpp>
+	<boost/serialization/config.hpp>
+	<boost/config/abi_prefix.hpp>
+	<boost/config/abi_suffix.hpp>
+
+1521452708 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\is_virtual_base_of.hpp
+	<boost/type_traits/is_base_of.hpp>
+	<boost/type_traits/is_same.hpp>
+
+1521452707 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\is_base_of.hpp
+	<boost/type_traits/is_base_and_derived.hpp>
+	<boost/type_traits/is_same.hpp>
+	<boost/type_traits/is_class.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\basic_iserializer.hpp
+	<cstdlib>
+	<boost/config.hpp>
+	<boost/archive/basic_archive.hpp>
+	<boost/archive/detail/decl.hpp>
+	<boost/archive/detail/basic_serializer.hpp>
+	<boost/archive/detail/auto_link_archive.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452722 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\archive_serializer_map.hpp
+	<boost/config.hpp>
+	<boost/archive/detail/auto_link_archive.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\check.hpp
+	<boost/config.hpp>
+	<boost/static_assert.hpp>
+	<boost/type_traits/is_const.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/or.hpp>
+	<boost/mpl/equal_to.hpp>
+	<boost/mpl/int.hpp>
+	<boost/mpl/not.hpp>
+	<boost/mpl/greater.hpp>
+	<boost/mpl/assert.hpp>
+	<boost/serialization/static_warning.hpp>
+	<boost/serialization/version.hpp>
+	<boost/serialization/level.hpp>
+	<boost/serialization/tracking.hpp>
+	<boost/serialization/wrapper.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\register_archive.hpp
+
+1521452622 c:\mingw-w64\boost\include\boost-1_66\boost\archive\text_oarchive.hpp
+	<ostream>
+	<cstddef>
+	<boost/config.hpp>
+	<boost/archive/detail/auto_link_archive.hpp>
+	<boost/archive/basic_text_oprimitive.hpp>
+	<boost/archive/basic_text_oarchive.hpp>
+	<boost/archive/detail/register_archive.hpp>
+	<boost/serialization/item_version_type.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452621 c:\mingw-w64\boost\include\boost-1_66\boost\archive\basic_text_oprimitive.hpp
+	<iomanip>
+	<locale>
+	<cstddef>
+	<boost/config.hpp>
+	<boost/static_assert.hpp>
+	<boost/io/ios_state.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/archive/dinkumware.hpp>
+	<boost/type_traits/is_floating_point.hpp>
+	<boost/mpl/bool.hpp>
+	<boost/limits.hpp>
+	<boost/integer.hpp>
+	<boost/io/ios_state.hpp>
+	<boost/serialization/throw_exception.hpp>
+	<boost/archive/basic_streambuf_locale_saver.hpp>
+	<boost/archive/codecvt_null.hpp>
+	<boost/archive/archive_exception.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452618 c:\mingw-w64\boost\include\boost-1_66\boost\integer.hpp
+	<boost/integer_fwd.hpp>
+	<boost/integer_traits.hpp>
+	<boost/limits.hpp>
+	<boost/cstdint.hpp>
+	<boost/static_assert.hpp>
+
+1521452621 c:\mingw-w64\boost\include\boost-1_66\boost\archive\basic_text_oarchive.hpp
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/archive/detail/common_oarchive.hpp>
+	<boost/serialization/string.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\common_oarchive.hpp
+	<boost/config.hpp>
+	<boost/archive/detail/basic_oarchive.hpp>
+	<boost/archive/detail/interface_oarchive.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\basic_oarchive.hpp
+	<cstddef>
+	<boost/config.hpp>
+	<boost/noncopyable.hpp>
+	<boost/scoped_ptr.hpp>
+	<boost/archive/basic_archive.hpp>
+	<boost/serialization/tracking_enum.hpp>
+	<boost/archive/detail/helper_collection.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\interface_oarchive.hpp
+	<cstddef>
+	<boost/cstdint.hpp>
+	<boost/mpl/bool.hpp>
+	<boost/archive/detail/auto_link_archive.hpp>
+	<boost/archive/detail/oserializer.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/serialization/singleton.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\oserializer.hpp
+	<boost/assert.hpp>
+	<cstddef>
+	<boost/config.hpp>
+	<boost/static_assert.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/equal_to.hpp>
+	<boost/mpl/greater_equal.hpp>
+	<boost/mpl/identity.hpp>
+	<boost/mpl/bool_fwd.hpp>
+	<boost/serialization/extended_type_info_typeid.hpp>
+	<boost/serialization/throw_exception.hpp>
+	<boost/serialization/smart_cast.hpp>
+	<boost/serialization/assume_abstract.hpp>
+	<boost/serialization/static_warning.hpp>
+	<boost/type_traits/is_pointer.hpp>
+	<boost/type_traits/is_enum.hpp>
+	<boost/type_traits/is_const.hpp>
+	<boost/type_traits/is_polymorphic.hpp>
+	<boost/type_traits/remove_extent.hpp>
+	<boost/serialization/serialization.hpp>
+	<boost/serialization/version.hpp>
+	<boost/serialization/level.hpp>
+	<boost/serialization/tracking.hpp>
+	<boost/serialization/type_info_implementation.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/void_cast.hpp>
+	<boost/serialization/collection_size_type.hpp>
+	<boost/serialization/array_wrapper.hpp>
+	<boost/serialization/singleton.hpp>
+	<boost/archive/archive_exception.hpp>
+	<boost/archive/detail/basic_oarchive.hpp>
+	<boost/archive/detail/basic_oserializer.hpp>
+	<boost/archive/detail/basic_pointer_oserializer.hpp>
+	<boost/archive/detail/archive_serializer_map.hpp>
+	<boost/archive/detail/check.hpp>
+	<boost/core/addressof.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\basic_oserializer.hpp
+	<cstddef>
+	<boost/config.hpp>
+	<boost/noncopyable.hpp>
+	<boost/archive/basic_archive.hpp>
+	<boost/archive/detail/auto_link_archive.hpp>
+	<boost/archive/detail/basic_serializer.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452723 c:\mingw-w64\boost\include\boost-1_66\boost\archive\detail\basic_pointer_oserializer.hpp
+	<boost/config.hpp>
+	<boost/noncopyable.hpp>
+	<boost/archive/detail/auto_link_archive.hpp>
+	<boost/archive/detail/basic_serializer.hpp>
+	<boost/archive/detail/abi_prefix.hpp>
+	<boost/archive/detail/abi_suffix.hpp>
+
+1521452683 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\ptr_vector.hpp
+	<vector>
+	<boost/ptr_container/ptr_sequence_adapter.hpp>
+
+1521452682 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\ptr_sequence_adapter.hpp
+	<boost/ptr_container/detail/reversible_ptr_container.hpp>
+	<boost/ptr_container/indirect_fun.hpp>
+	<boost/ptr_container/detail/void_ptr_iterator.hpp>
+	<boost/type_traits/remove_pointer.hpp>
+	<boost/type_traits/is_same.hpp>
+
+1521452845 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\detail\reversible_ptr_container.hpp
+	<boost/ptr_container/detail/throw_exception.hpp>
+	<boost/ptr_container/detail/scoped_deleter.hpp>
+	<boost/ptr_container/detail/static_move_ptr.hpp>
+	<boost/ptr_container/exception.hpp>
+	<boost/ptr_container/clone_allocator.hpp>
+	<boost/ptr_container/nullable.hpp>
+	<boost/range/functions.hpp>
+	<boost/config.hpp>
+	<boost/iterator/reverse_iterator.hpp>
+	<boost/range/iterator.hpp>
+	<boost/utility/enable_if.hpp>
+	<boost/type_traits/is_pointer.hpp>
+	<boost/type_traits/is_integral.hpp>
+	<boost/swap.hpp>
+	<typeinfo>
+	<memory>
+
+1521452846 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\detail\throw_exception.hpp
+	<boost/assert.hpp>
+	<boost/config.hpp>
+
+1521452845 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\detail\scoped_deleter.hpp
+	<iterator>
+	<cstddef>
+	<boost/scoped_array.hpp>
+
+1521452619 c:\mingw-w64\boost\include\boost-1_66\boost\scoped_array.hpp
+	<boost/smart_ptr/scoped_array.hpp>
+
+1521452697 c:\mingw-w64\boost\include\boost-1_66\boost\smart_ptr\scoped_array.hpp
+	<boost/config.hpp>
+	<boost/assert.hpp>
+	<boost/checked_delete.hpp>
+	<boost/smart_ptr/detail/sp_nullptr_t.hpp>
+	<boost/smart_ptr/detail/sp_noexcept.hpp>
+	<boost/detail/workaround.hpp>
+	<cstddef>
+	<boost/smart_ptr/detail/operator_bool.hpp>
+
+1521452846 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\detail\static_move_ptr.hpp
+	<boost/config.hpp>
+	<cstddef>
+	<boost/compressed_pair.hpp>
+	<boost/ptr_container/detail/default_deleter.hpp>
+	<boost/ptr_container/detail/is_convertible.hpp>
+	<boost/ptr_container/detail/move.hpp>
+	<boost/static_assert.hpp>
+	<boost/type_traits/add_reference.hpp>
+	<boost/type_traits/is_array.hpp>
+
+1521452617 c:\mingw-w64\boost\include\boost-1_66\boost\compressed_pair.hpp
+	<boost/config.hpp>
+	<boost/detail/compressed_pair.hpp>
+
+1521452635 c:\mingw-w64\boost\include\boost-1_66\boost\detail\compressed_pair.hpp
+	<algorithm>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/type_traits/is_empty.hpp>
+	<boost/type_traits/is_same.hpp>
+	<boost/call_traits.hpp>
+
+1521452707 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\is_empty.hpp
+	<boost/type_traits/is_convertible.hpp>
+	<boost/type_traits/detail/config.hpp>
+	<boost/type_traits/intrinsics.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/type_traits/is_class.hpp>
+	<boost/type_traits/add_reference.hpp>
+
+1521452616 c:\mingw-w64\boost\include\boost-1_66\boost\call_traits.hpp
+	<boost/config.hpp>
+	<boost/detail/call_traits.hpp>
+
+1521452634 c:\mingw-w64\boost\include\boost-1_66\boost\detail\call_traits.hpp
+	<boost/config.hpp>
+	<cstddef>
+	<boost/type_traits/is_arithmetic.hpp>
+	<boost/type_traits/is_enum.hpp>
+	<boost/type_traits/is_pointer.hpp>
+	<boost/detail/workaround.hpp>
+
+1521452845 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\detail\default_deleter.hpp
+	<boost/checked_delete.hpp>
+	<boost/mpl/if.hpp>
+	<boost/type_traits/is_array.hpp>
+	<boost/type_traits/remove_bounds.hpp>
+
+1521452845 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\detail\is_convertible.hpp
+	<boost/config.hpp>
+	<boost/mpl/aux_/lambda_support.hpp>
+	<boost/mpl/and.hpp>
+	<boost/mpl/bool.hpp>
+	<boost/mpl/identity.hpp>
+	<boost/mpl/if.hpp>
+	<boost/type_traits/is_array.hpp>
+	<boost/type_traits/is_convertible.hpp>
+	<boost/type_traits/is_same.hpp>
+	<boost/type_traits/remove_bounds.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/utility/enable_if.hpp>
+
+1521452845 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\detail\move.hpp
+
+1521452682 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\exception.hpp
+	<exception>
+
+1521452682 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\clone_allocator.hpp
+	<boost/assert.hpp>
+	<boost/checked_delete.hpp>
+	<typeinfo>
+
+1521452682 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\nullable.hpp
+	<boost/type_traits/detail/yes_no_type.hpp>
+	<boost/type_traits/is_const.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/identity.hpp>
+	<boost/config.hpp>
+
+1521452691 c:\mingw-w64\boost\include\boost-1_66\boost\range\functions.hpp
+	<boost/range/begin.hpp>
+	<boost/range/end.hpp>
+	<boost/range/size.hpp>
+	<boost/range/distance.hpp>
+	<boost/range/empty.hpp>
+	<boost/range/rbegin.hpp>
+	<boost/range/rend.hpp>
+
+1521452690 c:\mingw-w64\boost\include\boost-1_66\boost\range\begin.hpp
+	<boost/range/config.hpp>
+	<boost/range/detail/begin.hpp>
+	<boost/range/iterator.hpp>
+
+1521452856 c:\mingw-w64\boost\include\boost-1_66\boost\range\detail\begin.hpp
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/range/iterator.hpp>
+	<boost/range/detail/common.hpp>
+
+1521452691 c:\mingw-w64\boost\include\boost-1_66\boost\range\iterator.hpp
+	<boost/range/config.hpp>
+	<boost/range/range_fwd.hpp>
+	<boost/range/mutable_iterator.hpp>
+	<boost/range/const_iterator.hpp>
+	<boost/type_traits/is_const.hpp>
+	<boost/type_traits/remove_const.hpp>
+	<boost/mpl/eval_if.hpp>
+
+1521452856 c:\mingw-w64\boost\include\boost-1_66\boost\range\detail\common.hpp
+	<boost/range/config.hpp>
+	<boost/range/detail/sfinae.hpp>
+	<boost/type_traits/is_void.hpp>
+	<boost/mpl/bool.hpp>
+	<boost/mpl/if.hpp>
+	<boost/mpl/int.hpp>
+	<boost/mpl/or.hpp>
+	<cstddef>
+
+1521452857 c:\mingw-w64\boost\include\boost-1_66\boost\range\detail\sfinae.hpp
+	<boost/range/config.hpp>
+	<boost/type_traits/is_array.hpp>
+	<boost/type_traits/detail/yes_no_type.hpp>
+	<utility>
+
+1521452691 c:\mingw-w64\boost\include\boost-1_66\boost\range\end.hpp
+	<boost/range/config.hpp>
+	<boost/range/detail/end.hpp>
+	<boost/range/detail/implementation_help.hpp>
+	<boost/range/iterator.hpp>
+	<boost/range/const_iterator.hpp>
+
+1521452856 c:\mingw-w64\boost\include\boost-1_66\boost\range\detail\end.hpp
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/range/detail/implementation_help.hpp>
+	<boost/range/iterator.hpp>
+	<boost/range/detail/common.hpp>
+
+1521452857 c:\mingw-w64\boost\include\boost-1_66\boost\range\detail\implementation_help.hpp
+	<boost/range/config.hpp>
+	<boost/range/detail/common.hpp>
+	<boost/type_traits/is_same.hpp>
+	<cstddef>
+	<string.h>
+	<wchar.h>
+
+1521452692 c:\mingw-w64\boost\include\boost-1_66\boost\range\size.hpp
+	<boost/range/config.hpp>
+	<boost/range/begin.hpp>
+	<boost/range/end.hpp>
+	<boost/range/size_type.hpp>
+	<boost/range/detail/has_member_size.hpp>
+	<boost/assert.hpp>
+	<boost/cstdint.hpp>
+	<boost/utility.hpp>
+
+1521452692 c:\mingw-w64\boost\include\boost-1_66\boost\range\size_type.hpp
+	<boost/range/config.hpp>
+	<boost/range/difference_type.hpp>
+	<boost/range/concepts.hpp>
+	<boost/range/has_range_iterator.hpp>
+	<boost/utility/enable_if.hpp>
+	<boost/type_traits/make_unsigned.hpp>
+	<boost/type_traits/remove_const.hpp>
+	<cstddef>
+	<utility>
+
+1521452691 c:\mingw-w64\boost\include\boost-1_66\boost\range\difference_type.hpp
+	<boost/mpl/and.hpp>
+	<boost/range/config.hpp>
+	<boost/range/iterator.hpp>
+	<boost/range/has_range_iterator.hpp>
+	<boost/iterator/iterator_traits.hpp>
+	<boost/type_traits/remove_reference.hpp>
+
+1521452691 c:\mingw-w64\boost\include\boost-1_66\boost\range\has_range_iterator.hpp
+	<boost/mpl/bool.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/has_xxx.hpp>
+	<boost/range/iterator.hpp>
+	<boost/type_traits/remove_reference.hpp>
+	<boost/utility/enable_if.hpp>
+
+1521452690 c:\mingw-w64\boost\include\boost-1_66\boost\range\concepts.hpp
+	<boost/concept_check.hpp>
+	<boost/iterator/iterator_concepts.hpp>
+	<boost/range/begin.hpp>
+	<boost/range/end.hpp>
+	<boost/range/iterator.hpp>
+	<boost/range/value_type.hpp>
+	<boost/range/detail/misc_concept.hpp>
+	<boost/type_traits/remove_reference.hpp>
+	<iterator>
+
+1521452617 c:\mingw-w64\boost\include\boost-1_66\boost\concept_check.hpp
+	<boost/concept/assert.hpp>
+	<iterator>
+	<boost/type_traits/conversion_traits.hpp>
+	<utility>
+	<boost/type_traits/is_same.hpp>
+	<boost/type_traits/is_void.hpp>
+	<boost/mpl/assert.hpp>
+	<boost/mpl/bool.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/concept/usage.hpp>
+	<boost/concept/detail/concept_def.hpp>
+	<boost/concept/detail/concept_undef.hpp>
+
+1521452629 c:\mingw-w64\boost\include\boost-1_66\boost\concept\assert.hpp
+	<boost/config.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/concept/detail/msvc.hpp>
+	<boost/concept/detail/borland.hpp>
+	<boost/concept/detail/general.hpp>
+
+1521452750 c:\mingw-w64\boost\include\boost-1_66\boost\concept\detail\msvc.hpp
+	<boost/preprocessor/cat.hpp>
+	<boost/concept/detail/backward_compatibility.hpp>
+	<boost/config.hpp>
+	<boost/concept/detail/has_constraints.hpp>
+	<boost/mpl/if.hpp>
+
+1521452750 c:\mingw-w64\boost\include\boost-1_66\boost\concept\detail\backward_compatibility.hpp
+
+1521452750 c:\mingw-w64\boost\include\boost-1_66\boost\concept\detail\has_constraints.hpp
+	<boost/mpl/bool.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/concept/detail/backward_compatibility.hpp>
+
+1521452750 c:\mingw-w64\boost\include\boost-1_66\boost\concept\detail\borland.hpp
+	<boost/preprocessor/cat.hpp>
+	<boost/concept/detail/backward_compatibility.hpp>
+
+1521452750 c:\mingw-w64\boost\include\boost-1_66\boost\concept\detail\general.hpp
+	<boost/config.hpp>
+	<boost/preprocessor/cat.hpp>
+	<boost/concept/detail/backward_compatibility.hpp>
+	<boost/concept/detail/has_constraints.hpp>
+	<boost/mpl/if.hpp>
+
+1521452705 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\conversion_traits.hpp
+	<boost/type_traits/is_convertible.hpp>
+
+1521452629 c:\mingw-w64\boost\include\boost-1_66\boost\concept\usage.hpp
+	<boost/concept/assert.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/concept/detail/backward_compatibility.hpp>
+
+1521452750 c:\mingw-w64\boost\include\boost-1_66\boost\concept\detail\concept_def.hpp
+	<boost/preprocessor/seq/for_each_i.hpp>
+	<boost/preprocessor/seq/enum.hpp>
+	<boost/preprocessor/comma_if.hpp>
+	<boost/preprocessor/cat.hpp>
+
+1521452841 c:\mingw-w64\boost\include\boost-1_66\boost\preprocessor\seq\for_each_i.hpp
+	<boost/preprocessor/arithmetic/dec.hpp>
+	<boost/preprocessor/arithmetic/inc.hpp>
+	<boost/preprocessor/config/config.hpp>
+	<boost/preprocessor/control/if.hpp>
+	<boost/preprocessor/control/iif.hpp>
+	<boost/preprocessor/repetition/for.hpp>
+	<boost/preprocessor/seq/seq.hpp>
+	<boost/preprocessor/seq/size.hpp>
+	<boost/preprocessor/seq/detail/is_empty.hpp>
+	<boost/preprocessor/tuple/elem.hpp>
+	<boost/preprocessor/tuple/rem.hpp>
+
+1521452840 c:\mingw-w64\boost\include\boost-1_66\boost\preprocessor\seq\enum.hpp
+	<boost/preprocessor/cat.hpp>
+	<boost/preprocessor/config/config.hpp>
+	<boost/preprocessor/seq/size.hpp>
+
+1521452750 c:\mingw-w64\boost\include\boost-1_66\boost\concept\detail\concept_undef.hpp
+
+1521452659 c:\mingw-w64\boost\include\boost-1_66\boost\iterator\iterator_concepts.hpp
+	<boost/concept_check.hpp>
+	<boost/iterator/iterator_categories.hpp>
+	<boost/type_traits/is_same.hpp>
+	<boost/type_traits/is_integral.hpp>
+	<boost/mpl/bool.hpp>
+	<boost/mpl/if.hpp>
+	<boost/mpl/and.hpp>
+	<boost/mpl/or.hpp>
+	<boost/static_assert.hpp>
+	<boost/limits.hpp>
+	<boost/config.hpp>
+	<algorithm>
+	<iterator>
+	<boost/concept/detail/concept_def.hpp>
+	<boost/concept/detail/concept_undef.hpp>
+
+1521452692 c:\mingw-w64\boost\include\boost-1_66\boost\range\value_type.hpp
+	<boost/range/config.hpp>
+	<boost/range/iterator.hpp>
+	<boost/iterator/iterator_traits.hpp>
+
+1521452857 c:\mingw-w64\boost\include\boost-1_66\boost\range\detail\misc_concept.hpp
+	<boost/concept_check.hpp>
+
+1521452708 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\make_unsigned.hpp
+	<boost/type_traits/conditional.hpp>
+	<boost/type_traits/is_integral.hpp>
+	<boost/type_traits/is_signed.hpp>
+	<boost/type_traits/is_unsigned.hpp>
+	<boost/type_traits/is_enum.hpp>
+	<boost/type_traits/is_same.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/type_traits/is_const.hpp>
+	<boost/type_traits/is_volatile.hpp>
+	<boost/type_traits/add_const.hpp>
+	<boost/type_traits/add_volatile.hpp>
+	<boost/static_assert.hpp>
+
+1521452708 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\is_signed.hpp
+	<boost/type_traits/is_integral.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/type_traits/is_enum.hpp>
+	<climits>
+
+1521452708 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\is_unsigned.hpp
+	<boost/type_traits/is_integral.hpp>
+	<boost/type_traits/is_enum.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<climits>
+
+1521452704 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\add_volatile.hpp
+	<boost/config.hpp>
+
+1521452857 c:\mingw-w64\boost\include\boost-1_66\boost\range\detail\has_member_size.hpp
+	<boost/type_traits/is_class.hpp>
+	<boost/type_traits/is_member_function_pointer.hpp>
+	<boost/mpl/and.hpp>
+	<boost/mpl/bool.hpp>
+	<boost/cstdint.hpp>
+
+1521452620 c:\mingw-w64\boost\include\boost-1_66\boost\utility.hpp
+	<boost/utility/addressof.hpp>
+	<boost/utility/base_from_member.hpp>
+	<boost/utility/binary.hpp>
+	<boost/utility/enable_if.hpp>
+	<boost/utility/identity_type.hpp>
+	<boost/core/checked_delete.hpp>
+	<boost/core/noncopyable.hpp>
+	<boost/next_prior.hpp>
+
+1521452711 c:\mingw-w64\boost\include\boost-1_66\boost\utility\base_from_member.hpp
+	<boost/config.hpp>
+	<boost/preprocessor/arithmetic/inc.hpp>
+	<boost/preprocessor/repetition/enum_binary_params.hpp>
+	<boost/preprocessor/repetition/enum_params.hpp>
+	<boost/preprocessor/repetition/repeat_from_to.hpp>
+	<boost/type_traits/is_same.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/type_traits/remove_reference.hpp>
+	<boost/utility/enable_if.hpp>
+
+1521452840 c:\mingw-w64\boost\include\boost-1_66\boost\preprocessor\repetition\enum_binary_params.hpp
+	<boost/preprocessor/cat.hpp>
+	<boost/preprocessor/config/config.hpp>
+	<boost/preprocessor/punctuation/comma_if.hpp>
+	<boost/preprocessor/repetition/repeat.hpp>
+	<boost/preprocessor/tuple/elem.hpp>
+	<boost/preprocessor/tuple/rem.hpp>
+
+1521452711 c:\mingw-w64\boost\include\boost-1_66\boost\utility\binary.hpp
+	<boost/preprocessor/control/deduce_d.hpp>
+	<boost/preprocessor/facilities/identity.hpp>
+	<boost/preprocessor/cat.hpp>
+	<boost/preprocessor/seq/cat.hpp>
+	<boost/preprocessor/seq/transform.hpp>
+	<boost/preprocessor/arithmetic/mod.hpp>
+	<boost/preprocessor/seq/size.hpp>
+	<boost/preprocessor/facilities/empty.hpp>
+	<boost/preprocessor/control/while.hpp>
+
+1521452838 c:\mingw-w64\boost\include\boost-1_66\boost\preprocessor\control\deduce_d.hpp
+	<boost/preprocessor/control/while.hpp>
+	<boost/preprocessor/detail/auto_rec.hpp>
+
+1521452840 c:\mingw-w64\boost\include\boost-1_66\boost\preprocessor\seq\cat.hpp
+	<boost/preprocessor/arithmetic/dec.hpp>
+	<boost/preprocessor/config/config.hpp>
+	<boost/preprocessor/control/if.hpp>
+	<boost/preprocessor/seq/fold_left.hpp>
+	<boost/preprocessor/seq/seq.hpp>
+	<boost/preprocessor/seq/size.hpp>
+	<boost/preprocessor/tuple/eat.hpp>
+
+1521452841 c:\mingw-w64\boost\include\boost-1_66\boost\preprocessor\seq\transform.hpp
+	<boost/preprocessor/config/config.hpp>
+	<boost/preprocessor/seq/fold_left.hpp>
+	<boost/preprocessor/seq/seq.hpp>
+	<boost/preprocessor/tuple/elem.hpp>
+	<boost/preprocessor/tuple/rem.hpp>
+
+1521452837 c:\mingw-w64\boost\include\boost-1_66\boost\preprocessor\arithmetic\mod.hpp
+	<boost/preprocessor/arithmetic/detail/div_base.hpp>
+	<boost/preprocessor/config/config.hpp>
+	<boost/preprocessor/tuple/elem.hpp>
+
+1521452957 c:\mingw-w64\boost\include\boost-1_66\boost\preprocessor\arithmetic\detail\div_base.hpp
+	<boost/preprocessor/arithmetic/inc.hpp>
+	<boost/preprocessor/arithmetic/sub.hpp>
+	<boost/preprocessor/comparison/less_equal.hpp>
+	<boost/preprocessor/config/config.hpp>
+	<boost/preprocessor/control/while.hpp>
+	<boost/preprocessor/tuple/elem.hpp>
+	<boost/preprocessor/tuple/rem.hpp>
+
+1521452711 c:\mingw-w64\boost\include\boost-1_66\boost\utility\identity_type.hpp
+	<boost/type_traits/function_traits.hpp>
+
+1521452705 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\function_traits.hpp
+	<boost/config.hpp>
+	<boost/type_traits/is_function.hpp>
+	<boost/type_traits/add_pointer.hpp>
+
+1521452618 c:\mingw-w64\boost\include\boost-1_66\boost\next_prior.hpp
+	<iterator>
+	<boost/config.hpp>
+	<boost/core/enable_if.hpp>
+	<boost/type_traits/has_plus.hpp>
+	<boost/type_traits/has_plus_assign.hpp>
+	<boost/type_traits/has_minus.hpp>
+	<boost/type_traits/has_minus_assign.hpp>
+	<boost/iterator/advance.hpp>
+	<boost/iterator/reverse_iterator.hpp>
+
+1521452706 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\has_plus.hpp
+	<boost/type_traits/detail/has_binary_operator.hpp>
+
+1521452885 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\detail\has_binary_operator.hpp
+	<boost/config.hpp>
+	<boost/type_traits/detail/yes_no_type.hpp>
+	<boost/type_traits/integral_constant.hpp>
+	<boost/type_traits/is_base_of.hpp>
+	<boost/type_traits/is_const.hpp>
+	<boost/type_traits/is_convertible.hpp>
+	<boost/type_traits/is_fundamental.hpp>
+	<boost/type_traits/is_integral.hpp>
+	<boost/type_traits/is_pointer.hpp>
+	<boost/type_traits/is_same.hpp>
+	<boost/type_traits/is_void.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/type_traits/remove_pointer.hpp>
+	<boost/type_traits/remove_reference.hpp>
+
+1521452706 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\has_plus_assign.hpp
+	<boost/type_traits/detail/has_binary_operator.hpp>
+
+1521452706 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\has_minus.hpp
+	<boost/type_traits/detail/has_binary_operator.hpp>
+
+1521452706 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\has_minus_assign.hpp
+	<boost/type_traits/detail/has_binary_operator.hpp>
+
+1521452659 c:\mingw-w64\boost\include\boost-1_66\boost\iterator\advance.hpp
+	<boost/config.hpp>
+	<boost/iterator/iterator_categories.hpp>
+
+1521452660 c:\mingw-w64\boost\include\boost-1_66\boost\iterator\reverse_iterator.hpp
+	<boost/iterator/iterator_adaptor.hpp>
+
+1521452659 c:\mingw-w64\boost\include\boost-1_66\boost\iterator\iterator_adaptor.hpp
+	<boost/static_assert.hpp>
+	<boost/iterator/iterator_categories.hpp>
+	<boost/iterator/iterator_facade.hpp>
+	<boost/iterator/detail/enable_if.hpp>
+	<boost/mpl/and.hpp>
+	<boost/mpl/not.hpp>
+	<boost/mpl/or.hpp>
+	<boost/type_traits/is_same.hpp>
+	<boost/type_traits/is_convertible.hpp>
+	<boost/type_traits/remove_reference.hpp>
+	<boost/type_traits/add_reference.hpp>
+	<boost/iterator/detail/config_def.hpp>
+	<boost/iterator/iterator_traits.hpp>
+	<boost/iterator/detail/config_undef.hpp>
+
+1521452691 c:\mingw-w64\boost\include\boost-1_66\boost\range\distance.hpp
+	<boost/range/begin.hpp>
+	<boost/range/end.hpp>
+	<boost/range/difference_type.hpp>
+
+1521452691 c:\mingw-w64\boost\include\boost-1_66\boost\range\empty.hpp
+	<boost/range/config.hpp>
+	<boost/range/begin.hpp>
+	<boost/range/end.hpp>
+
+1521452691 c:\mingw-w64\boost\include\boost-1_66\boost\range\rbegin.hpp
+	<boost/range/end.hpp>
+	<boost/range/reverse_iterator.hpp>
+
+1521452691 c:\mingw-w64\boost\include\boost-1_66\boost\range\reverse_iterator.hpp
+	<boost/range/config.hpp>
+	<boost/range/iterator.hpp>
+	<boost/type_traits/remove_reference.hpp>
+	<boost/iterator/reverse_iterator.hpp>
+
+1521452691 c:\mingw-w64\boost\include\boost-1_66\boost\range\rend.hpp
+	<boost/range/begin.hpp>
+	<boost/range/reverse_iterator.hpp>
+
+1521452620 c:\mingw-w64\boost\include\boost-1_66\boost\swap.hpp
+	<boost/core/swap.hpp>
+
+1521452632 c:\mingw-w64\boost\include\boost-1_66\boost\core\swap.hpp
+	<utility>
+	<algorithm>
+	<cstddef>
+	<boost/config.hpp>
+
+1521452682 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\indirect_fun.hpp
+	<boost/config.hpp>
+	<boost/utility/result_of.hpp>
+	<boost/pointee.hpp>
+	<boost/assert.hpp>
+	<boost/static_assert.hpp>
+	<boost/type_traits/is_void.hpp>
+	<functional>
+
+1521452711 c:\mingw-w64\boost\include\boost-1_66\boost\utility\result_of.hpp
+	<boost/config.hpp>
+	<boost/preprocessor/cat.hpp>
+	<boost/preprocessor/iteration/iterate.hpp>
+	<boost/preprocessor/repetition/enum_params.hpp>
+	<boost/preprocessor/repetition/enum_trailing_params.hpp>
+	<boost/preprocessor/repetition/enum_binary_params.hpp>
+	<boost/preprocessor/repetition/enum_shifted_params.hpp>
+	<boost/preprocessor/facilities/intercept.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/mpl/has_xxx.hpp>
+	<boost/mpl/if.hpp>
+	<boost/mpl/eval_if.hpp>
+	<boost/mpl/bool.hpp>
+	<boost/mpl/identity.hpp>
+	<boost/mpl/or.hpp>
+	<boost/type_traits/is_class.hpp>
+	<boost/type_traits/is_pointer.hpp>
+	<boost/type_traits/is_member_function_pointer.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/type_traits/remove_reference.hpp>
+	<boost/utility/declval.hpp>
+	<boost/utility/enable_if.hpp>
+	<boost/utility/detail/result_of_iterate.hpp>
+
+1521452838 c:\mingw-w64\boost\include\boost-1_66\boost\preprocessor\facilities\intercept.hpp
+
+1521452711 c:\mingw-w64\boost\include\boost-1_66\boost\utility\declval.hpp
+	<boost/type_traits/declval.hpp>
+
+1521452889 c:\mingw-w64\boost\include\boost-1_66\boost\utility\detail\result_of_iterate.hpp
+
+1521452619 c:\mingw-w64\boost\include\boost-1_66\boost\pointee.hpp
+	<boost/detail/is_incrementable.hpp>
+	<boost/iterator/iterator_traits.hpp>
+	<boost/type_traits/add_const.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/mpl/if.hpp>
+	<boost/mpl/eval_if.hpp>
+	<iterator>
+
+1521452635 c:\mingw-w64\boost\include\boost-1_66\boost\detail\is_incrementable.hpp
+	<boost/type_traits/integral_constant.hpp>
+	<boost/type_traits/remove_cv.hpp>
+	<boost/mpl/aux_/lambda_support.hpp>
+	<boost/mpl/bool.hpp>
+	<boost/detail/workaround.hpp>
+	<boost/type_traits/detail/bool_trait_undef.hpp>
+
+1521452885 c:\mingw-w64\boost\include\boost-1_66\boost\type_traits\detail\bool_trait_undef.hpp
+
+1521452846 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\detail\void_ptr_iterator.hpp
+	<boost/config.hpp>
+	<boost/iterator/iterator_traits.hpp>
+	<boost/type_traits/remove_const.hpp>
+
+1521452683 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\serialize_ptr_vector.hpp
+	<boost/ptr_container/detail/serialize_reversible_cont.hpp>
+	<boost/ptr_container/ptr_vector.hpp>
+
+1521452845 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\detail\serialize_reversible_cont.hpp
+	<boost/ptr_container/detail/reversible_ptr_container.hpp>
+	<boost/ptr_container/detail/serialize_xml_names.hpp>
+	<boost/serialization/split_free.hpp>
+	<boost/serialization/nvp.hpp>
+
+1521452846 c:\mingw-w64\boost\include\boost-1_66\boost\ptr_container\detail\serialize_xml_names.hpp
+
+1521452693 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\export.hpp
+	<utility>
+	<cstddef>
+	<boost/config.hpp>
+	<boost/static_assert.hpp>
+	<boost/preprocessor/stringize.hpp>
+	<boost/type_traits/is_polymorphic.hpp>
+	<boost/mpl/assert.hpp>
+	<boost/mpl/and.hpp>
+	<boost/mpl/not.hpp>
+	<boost/mpl/bool_fwd.hpp>
+	<boost/serialization/extended_type_info.hpp>
+	<boost/serialization/static_warning.hpp>
+	<boost/serialization/assume_abstract.hpp>
+	<boost/serialization/force_include.hpp>
+	<boost/serialization/singleton.hpp>
+	<boost/archive/detail/register_archive.hpp>
+	<iostream>
 

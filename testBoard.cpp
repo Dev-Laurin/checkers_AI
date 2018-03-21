@@ -170,7 +170,7 @@ int main() {
   //Test individual moves.
   {
       stdBoard tBoard;
-      stdBoard tTracker[4] = stdBoard(0,0,0,0);
+      stdBoard tTracker[4] = {stdBoard(0,0,0,0)};
       for(int j = 0; j < 4;++j) {
           tBoard.pieces[0] = 0;
           tBoard.pieces[1] = 0;
@@ -193,7 +193,7 @@ int main() {
   //Test jumps.
   {
       stdBoard tBoard;
-      stdBoard tTracker[4] = stdBoard(0,0,0,0);
+      stdBoard tTracker[4] = {stdBoard(0,0,0,0)};
       for(int j = 0; j < 4;++j) {
           tBoard.pieces[0] = 0;
           tBoard.pieces[1] = 0;
@@ -220,7 +220,7 @@ int main() {
   //Test Blocking.
   {
       stdBoard tBoard;
-      stdBoard tTracker[4] = stdBoard(0,0,0,0);
+      stdBoard tTracker[4] = {stdBoard(0,0,0,0),stdBoard(0,0,0,0),stdBoard(0,0,0,0),stdBoard(0,0,0,0)};
       for(int j = 0; j < 4;++j) {
           tBoard.pieces[0] = 0;
           tBoard.pieces[1] = 0;

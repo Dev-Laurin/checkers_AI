@@ -182,7 +182,7 @@ public:
     std::vector<int> nodeSizes;
     std::vector<vector<double>> sigmas; //the change in weights
     virtual ~NN()=default;
-
+    template <typename Archive>
     void serialize(Archive &ar, const unsigned int version) {
         ar & boost::serialization::base_object<AIPlayer>(*this);
         ar & network;
