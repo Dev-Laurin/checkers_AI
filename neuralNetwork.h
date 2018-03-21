@@ -35,6 +35,8 @@ using std::min;
 
 #include<unordered_map>
 
+#include <boost/serialization/base_object.hpp>
+
 #include "board.h"
 
 
@@ -100,6 +102,17 @@ public:
     //serialization
     template <typename Archive>
     void serialize(Archive &ar, const unsigned int version) {
+        ar & kingVal;
+        ar & sigma;
+        ar & pieceWeight;
+        ar & montyWeight;
+        ar & montyK;
+        ar & generation;
+        ar & familyName;
+        ar & boardMem;
+        ar & wins;
+        ar & losses;
+        ar & draws;
     }
 };
 
@@ -153,7 +166,6 @@ public:
 	void getBoardInput(stdBoard & board);
 	double boardCount(stdBoard & board);
 
-
 	//Save this NN to a file
 	int saveToFile(string filename);
 
@@ -164,12 +176,20 @@ public:
 	void becomeOffspring();
 
 	//Data Members
+    std::mt19937_64 gen;
 	std::vector<std::vector<double>> network;
-  std::mt19937_64 gen;
-  std::vector<std::vector<double>> nodes; //Count of nodes per layer
-  std::vector<int> nodeSizes;
-  std::vector<vector<double>> sigmas; //the change in weights
-  virtual ~NN()=default;
+    std::vector<std::vector<double>> nodes; //Count of nodes per layer
+    std::vector<int> nodeSizes;
+    std::vector<vector<double>> sigmas; //the change in weights
+    virtual ~NN()=default;
+
+    void serialize(Archive &ar, const unsigned int version) {
+        ar & boost::serialization::base_object<AIPlayer>(*this);
+        ar & network;
+        ar & nodes;
+        ar & nodeSizes;
+        ar & sigmas;
+    }
 };
 
 //Operator != for NN's for testing
