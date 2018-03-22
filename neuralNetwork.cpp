@@ -1,5 +1,9 @@
 #include "neuralNetwork.h"
 
+//declare random number generator
+std::mt19937_64 gen(time(0));
+
+
 //Searches until it runs out of time.
 stdBoard AIPlayer::IntDeepSearch(stdBoard & board, bool side) {
   stdBoard moveList[MAXMOVES];
@@ -218,10 +222,8 @@ NN::NN(std::vector<int>& nS, string familyname)
     nodes[i].resize(nodeSizes[i], 0);
   }
   //Random number generator
-  gen.seed(time(0));
   //Each weight is now between -0.2 and 0.2 (see proj3)
-    std::uniform_real_distribution<double> dis(-0.2,0.2);
-
+  std::uniform_real_distribution<double> dis(-0.2,0.2);
   //create how many layers there will be (4,32,40,10,1)
   network.resize(nodeSizes.size()-1);
   for(unsigned int j=0; j<network.size(); ++j){

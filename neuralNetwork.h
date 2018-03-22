@@ -55,7 +55,7 @@ constexpr sNN HIGHEST = 10000;
 #endif // CONSTS
 
 const static double MOVETIME = 14.0;  //Seconds.
-
+extern std::mt19937_64 gen;
 
 class AIPlayer{
 public:
@@ -125,9 +125,7 @@ class RandomPlayer: public AIPlayer {
 public:
   RandomPlayer() {
     distro = std::uniform_real_distribution<double>(0.0,1.0);
-    gen.seed(time(0));
   }
-  std::mt19937_64 gen;
   std::uniform_real_distribution<double> distro;
 
   sNN calculateBoard(stdBoard & board) {
@@ -143,10 +141,8 @@ class PieceCount: public AIPlayer
 public:
   PieceCount() {
     distro = std::uniform_real_distribution<double>(0.0,1.0);
-    gen.seed(time(0));
 
   }
-  std::mt19937_64 gen;
   std::uniform_real_distribution<double> distro;
 
   sNN calculateBoard(stdBoard & board) {
@@ -181,14 +177,13 @@ public:
 	void becomeOffspring();
 
 	//Data Members
-    std::mt19937_64 gen;
 	std::vector<std::vector<double>> network;
-    std::vector<std::vector<double>> nodes; //Count of nodes per layer
-    std::vector<int> nodeSizes;
-    std::vector<vector<double>> sigmas; //the change in weights
-    virtual ~NN()=default;
-    template <typename Archive>
-    void serialize(Archive &ar, const unsigned int version) {
+  std::vector<std::vector<double>> nodes; //Count of nodes per layer
+  std::vector<int> nodeSizes;
+  std::vector<vector<double>> sigmas; //the change in weights
+  virtual ~NN()=default;
+  template <typename Archive>
+  void serialize(Archive &ar, const unsigned int version) {
         ar & boost::serialization::base_object<AIPlayer>(*this);
         ar & network;
         ar & nodes;

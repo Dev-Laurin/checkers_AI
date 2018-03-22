@@ -110,6 +110,7 @@
 			<Add library="sfml-system" />
 			<Add library="libboost_system-mgw72-mt-x64-1_66" />
 			<Add library="libboost_filesystem-mgw72-mt-x64-1_66" />
+			<Add library="libboost_serialization-mgw72-mt-s-x64-1_66" />
 			<Add directory="$(#boost.lib)" />
 		</Linker>
 		<Unit filename="Chinook.c">

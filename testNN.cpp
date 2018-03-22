@@ -4,11 +4,11 @@
 //To test our neural network implementation.
 #include <iostream>
 #include <fstream>
-#include "neuralNetwork.h"
 #include <vector>
 using std::cout;
 using std::endl;
-#include "board.h"
+
+#include<unordered_map>
 #include <ctime>
 #include <random>
 //Boost library for writing folders/directories
@@ -20,7 +20,9 @@ using std::endl;
 #define CATCH_CONFIG_MAIN
 #include "Catch2.hpp" //C++ Testing Framework
 
-#include<unordered_map>
+
+#include "board.h"
+#include "neuralNetwork.h"
 
 // #include <chrono> <- Doesn't work on Laurin's machine
 	//Issue with new 5.4.1 g++ version on Ubuntu 16.06?
@@ -247,8 +249,6 @@ TEST_CASE("Blondie24", "{32, 40, 10, 1}"){
 
 TEST_CASE("Timing Blondie24.", "{32, 40, 10, 1}"){
 
-	std::mt19937_64 gen(time(0));
-
   uint32_t max32 = 0;
   max32 = ~max32;
   std::uniform_int_distribution<uint32_t> dis32(0,~((uint32_t)0));
@@ -346,7 +346,7 @@ TEST_CASE("Timing for Big Neural Network.",
 	b3.updateBoard("rrrrr    r       r    b bbbbbbbb");
 	std::vector<stdBoard> boards{b, b1, b2, b3};
 
-	std::mt19937 gen(time(0));
+	std::mt19937 gen;
 	std::uniform_int_distribution<int> dis(0,boards.size()-1);
 
 	//Start the timer
@@ -441,7 +441,6 @@ TEST_CASE("Test Loading NN file.", "{32, 40, 10, 1}"){
 TEST_CASE("Testing Normal Distribution Random Number Generator.",
 	"std::normal_distribution<double> nDis(0, 1);"){
 
-	std::mt19937_64 gen(time(0));
 	//Mean = 0, StdDev = 1
 	std::normal_distribution<double> nDis(0, 1.0);
 	//-1.0 -0.9 -0.8 -0.7 -0.6...
@@ -658,12 +657,12 @@ TEST_CASE("Testing Boost Serialization") {
     if (test1==test2) {
         cout << "Two randomly generated networks are the same?" << endl;
     }
-    std::ofstream ofs("testGeneratedFiles/test.nn");
-    boost::archive::binary_oarchive oa(ofs);
+    std::ofstream ofs("testGeneratedFiles/test.txt");
+    boost::archive::text_oarchive oa(ofs);
     oa << test1;
     ofs.close();
-    std::ifstream ifs("testGeneratedFiles/test.nn", std::ios::binary);
-    boost::archive::binary_iarchive ia(ifs);
+    std::ifstream ifs("testGeneratedFiles/test.txt", std::ios::binary);
+    boost::archive::text_iarchive ia(ifs);
     // read class state from archive
     ia >> test2;
     ifs.close();
