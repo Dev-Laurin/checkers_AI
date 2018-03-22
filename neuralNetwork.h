@@ -36,6 +36,11 @@ using std::min;
 #include<unordered_map>
 
 #include <boost/serialization/base_object.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/unordered_map.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+
 
 #include "board.h"
 

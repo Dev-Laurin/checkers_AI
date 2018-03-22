@@ -12,6 +12,9 @@ using std::endl;
 using std::bitset;
 
 #include <boost/functional/hash.hpp>
+#include <boost/serialization/base_object.hpp>
+#include <boost/serialization/bitset.hpp>
+
 #include<unordered_map>
 
 
@@ -27,8 +30,8 @@ class cmpBoard;
 
 class stdBoard {
 public:
-	i32 pieces[4];
-  double score;
+    i32 pieces[4];
+    double score;
 	//Constructors
 	stdBoard() {
 	  pieces[0] = 0xFFF00000;//Initial regular board
@@ -362,6 +365,10 @@ public:
 		}
 		cout << endl;
 	}
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+        ar & pieces;
+    }
 };
 
 inline bool operator==(const stdBoard & lhs, const stdBoard & rhs){ /* do actual comparison */

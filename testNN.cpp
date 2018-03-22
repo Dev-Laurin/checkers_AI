@@ -3,6 +3,7 @@
 //3-5-18 Modified
 //To test our neural network implementation.
 #include <iostream>
+#include <fstream>
 #include "neuralNetwork.h"
 #include <vector>
 using std::cout;
@@ -12,6 +13,8 @@ using std::endl;
 #include <random>
 //Boost library for writing folders/directories
 #include <boost/filesystem.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
 //Tells catch to provide a main (one file only)
 #define CATCH_CONFIG_MAIN
@@ -648,9 +651,22 @@ TEST_CASE("Make Directory via boost library test."){
 	boost::filesystem::create_directories(dir);
 	REQUIRE(boost::filesystem::is_directory(dir));
 }
-TEST_CASE("Testing Iterative Deepening Search") {
-  vector<int> blond{32, 40, 10, 1};
-  NN testIDS(blond, "blondie");
-  stdBoard board;
-  testIDS.IntDeepSearch(board, false);
+TEST_CASE("Testing Boost Serialization") {
+    vector<int> blond{32, 40, 10, 1};
+    NN test1(blond, "blondie");
+    NN test2(blond, "blondie");
+    if (test1==test2) {
+        cout << "Two randomly generated networks are the same?" << endl;
+    }
+    std::ofstream ofs("testGeneratedFiles/test.nn");
+    boost::archive::binary_oarchive oa(ofs);
+    oa << test1;
+    ofs.close();
+    std::ifstream ifs("testGeneratedFiles/test.nn", std::ios::binary);
+    boost::archive::binary_iarchive ia(ifs);
+    // read class state from archive
+    ia >> test2;
+    ifs.close();
+    //Make sure the tests are the same
+    REQUIRE(test1==test2);
 }
