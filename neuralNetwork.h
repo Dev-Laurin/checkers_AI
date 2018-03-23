@@ -134,6 +134,7 @@ public:
     return count;
   }
   virtual stdBoard getMove(stdBoard & board, bool side=false);
+  ~RandomPlayer()=default;
 };
 
 class PieceCount: public AIPlayer
