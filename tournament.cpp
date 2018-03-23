@@ -15,10 +15,10 @@ using std::vector;
 #include <algorithm>
 
 int main(){
-  const int population = 30;
+ 	const int population = 30;
+ 	vector<AI_Player>NeuralNets(population); 
 
 	vector<int> nodes{32, 40, 10, 1};
-	NN blondie24(nodes, "blondie");
 
 	//file variables
 	string parentDirectory = "NeuralNetworkFiles/";
@@ -51,11 +51,12 @@ int main(){
 
 	int tournamentNum = -1;
   cout << "Starting Tournament!" << endl;
-	while(true){
 
-		//For choosing random opponent within NNs
-		std::mt19937_64 gen(time(0));
-		std::uniform_int_distribution<int> dis(0,NeuralNets.size());
+	//For choosing random opponent within NNs
+	std::mt19937_64 gen(time(0));
+	std::uniform_int_distribution<int> dis(0,NeuralNets.size());
+
+	while(true){
 
 		//150 game tournament = 30 NNs * 5 games each
 		++tournamentNum;
@@ -69,7 +70,7 @@ int main(){
 				//Choose random opponent
 				unsigned int randIndex;
 				do { //Prevent the AI from playing itself.
-          randIndex = dis(gen);
+          			randIndex = dis(gen);
 				} while (randIndex == i);
 
 				cout << "NN " << i << " vs NN " << randIndex << "!" << endl;

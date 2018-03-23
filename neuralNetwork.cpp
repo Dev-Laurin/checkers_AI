@@ -304,45 +304,17 @@ void AIPlayer::sigmoid(double & num){
 //Save this NN to a file
 int NN::saveToFile(string filename){
 
-  ofstream file(filename,
-    std::ios::binary);
-
-  if(!file){
-    cout << "Unable to open file: " << filename << endl;
-    return -1;
+  //Boost file saving
+  std::ofstream ofs(filename); 
+  if(!ofs){
+    cout << "Error opening file for NN saving: " << filename;
+    cout << endl;  
+    return -1; 
   }
+  boost::archive::text_oarchive oa(ofs); 
+  oa << *this; 
+  ofs.close(); 
 
-  //Write generation number
-  file.write((char*)&generation, sizeof(generation));
-
-  //write the king value
-  file.write((char*)&kingVal, sizeof(kingVal));
-
-  //write the weight vector sizes
-  int size = network.size();
-  file.write((char*)&size, sizeof(int));
-
-  //write the multiple vector sizes
-  for(unsigned int i=0; i<network.size(); ++i){
-    int size = network[i].size();
-    file.write((char*)&size, sizeof(int));
-  }
-
-  //Write weights to file
-  for(unsigned int i=0; i<network.size(); ++i){
-    for(unsigned int j=0; j<network[i].size(); ++j){
-      file.write((char*)&network[i][j], sizeof(double));
-    }
-  }
-
-  //Write sigmas
-  for(unsigned int i=0; i<sigmas.size(); ++i){
-    for(unsigned int j=0; j<sigmas[i].size(); ++j){
-      file.write((char*)&sigmas[i][j], sizeof(double));
-    }
-  }
-
-  file.close();
   return 0; //successful
 }
 
@@ -350,51 +322,16 @@ int NN::saveToFile(string filename){
 //Filename = FamilyName/GEN#
 //EX:  Blondie24/GEN100/NNpp
 int NN::loadFromFile(string filename){
-  ifstream file(filename, std::ios::binary);
 
+  ifstream file(filename); 
   if(!file){
-    cout << "Error opening file.";
-    cout << " Filename: " << filename << endl;
-    return -1;
+    cout << "Error opening NN file: " << filename << endl;
+    return -1; 
   }
+  boost::archive::text_iarchive ia(file); 
+  ia >> *this; 
+  file.close(); 
 
-  //read in the generation number
-  file.read(reinterpret_cast<char *>(&generation), sizeof(generation));
-
-  //read in the kingvalue
-  file.read(reinterpret_cast<char *>(&kingVal), sizeof(kingVal));
-
-  //read in the overall size of the weights
-  int weightSize;
-  file.read(reinterpret_cast<char *>(&weightSize), sizeof(int));
-
-  network.resize(weightSize);
-  sigmas.resize(weightSize);
-
-  //read in size of individual vectors (2D)
-  for(int i=0; i<weightSize; ++i){
-    int size;
-    file.read(reinterpret_cast<char *>(&size), sizeof(int));
-    network[i].resize(size);
-    sigmas[i].resize(size);
-  }
-
-  //read in the actual weights
-  for(unsigned int i=0; i<network.size(); ++i){
-    file.read((char *)network[i].data(), network[i].size()*sizeof(double));
-  }
-
-  //read in sigmas
-  for(unsigned int i=0; i<sigmas.size(); ++i){
-    file.read((char *)sigmas[i].data(), sigmas[i].size()*sizeof(double));
-  }
-
-  file.close();
-
-  //update nodeSizes
-  for(unsigned int i=0; i<sigmas.size(); ++i){
-    nodeSizes[i] = sigmas[i].size();
-  }
   return 0;
 }
 
