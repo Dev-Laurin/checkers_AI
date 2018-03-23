@@ -1,7 +1,6 @@
 SFML/
 bin/
 NeuralNetworkFiles/
-test/
 chinook/
 testGeneratedFiles/
 *.exe
