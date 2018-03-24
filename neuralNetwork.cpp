@@ -301,40 +301,6 @@ void AIPlayer::sigmoid(double & num){
   num = num/(.16667+std::abs(num));
 }
 
-//Save this NN to a file
-int NN::saveToFile(string filename){
-
-  //Boost file saving
-  std::ofstream ofs(filename); 
-  if(!ofs){
-    cout << "Error opening file for NN saving: " << filename;
-    cout << endl;  
-    return -1; 
-  }
-  boost::archive::text_oarchive oa(ofs); 
-  oa << *this; 
-  ofs.close(); 
-
-  return 0; //successful
-}
-
-//Load NN from file
-//Filename = FamilyName/GEN#
-//EX:  Blondie24/GEN100/NNpp
-int NN::loadFromFile(string filename){
-
-  ifstream file(filename); 
-  if(!file){
-    cout << "Error opening NN file: " << filename << endl;
-    return -1; 
-  }
-  boost::archive::text_iarchive ia(file); 
-  ia >> *this; 
-  file.close(); 
-
-  return 0;
-}
-
 //generate offspring, randomize this NN
   //(assuming this is a copy of the original)
 void NN::becomeOffspring(){
@@ -502,3 +468,91 @@ stdBoard RandomPlayer::getMove(stdBoard & board, bool side) {
     cout << "Hehe, I'm Random!" << endl;
     return possibleBoards[moveSelect];
   }
+
+// //Global Save to File Functions
+// //Save this NN to a file
+// int saveToFile(const NN & nn, string filename){
+
+//   //Boost file saving
+//   std::ofstream ofs(filename); 
+//   if(!ofs){
+//     cout << "Error opening file for NN saving: " << filename;
+//     cout << endl;  
+//     return -1; 
+//   }
+//   boost::archive::text_oarchive oa(ofs);  
+//   oa << nn; 
+//   ofs.close(); 
+
+//   return 0; //successful
+// }
+
+// int loadFromFile(NN & nn, string filename){
+
+//   ifstream file(filename); 
+//   if(!file){
+//     cout << "Error opening NN file: " << filename << endl;
+//     return -1; 
+//   }
+//   boost::archive::text_iarchive ia(file);
+//   ia >> nn; 
+//   file.close(); 
+
+//   return 0;
+// }
+
+int NN::saveToFile(string filename){
+  //Boost file saving
+  std::ofstream ofs(filename); 
+  if(!ofs){
+    cout << "Error opening file for NN saving: " << filename;
+    cout << endl;  
+    return -1; 
+  }
+  boost::archive::text_oarchive oa(ofs);  
+  oa << *this; 
+  ofs.close(); 
+
+  return 0; //successful
+}
+
+int NN::loadFromFile(string filename){
+  ifstream file(filename); 
+  if(!file){
+    cout << "Error opening NN file: " << filename << endl;
+    return -1; 
+  }
+  boost::archive::text_iarchive ia(file);
+  ia >> *this; 
+  file.close(); 
+
+  return 0; 
+}
+
+int saveToFile(const NN & nn, string filename){
+    //Boost file saving
+  std::ofstream ofs(filename); 
+  if(!ofs){
+    cout << "Error opening file for NN saving: " << filename;
+    cout << endl;  
+    return -1; 
+  }
+  boost::archive::text_oarchive oa(ofs);  
+  oa << nn; 
+  ofs.close(); 
+
+  return 0; //successful
+}
+
+int loadFromFile(NN& nn, string filename){
+  ifstream file(filename); 
+  if(!file){
+    cout << "Error opening NN file: " << filename << endl;
+    return -1; 
+  }
+  boost::archive::text_iarchive ia(file);
+  ia >> nn; 
+  file.close(); 
+
+  return 0; 
+}

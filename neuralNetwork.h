@@ -40,6 +40,8 @@ using std::min;
 #include <boost/serialization/unordered_map.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
 
 
 #include "board.h"
@@ -167,11 +169,9 @@ public:
 	void getBoardInput(stdBoard & board);
 	double boardCount(stdBoard & board);
 
-	//Save this NN to a file
-	int saveToFile(string filename);
+  int saveToFile(string filename); 
+  int loadFromFile(string filename); 
 
-	//Load NN from file
-	int loadFromFile(string filename);
 	//generate offspring, randomize this NN
 		//(assuming this is a copy of the original)
 	void becomeOffspring();
@@ -205,6 +205,17 @@ public:
 
 bool operator!=(const NN2 & lhs, const NN2 & rhs);
 bool operator==(const NN2 & lhs, const NN2 & rhs);
+
+// //Global Save to File Functions
+// //Save this NN to a file
+// int saveToFile(const NN & nn, string filename);
+int saveToFile(const NN & nn, string filename);
+// //Load NN from file
+// //Filename = FamilyName/GEN#
+// //EX:  Blondie24/GEN100/NNpp
+// int loadFromFile(NN & nn, string filename);
+int loadFromFile(NN& nn, string filename); 
+
 #endif /* NEURAL_NETWORK_H */
 
 

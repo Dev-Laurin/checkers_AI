@@ -5,7 +5,7 @@ testBoard: Test/testBoard.cpp old_movegenerator.cpp
 	g++ -std=c++17 Test/testBoard.cpp old_movegenerator.cpp
 	./a.out
 testNN: testNN.cpp neuralNetwork.cpp
-	g++ -std=c++17 testNN.cpp neuralNetwork.cpp -O2 -lboost_system -lboost_filesystem -o nnTest.o
+	g++ -std=c++17 testNN.cpp neuralNetwork.cpp -O2 -lboost_system -lboost_filesystem -lboost_serialization -o nnTest.o
 	./nnTest.o 
 train: training.cpp
 	g++ -std=c++17 training.cpp -o train.o

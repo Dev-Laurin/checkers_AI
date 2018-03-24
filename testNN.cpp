@@ -390,22 +390,20 @@ TEST_CASE("Saving and Loading NN from file. ",
 	NN blondie24(nodes, "blondie");
 	blondie24.saveToFile("testGeneratedFiles/" +
 		blondie24.familyName + "/GEN" + to_string(blondie24.generation) +
-		+"/NN" + to_string(blondie24.generation) + ".bin");
-	blondie24.loadFromFile("testGeneratedFiles/blondie/GEN0/NN0.bin");
+		+"/NN" + to_string(blondie24.generation) + ".txt");
+	blondie24.loadFromFile("testGeneratedFiles/blondie/GEN0/NN0.txt");
 
 	NN copy = blondie24;
 	copy.generation+=1;
 	copy.saveToFile("testGeneratedFiles/" +
 		copy.familyName + "/GEN" + to_string(copy.generation) +
-		+"/NN" + to_string(copy.generation) + ".bin");
+		+"/NN" + to_string(copy.generation) + ".txt");
 
-	ifstream file("testGeneratedFiles/blondie/GEN0/NN0.bin", std::ios::binary);
-	ifstream file1("testGeneratedFiles/blondie/GEN1/NN1.bin", std::ios::binary);
+	ifstream file("testGeneratedFiles/blondie/GEN0/NN0.txt");
+	ifstream file1("testGeneratedFiles/blondie/GEN1/NN1.txt");
 
 	REQUIRE(file);
 	REQUIRE(file1);
-
-	REQUIRE(checkIfFilesAreEqual(file, file1)==0);
 }
 
 TEST_CASE("Test Loading NN file.", "{32, 40, 10, 1}"){
@@ -414,27 +412,30 @@ TEST_CASE("Test Loading NN file.", "{32, 40, 10, 1}"){
 	NN blondie24(nodes, "blondie");
 
 	NN copy = blondie24;
+	REQUIRE(copy==blondie24); 
 
 	//Check saving files & loading
 	blondie24.saveToFile("testGeneratedFiles/" +
 		blondie24.familyName + "/GEN" + to_string(blondie24.generation) +
-		+"/NN" + to_string(blondie24.generation) + ".bin");
+		+"/NN" + to_string(blondie24.generation) + ".txt");
+
 	blondie24.becomeOffspring(); //change the NN
+	cout << "Generation #: " << blondie24.generation << endl; 
+
 	blondie24.saveToFile("testGeneratedFiles/" +
 		blondie24.familyName + "/GEN" + to_string(blondie24.generation) +
-		+"/NN" + to_string(blondie24.generation) + ".bin");
-	blondie24.loadFromFile("testGeneratedFiles/blondie/GEN0/NN0.bin");
+		+"/NN" + to_string(blondie24.generation) + ".txt");
 
+	blondie24.loadFromFile("testGeneratedFiles/blondie/GEN0/NN0.txt");
+	blondie24.saveToFile("testGeneratedFiles/blondie/GEN0/After.txt");
 	//Check the NN loading
 	REQUIRE(blondie24==copy);
 
-	ifstream file("testGeneratedFiles/blondie/GEN0/NN0.bin", std::ios::binary);
-	ifstream file2("testGeneratedFiles/blondie/GEN1/NN1.bin", std::ios::binary);
+	ifstream file("testGeneratedFiles/blondie/GEN0/NN0.txt");
+	ifstream file2("testGeneratedFiles/blondie/GEN1/NN1.txt");
 
 	REQUIRE(file);
 	REQUIRE(file2);
-
-	REQUIRE(checkIfFilesAreEqual(file, file2)!=0);
 }
 
 
@@ -650,6 +651,7 @@ TEST_CASE("Make Directory via boost library test."){
 	boost::filesystem::create_directories(dir);
 	REQUIRE(boost::filesystem::is_directory(dir));
 }
+
 TEST_CASE("Testing Boost Serialization") {
     vector<int> blond{32, 40, 10, 1};
     NN test1(blond, "blondie");
@@ -661,11 +663,25 @@ TEST_CASE("Testing Boost Serialization") {
     boost::archive::text_oarchive oa(ofs);
     oa << test1;
     ofs.close();
-    std::ifstream ifs("testGeneratedFiles/test.txt", std::ios::binary);
+    std::ifstream ifs("testGeneratedFiles/test.txt");
     boost::archive::text_iarchive ia(ifs);
     // read class state from archive
     ia >> test2;
     ifs.close();
     //Make sure the tests are the same
     REQUIRE(test1==test2);
+}
+
+TEST_CASE("Test new NN saveToFile and loadFromFile." , 
+	"Using boost filesaving."){
+	vector<int> blond{32, 40, 10, 1};
+    NN test1(blond, "blondie");
+
+    test1.saveToFile("testGeneratedFiles/saveFileTest.txt");
+
+    NN test2(blond, "blondie2"); 
+    REQUIRE(test1!=test2); 
+
+    test2.loadFromFile("testGeneratedFiles/saveFileTest.txt");  
+    REQUIRE(test1==test2); 
 }
