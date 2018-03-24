@@ -412,7 +412,7 @@ TEST_CASE("Test Loading NN file.", "{32, 40, 10, 1}"){
 	NN blondie24(nodes, "blondie");
 
 	NN copy = blondie24;
-	REQUIRE(copy==blondie24); 
+	REQUIRE(copy==blondie24);
 
 	//Check saving files & loading
 	blondie24.saveToFile("testGeneratedFiles/" +
@@ -420,7 +420,7 @@ TEST_CASE("Test Loading NN file.", "{32, 40, 10, 1}"){
 		+"/NN" + to_string(blondie24.generation) + ".txt");
 
 	blondie24.becomeOffspring(); //change the NN
-	cout << "Generation #: " << blondie24.generation << endl; 
+	cout << "Generation #: " << blondie24.generation << endl;
 
 	blondie24.saveToFile("testGeneratedFiles/" +
 		blondie24.familyName + "/GEN" + to_string(blondie24.generation) +
@@ -657,15 +657,14 @@ TEST_CASE("Testing Boost Serialization") {
 
     NN test1(blond, "blondie");
     NN test2(blond, "blondie");
-    if (test1==test2) {
-        cout << "Two randomly generated networks are the same?" << endl;
-    }
-    std::ofstream ofs("testGeneratedFiles/test.txt");
-    boost::archive::text_oarchive oa(ofs);
+    REQUIRE (test1 != test2);
+
+    std::ofstream ofs("testGeneratedFiles/test.nn", std::ios::binary);
+    boost::archive::binary_oarchive oa(ofs);
     oa << test1;
     ofs.close();
-    std::ifstream ifs("testGeneratedFiles/test.txt");
-    boost::archive::text_iarchive ia(ifs);
+    std::ifstream ifs("testGeneratedFiles/test.nn", std::ios::binary);
+    boost::archive::binary_iarchive ia(ifs);
     // read class state from archive
     ia >> test2;
     ifs.close();
@@ -673,18 +672,18 @@ TEST_CASE("Testing Boost Serialization") {
     REQUIRE(test1==test2);
 }
 
-TEST_CASE("Test new NN saveToFile and loadFromFile." , 
+TEST_CASE("Test new NN saveToFile and loadFromFile." ,
 	"Using boost filesaving."){
 	vector<int> blond{32, 40, 10, 1};
     NN test1(blond, "blondie");
 
     test1.saveToFile("testGeneratedFiles/saveFileTest.txt");
 
-    NN test2(blond, "blondie2"); 
-    REQUIRE(test1!=test2); 
+    NN test2(blond, "blondie2");
+    REQUIRE(test1!=test2);
 
-    test2.loadFromFile("testGeneratedFiles/saveFileTest.txt");  
-    REQUIRE(test1==test2); 
+    test2.loadFromFile("testGeneratedFiles/saveFileTest.txt");
+    REQUIRE(test1==test2);
 }
 
 
