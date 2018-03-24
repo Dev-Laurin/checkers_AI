@@ -96,6 +96,15 @@
 					<Add option="-flto" />
 				</Linker>
 			</Target>
+			<Target title="tBlondie">
+				<Option output="blondietourn" prefix_auto="1" extension_auto="1" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-std=c++1z" />
+				</Compiler>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-O2" />
@@ -108,8 +117,8 @@
 			<Add library="sfml-graphics" />
 			<Add library="sfml-window" />
 			<Add library="sfml-system" />
-			<Add library="libboost_system-mgw72-mt-x64-1_66" />
-			<Add library="libboost_filesystem-mgw72-mt-x64-1_66" />
+			<Add library="libboost_system-mgw72-mt-s-x64-1_66" />
+			<Add library="libboost_filesystem-mgw72-mt-s-x64-1_66" />
 			<Add library="libboost_serialization-mgw72-mt-s-x64-1_66" />
 			<Add directory="$(#boost.lib)" />
 		</Linker>
@@ -119,12 +128,6 @@
 		</Unit>
 		<Unit filename="NN2Trainer.cpp">
 			<Option target="Bigg" />
-		</Unit>
-		<Unit filename="Test/testBoardEval.cpp">
-			<Option target="playmove" />
-		</Unit>
-		<Unit filename="Test/testplaygame.cpp">
-			<Option target="playgame" />
 		</Unit>
 		<Unit filename="alphabeta.h">
 			<Option target="Debug" />
@@ -157,6 +160,7 @@
 			<Option target="blondietourn" />
 			<Option target="Bigg" />
 			<Option target="playmove" />
+			<Option target="tBlondie" />
 		</Unit>
 		<Unit filename="neuralNetwork.h">
 			<Option target="&lt;{~None~}&gt;" />
@@ -172,6 +176,7 @@
 			<Option target="blondietourn" />
 			<Option target="Release" />
 			<Option target="Bigg" />
+			<Option target="tBlondie" />
 		</Unit>
 		<Unit filename="testBoard.cpp">
 			<Option target="Test" />
@@ -181,6 +186,15 @@
 		</Unit>
 		<Unit filename="testNN.cpp">
 			<Option target="testNN" />
+		</Unit>
+		<Unit filename="test/testBoardEval.cpp">
+			<Option target="playmove" />
+		</Unit>
+		<Unit filename="test/testplaygame.cpp">
+			<Option target="playgame" />
+		</Unit>
+		<Unit filename="tournament.cpp">
+			<Option target="tBlondie" />
 		</Unit>
 		<Extensions>
 			<code_completion />

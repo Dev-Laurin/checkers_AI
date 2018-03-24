@@ -3,20 +3,69 @@
 	//to get errors early rather than later with NN.
 //3-12-18
 
+#include <queue>
+#include <algorithm>
 #include <iostream>
 using std::cout;
 using std::endl;
+
 #include <vector>
 using std::vector;
+
 #include "neuralNetwork.h"
+
 #include <boost/filesystem.hpp>
+using namespace boost::filesystem;
 
 #include "playgame.h"
-#include <algorithm>
+
+
+class gameList {
+public:
+    std::queue<int> pl1;
+    std::queue<int> pl2;
+//Accessors
+    int size() {
+        return pl1.size();
+    }
+    int p1() {
+        return pl1.front();
+    }
+    int p2() {
+        return pl2.front();
+    }
+// Add/remove games
+    void addGame(int a, int b) {
+        pl1.push(a);
+        pl2.push(b);
+    }
+
+    void popGame() {
+        pl1.pop();
+        pl2.pop();
+    }
+//Able to save
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version) {
+        ar & pl1;
+        ar & pl2;
+    }
+};
+
 
 int main(){
- 	const int population = 30;
- 	vector<AI_Player>NeuralNets(population); 
+  const int population = 30;
+  string tournName = "Blondie";
+  string tournPath = "tournaments/" + tournName;
+  if (!is_directory(tournPath)) {
+    cout << "directory doesn't exist!";
+    create_directories(tournPath);
+  }
+  if (exists(tournPath + "playList.txt")){
+  }
+  return 0;
+}
+/*
 
 	vector<int> nodes{32, 40, 10, 1};
 
@@ -188,3 +237,4 @@ int main(){
 
 	return 0;
 }
+*/

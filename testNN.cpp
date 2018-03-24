@@ -654,6 +654,7 @@ TEST_CASE("Make Directory via boost library test."){
 
 TEST_CASE("Testing Boost Serialization") {
     vector<int> blond{32, 40, 10, 1};
+
     NN test1(blond, "blondie");
     NN test2(blond, "blondie");
     if (test1==test2) {
@@ -684,4 +685,13 @@ TEST_CASE("Test new NN saveToFile and loadFromFile." ,
 
     test2.loadFromFile("testGeneratedFiles/saveFileTest.txt");  
     REQUIRE(test1==test2); 
+}
+
+
+TEST_CASE("Testing clamp") {
+    vector<int> blond{32, 40, 10, 1};
+    NN test1(blond, "blondie");
+    REQUIRE(test1.clmp(1.5, 0.0, 2.0)==1.5);
+    REQUIRE(test1.clmp(0.5, 1.0, 2.0)==1.0);
+    REQUIRE(test1.clmp(2.5, 1.0, 2.0)==2.0);
 }

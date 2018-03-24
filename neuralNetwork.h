@@ -47,11 +47,12 @@ using std::min;
 #include "board.h"
 
 
-
 #ifndef CONSTS
 #define CONSTS
-typedef double sNN;
+typedef double sNN;  template <typename Archive>
+
 unsigned const static int MAXMOVES = 32;
+
 constexpr sNN LOWEST = -10000;
 constexpr sNN HIGHEST = 10000;
 #endif // CONSTS
@@ -72,6 +73,7 @@ public:
     time_t timeStart;
     time_t timeLimit;
     bool timeExceeded = false;
+
     int depthReached = 0;
     std::unordered_map<stdBoard, double> boardMem;
     unsigned int cacheHit = 0;
@@ -84,15 +86,17 @@ public:
     int draws = 0;
 
     // Returns the value of the board given.
-    // A virtual function to be implimented by the specific AI.
+
+    // A virtual function to be implemented by the specific AI.
     virtual sNN calculateBoard(stdBoard & board) = 0 ;
+
 
     // Returns a move given a board and a side.
     virtual stdBoard getMove(stdBoard & board, bool side=false);
     // Beta side of the board
-    sNN beta(stdBoard & board, int depth, sNN a, sNN b);
+    sNN beta(stdBoard & board, int depth, int maxDepth, sNN a, sNN b);
     //  Alpha side of the board
-    sNN alpha(stdBoard & board, int depth, sNN a, sNN b);
+    sNN alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b);
     // Handles starting up the alpha-beta search
     // sNN alphabeta(stdBoard board, unsigned int side = 0);
 
@@ -131,11 +135,14 @@ public:
   std::uniform_real_distribution<double> distro;
 
   sNN calculateBoard(stdBoard & board) {
+
     sNN count = distro(gen);
-    cout << "I'm Random!" << endl;
+    //cout << "I'm Random!" << endl;
+
     return count;
   }
   virtual stdBoard getMove(stdBoard & board, bool side=false);
+  ~RandomPlayer()=default;
 };
 
 class PieceCount: public AIPlayer
@@ -178,12 +185,13 @@ public:
 
 	//Data Members
 	std::vector<std::vector<double>> network;
-  std::vector<std::vector<double>> nodes; //Count of nodes per layer
-  std::vector<int> nodeSizes;
-  std::vector<vector<double>> sigmas; //the change in weights
-  virtual ~NN()=default;
-  template <typename Archive>
-  void serialize(Archive &ar, const unsigned int version) {
+
+    std::vector<std::vector<double>> nodes; //Count of nodes per layer
+    std::vector<int> nodeSizes;
+    std::vector<vector<double>> sigmas; //the change in weights
+    virtual ~NN()=default;
+    template <typename Archive>
+    void serialize(Archive &ar, const unsigned int version) {
         ar & boost::serialization::base_object<AIPlayer>(*this);
         ar & network;
         ar & nodes;

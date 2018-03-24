@@ -73,10 +73,10 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
       }
       std::sort(moveList,moveList+moves);
       selectMove = moves - 1;
-      sNN moveVal = beta(moveList[moves-1],searchDepth, LOWEST*2, HIGHEST*2);
+      sNN moveVal = beta(moveList[moves-1], 0, searchDepth, LOWEST*2, HIGHEST*2);
       sNN tempMove;
       for (int i = moves-2; i >= 0; --i) {
-          tempMove = beta(moveList[i],searchDepth, LOWEST * 2, HIGHEST * 2);
+          tempMove = beta(moveList[i], 0, searchDepth, LOWEST * 2, HIGHEST * 2);
           //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
           //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
           if (tempMove > moveVal) {
@@ -107,7 +107,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
 */
 
 
-sNN AIPlayer::alpha(stdBoard & board, int depth, sNN a, sNN b) {
+sNN AIPlayer::alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
   stdBoard moveList[MAXMOVES];
   int moves;
   moves = board.genMoves(moveList,0);
@@ -127,48 +127,48 @@ sNN AIPlayer::alpha(stdBoard & board, int depth, sNN a, sNN b) {
       timeExceeded = true;
       return moveList[moves-1].score;
     }
-    if (depth <= 1) { //Out of depth, return!)
+    if (depth >= maxDepth) { //Out of depth, return!)
       return moveList[moves-1].score;
     }
-    sNN rVal = beta(moveList[moves-1],depth-1, a, b);
+    sNN rVal = beta(moveList[moves-1],depth+1, maxDepth, a, b);
     for (int i = moves - 2;i >= 0; --i) {
       a = std::max(rVal, a);
       if (b <= a) {  //I can force a better move than the worse the opponent can, so he won't pick this.
         ++trimTotal;
         return rVal;
       }
-      rVal = max(rVal,beta(moveList[i],depth-1, a, b));
+      rVal = max(rVal,beta(moveList[i],depth+1, maxDepth, a, b));
     }
     //Take the highest value move.
     return rVal;
   } else {
     //No moves available.  We lose!
     //We don't like this, obviously.
-    return LOWEST - depth; //more depth means we are losing quicker, avoid.
+    return LOWEST + depth; //more depth means we are losing quicker, avoid.
   }
 
 }
 
 
-sNN AIPlayer::beta(stdBoard & board, int depth, sNN a, sNN b) {
+sNN AIPlayer::beta(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
   stdBoard moveList[MAXMOVES];
   int moveCount;
   moveCount = board.genMoves(moveList,1);
   if (moveCount) {
-      sNN rVal = alpha(moveList[0],depth, a, b);
+      sNN rVal = alpha(moveList[0],depth, maxDepth, a, b);
       for (int i = 1;i<moveCount;++i) {
         b = std::min(rVal, b);
         if (b <= a) { //I can force a worse move than the best found, stop looking.
           ++trimTotal;
           return rVal;
         }
-        rVal = min(rVal,alpha(moveList[i],depth, a, b));
+        rVal = min(rVal,alpha(moveList[i],depth, maxDepth, a, b));
       }
       return rVal;
   } else {
     //No moves available.  We win!
     //We like this, obviously.
-    return HIGHEST+depth; //more depth means it is losing quicker, prefer.
+    return HIGHEST-depth; //less depth means it is losing quicker, prefer.
   }
 }
 
