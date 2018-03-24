@@ -129,12 +129,6 @@
 		<Unit filename="NN2Trainer.cpp">
 			<Option target="Bigg" />
 		</Unit>
-		<Unit filename="Test/testBoardEval.cpp">
-			<Option target="playmove" />
-		</Unit>
-		<Unit filename="Test/testplaygame.cpp">
-			<Option target="playgame" />
-		</Unit>
 		<Unit filename="alphabeta.h">
 			<Option target="Debug" />
 			<Option target="Test" />
@@ -192,6 +186,12 @@
 		</Unit>
 		<Unit filename="testNN.cpp">
 			<Option target="testNN" />
+		</Unit>
+		<Unit filename="test/testBoardEval.cpp">
+			<Option target="playmove" />
+		</Unit>
+		<Unit filename="test/testplaygame.cpp">
+			<Option target="playgame" />
 		</Unit>
 		<Unit filename="tournament.cpp">
 			<Option target="tBlondie" />

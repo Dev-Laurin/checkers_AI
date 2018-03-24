@@ -145,7 +145,7 @@
 	<boost/archive/binary_oarchive.hpp>
 	"board.h"
 
-1521765225 source:c:\cygwin64\home\jason\checkers_ai\testnn.cpp
+1521770515 source:c:\cygwin64\home\jason\checkers_ai\testnn.cpp
 	<iostream>
 	<fstream>
 	<vector>
@@ -159,7 +159,7 @@
 	"board.h"
 	"neuralNetwork.h"
 
-1521771157 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
+1521843137 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -180,7 +180,7 @@
 1521761221 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
-1521765225 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
+1521844116 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
 1519177737 c:\cygwin64\home\jason\checkers_ai\catch2.hpp
