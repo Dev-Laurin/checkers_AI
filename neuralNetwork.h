@@ -49,7 +49,7 @@ using std::min;
 
 #ifndef CONSTS
 #define CONSTS
-typedef double sNN;  template <typename Archive>
+typedef double sNN;
 
 unsigned const static int MAXMOVES = 32;
 
@@ -176,8 +176,8 @@ public:
 	void getBoardInput(stdBoard & board);
 	double boardCount(stdBoard & board);
 
-  int saveToFile(string filename); 
-  int loadFromFile(string filename); 
+  int saveToFile(string filename);
+  int loadFromFile(string filename);
 
 	//generate offspring, randomize this NN
 		//(assuming this is a copy of the original)
@@ -222,7 +222,7 @@ int saveToFile(const NN & nn, string filename);
 // //Filename = FamilyName/GEN#
 // //EX:  Blondie24/GEN100/NNpp
 // int loadFromFile(NN & nn, string filename);
-int loadFromFile(NN& nn, string filename); 
+int loadFromFile(NN& nn, string filename);
 
 #endif /* NEURAL_NETWORK_H */
 
