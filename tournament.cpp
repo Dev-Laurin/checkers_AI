@@ -6,8 +6,11 @@
 #include <queue>
 #include <algorithm>
 #include <iostream>
+#include <iomanip>
 using std::cout;
 using std::endl;
+using std::setw;
+using std::setfill;
 
 #include <vector>
 using std::vector;
@@ -28,24 +31,26 @@ using namespace boost::filesystem;
 
 class gameList {
 public:
-    int pop;
+    int population;
     std::queue<int> pl1;
     std::queue<int> pl2;
     vector<int> scores;
     vector<int> wins;
     vector<int> losses;
     vector<int> ties;
+    int gameNum=0;
+    int tournCount = 0;
 
 //Constructor
     gameList() {
-      pop = 30;
+      population = 30;
       scores.resize(30,0);
       wins.resize(30,0);
       losses.resize(30,0);
       ties.resize(30,0);
     }
     gameList(int s) {
-      pop = s;
+      population = s;
       scores.resize(s,0);
       wins.resize(s,0);
       losses.resize(s,0);
@@ -68,7 +73,7 @@ public:
         pl2.push(b);
     }
 
-    void popGame() {
+    void pop() {
         pl1.pop();
         pl2.pop();
     }
@@ -76,13 +81,15 @@ public:
 //Able to save
     template <typename Archive>
     void serialize(Archive &ar, const unsigned int version) {
-        ar & pop;
+        ar & population;
         ar & pl1;
         ar & pl2;
         ar & scores;
         ar & wins;
         ar & losses;
         ar & ties;
+        ar & gameNum;
+        ar & tournCount;
     }
 };
 
@@ -92,7 +99,7 @@ int main(){
   string tournName = "blondie";
   vector<int> nodes{32, 40, 10, 1};
   string tournPath = "tournaments/" + tournName;
-
+  vector<stdBoard> gameBoards(201);
   gameList gL(population);
   std::uniform_int_distribution<int> distro(0, population-1);
   NN p1, p2;
@@ -121,146 +128,118 @@ int main(){
     ofs.close();
   }
   for (int i = 0; i < population; ++i) {
-    if (!exists(tournPath + "/" + tournName + ".nn")) {
-      std::ofstream ofs(tournPath + "/" + tournName + ".nn");
+    std::stringstream num;
+    num << setfill('0') << setw(3) << i;
+    if (!exists(tournPath + "/" + tournName + num.str() + ".nn")) {
+      cout << "Neural Network not found, creating!";
+      std::ofstream ofs(tournPath + "/" + tournName + num.str() + ".nn", std::ios::binary);
       boost::archive::binary_oarchive oa(ofs);
       oa << NN(nodes, tournName);
       ofs.close();
     }
   }
+  while (gL.size() > 0) {
+    //Load the relevant NNs
+    cout << "Network " << gL.p1() << " vs " << gL.p2() << endl;
+    std::stringstream num;
+    num << setfill('0') << setw(3) << gL.p1();
+    string player1 = tournPath + "/" + tournName + num.str() + ".nn";
+    p1.loadFromFile(player1);
+    num.str("");
+    num << setfill('0') << setw(3) << gL.p2();
+    string player2 = tournPath + "/" + tournName + num.str() + ".nn";
+    p2.loadFromFile(player2);
+    if (p1 == p2) {
+      cout << "Error, Networks are the same!" << endl;
+      return 1;
+    }
+    int gameResult = playGame(p1, p2, gameBoards);
+    if (gameResult==0) { //tie
+      ++gL.ties[gL.p1()];
+      ++gL.ties[gL.p2()];
+    } else if (gameResult==1) { //p1 wins
+      ++gL.wins[gL.p1()];
+      ++gL.losses[gL.p2()];
+    } else {
+      ++gL.losses[gL.p1()];
+      ++gL.wins[gL.p2()];
+    }
+    gL.scores[gL.p1()] += gameResult;
+    gL.scores[gL.p2()] -= gameResult;
+    //Game has been completed and tallied.
+    ++gL.gameNum;
+    num.clear();
+    num << setfill('0') << setw(3) << gL.tournCount;
+    string tPath = tournPath + "/t" + num.str();
+    create_directories(tPath);
+    num.clear();
+    num << setfill('0') << setw(3) << gL.gameNum;
+    std::ofstream file(tPath + "/game" + num.str() + ".txt");
+    if(!file){
+      cout << "Game File Error." << endl;
+      return -1;
+    }
+    if(boost::filesystem::is_directory(tPath)){
+      if(gameResult > 0){
+        //NeuralNets[i] won
+        file << "winner: " << p1.familyName;
+        file << " " << p1.generation;
+        file << " " << gL.p1() << endl;
 
+        file << p2.familyName;
+        file << " " << p2.generation;
+        file << " " << gL.p2() << endl;
+      }
+      else if(gameResult<0){
+        //NeuralNets[randIndex]
+        file << "winner: " << p2.familyName;
+        file << " " << p2.generation;
+        file << " " << gL.p2() << endl;
+
+        file << p1.familyName;
+        file << " " << p1.generation;
+        file << " " << gL.p1() << endl;
+      }
+      else{
+        //draw
+        file << p1.familyName;
+        file << " " << p1.generation;
+        file << " " << gL.p1() << endl;
+
+        file << p2.familyName;
+        file << " " << p2.generation;
+        file << " " << gL.p2() << endl;
+      }
+
+      //Save all the boards in the game into a file
+      for(unsigned int k=0; k<gameBoards.size(); ++k){
+        file << gameBoards[k].str() << endl;
+        file << endl;
+      }
+      file.close();
+    }
+    gL.pop(); //Knock off the game we just did.
+    //save the state.
+    std::ofstream ofs(tournPath + "/gamelist.txt");
+    boost::archive::text_oarchive oa(ofs);
+    oa << gL;
+    ofs.close();
+  }
+  //Playing games is over.  Evolve.
+  vector<int> rankings;
+  for(int i = 0;i<gL.population;++i) {
+    rankings.push_back(i);
+  }
+  std::sort(rankings.begin(),rankings.end(),[&](int a, int b) {
+            return gL.scores[a] > gL.scores[b];
+            });
+  for(int i = 0;i < gL.population; ++i) {
+    cout << "NN " << rankings[i] << "with score " << gL.scores[rankings[i]] << endl;
+  }
 
   return 0;
 }
 /*
-
-	vector<int> nodes{32, 40, 10, 1};
-
-	//file variables
-	string parentDirectory = "NeuralNetworkFiles/";
-	boost::filesystem::path current_path(boost::filesystem::current_path());
-
-	//Population = 30
-	for(int i=0; i<population; ++i){
-		NeuralNets[i] = NN(nodes, "blondie");
-
-		//First generation
-		string initialPath = parentDirectory + NeuralNets[i].familyName +
-			"/" + "GEN" + to_string(NeuralNets[i].generation) +
-			"/";
-		boost::filesystem::path path = current_path;
-		string slash  = "/" + initialPath;
-		path += slash.c_str();
-		boost::filesystem::path dir(path);
-		boost::filesystem::create_directories(dir);
-		if(boost::filesystem::is_directory(dir)){
-			NeuralNets[i].saveToFile(initialPath + "NN" + to_string(i));
-		}
-		else{
-			cout << "Error, directory not created in ";
-			cout << "before-tournament." << endl;
-			cout << path << endl;
-			return -1;
-		}
-
-	}
-
-	int tournamentNum = -1;
-  cout << "Starting Tournament!" << endl;
-
-	//For choosing random opponent within NNs
-	std::mt19937_64 gen(time(0));
-	std::uniform_int_distribution<int> dis(0,NeuralNets.size());
-
-	while(true){
-
-		//150 game tournament = 30 NNs * 5 games each
-		++tournamentNum;
-		int gamesPerNetwork = 5;
-		int gameNum = 0;
-		for(unsigned int i=0; i<NeuralNets.size(); ++i){
-			//Each NN playes 5 games as Red selecting
-				//random NN opponent
-
-			for(int games=0; games<gamesPerNetwork; ++games){
-				//Choose random opponent
-				unsigned int randIndex;
-				do { //Prevent the AI from playing itself.
-          			randIndex = dis(gen);
-				} while (randIndex == i);
-
-				cout << "NN " << i << " vs NN " << randIndex << "!" << endl;
-				//Play a game
-				boost::filesystem::path allPath = current_path;
-				string gameDirectory = parentDirectory + "TOUR" +
-					to_string(tournamentNum) + "/GAME" + to_string(gameNum);
-				string slash = "/" + gameDirectory;
-				allPath += slash.c_str();
-				//Make the path
-				boost::filesystem::path dir(allPath);
-				boost::filesystem::create_directories(dir);
-
-				vector<stdBoard> gameBoards(200);
-				if(boost::filesystem::is_directory(dir)){
-
-					++gameNum;
-          cout << "The Game begins!" << endl;
-					int results = playGame(NeuralNets[i], NeuralNets[randIndex], gameBoards);
-
-					ofstream file(gameDirectory + ".txt");
-					if(!file){
-						cout << "Game File Error." << endl;
-						return -1;
-					}
-					if(results>0){
-						//NeuralNets[i] won
-						file << "winner: " << NeuralNets[i].familyName;
-						file << " " << NeuralNets[i].generation;
-						file << " " << i << endl;
-
-						file << NeuralNets[randIndex].familyName;
-						file << " " << NeuralNets[randIndex].generation;
-						file << " " << randIndex << endl;
-					}
-					else if(results<0){
-						//NeuralNets[randIndex]
-						file << "winner: " << NeuralNets[randIndex].familyName;
-						file << " " << NeuralNets[randIndex].generation;
-						file << " " << randIndex << endl;
-
-						file << NeuralNets[i].familyName;
-						file << " " << NeuralNets[i].generation;
-						file << " " << i << endl;
-					}
-					else{
-						//draw
-						file << NeuralNets[randIndex].familyName;
-						file << " " << NeuralNets[randIndex].generation;
-						file << " " << randIndex << endl;
-
-						file << NeuralNets[i].familyName;
-						file << " " << NeuralNets[i].generation;
-						file << " " << i << endl;
-					}
-
-					//Save all the boards in the game into a file
-					for(unsigned int k=0; k<gameBoards.size(); ++k){
-						file << gameBoards[k].str() << endl;
-						file << endl;
-					}
-					file.close();
-				}
-				else{
-					cout << "Game DIR not correct." << endl;
-					cout << gameDirectory << endl;
-					cout << allPath << endl;
-					return -1;
-				}
-
-
-			}
-
-		}
 
 		//Tournament ended, choose the top 15 Neural Networks that
 			//will generate children

@@ -470,13 +470,13 @@ stdBoard RandomPlayer::getMove(stdBoard & board, bool side) {
 
 int NN::saveToFile(string filename){
   //Boost file saving
-  std::ofstream ofs(filename);
+  std::ofstream ofs(filename, std::ios::binary);
   if(!ofs){
     cout << "Error opening file for NN saving: " << filename;
     cout << endl;
     return -1;
   }
-  boost::archive::text_oarchive oa(ofs);
+  boost::archive::binary_oarchive oa(ofs);
   oa << *this;
   ofs.close();
 
@@ -484,12 +484,12 @@ int NN::saveToFile(string filename){
 }
 
 int NN::loadFromFile(string filename){
-  ifstream file(filename);
+  ifstream file(filename, std::ios::binary);
   if(!file){
     cout << "Error opening NN file: " << filename << endl;
     return -1;
   }
-  boost::archive::text_iarchive ia(file);
+  boost::archive::binary_iarchive ia(file);
   ia >> *this;
   file.close();
 
@@ -498,13 +498,13 @@ int NN::loadFromFile(string filename){
 
 int saveToFile(const NN & nn, string filename){
     //Boost file saving
-  std::ofstream ofs(filename);
+  std::ofstream ofs(filename, std::ios::binary);
   if(!ofs){
     cout << "Error opening file for NN saving: " << filename;
     cout << endl;
     return -1;
   }
-  boost::archive::text_oarchive oa(ofs);
+  boost::archive::binary_oarchive oa(ofs);
   oa << nn;
   ofs.close();
 
@@ -512,12 +512,12 @@ int saveToFile(const NN & nn, string filename){
 }
 
 int loadFromFile(NN& nn, string filename){
-  ifstream file(filename);
+  ifstream file(filename, std::ios::binary);
   if(!file){
     cout << "Error opening NN file: " << filename << endl;
     return -1;
   }
-  boost::archive::text_iarchive ia(file);
+  boost::archive::binary_iarchive ia(file);
   ia >> nn;
   file.close();
 
