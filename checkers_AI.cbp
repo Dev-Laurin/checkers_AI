@@ -105,6 +105,15 @@
 					<Add option="-std=c++1z" />
 				</Compiler>
 			</Target>
+			<Target title="tBigg">
+				<Option output="biggtourn" prefix_auto="1" extension_auto="1" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++1z" />
+				</Compiler>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-O2" />
@@ -167,6 +176,7 @@
 			<Option target="Bigg" />
 			<Option target="playmove" />
 			<Option target="tBlondie" />
+			<Option target="tBigg" />
 		</Unit>
 		<Unit filename="neuralNetwork.h">
 			<Option target="&lt;{~None~}&gt;" />
@@ -183,6 +193,10 @@
 			<Option target="Release" />
 			<Option target="Bigg" />
 			<Option target="tBlondie" />
+			<Option target="tBigg" />
+		</Unit>
+		<Unit filename="tBigg.cpp">
+			<Option target="tBigg" />
 		</Unit>
 		<Unit filename="testBoard.cpp">
 			<Option target="Test" />
@@ -195,6 +209,7 @@
 		</Unit>
 		<Unit filename="tournament.cpp">
 			<Option target="tBlondie" />
+			<Option target="tBigg" />
 		</Unit>
 		<Extensions>
 			<code_completion />

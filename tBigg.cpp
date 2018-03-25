@@ -97,13 +97,13 @@ public:
 
 int main(){
   const int population = 30;
-  string tournName = "blondie";
-  vector<int> nodes{32, 40, 10, 1};
+  string tournName = "bigg";
+  vector<int> nodes{128, 128, 40, 10, 1};
   string tournPath = "tournaments/" + tournName;
   vector<stdBoard> gameBoards;
   gameList gL(population);
   std::uniform_int_distribution<int> distro(0, population-1);
-  NN p1, p2;
+  NN2 p1, p2;
 
   if (!is_directory(tournPath)) {
     cout << "directory doesn't exist!";
@@ -131,11 +131,11 @@ int main(){
   for (int i = 0; i < population; ++i) {
     std::stringstream num;
     num << setfill('0') << setw(3) << i;
-    if (!exists(tournPath + "/" + tournName + num.str() + ".nn")) {
+    if (!exists(tournPath + "/" + tournName + num.str() + ".nn2")) {
       cout << "Neural Network not found, creating!" << endl;
-      std::ofstream ofs(tournPath + "/" + tournName + num.str() + ".nn", std::ios::binary);
+      std::ofstream ofs(tournPath + "/" + tournName + num.str() + ".nn2", std::ios::binary);
       boost::archive::binary_oarchive oa(ofs);
-      oa << NN(nodes, tournName + num.str());
+      oa << NN2(nodes, tournName + num.str());
       ofs.close();
     }
   }
@@ -145,11 +145,11 @@ int main(){
       cout << "Network " << gL.p1() << " vs " << gL.p2() << endl;
       std::stringstream num;
       num << setfill('0') << setw(3) << gL.p1();
-      string player1 = tournPath + "/" + tournName + num.str() + ".nn";
+      string player1 = tournPath + "/" + tournName + num.str() + ".nn2";
       p1.loadFromFile(player1);
       num.str("");
       num << setfill('0') << setw(3) << gL.p2();
-      string player2 = tournPath + "/" + tournName + num.str() + ".nn";
+      string player2 = tournPath + "/" + tournName + num.str() + ".nn2";
       p2.loadFromFile(player2);
       if (p1 == p2) {
         cout << "Error, Networks are the same!" << endl;
@@ -236,20 +236,20 @@ int main(){
               return gL.scores[a] > gL.scores[b];
               });
     for(int i = 0;i < gL.population; ++i) {
-      cout << "NN " << rankings[i] << " with score " << gL.scores[rankings[i]]
+      cout << "NN2 " << rankings[i] << " with score " << gL.scores[rankings[i]]
        << " Wins: " << gL.wins[rankings[i]] << " Losses: " << gL.losses[rankings[i]]
        << " Ties: " << gL.ties[rankings[i]] << endl;
     }
     for (int i = 0; i < population/5; ++i) {
-      NN evolve;
+      NN2 evolve;
       stringstream num;
       num << setfill('0') << setw(3) << rankings[i];
-      string fileName = tournPath + "/" + tournName + num.str() + ".nn";
+      string fileName = tournPath + "/" + tournName + num.str() + ".nn2";
       evolve.loadFromFile(fileName);
       evolve.becomeOffspring();
       num.str("");
       num << setfill('0') << setw(3) << rankings[population-i-1];
-      fileName = tournPath + "/" + tournName + num.str() + ".nn";
+      fileName = tournPath + "/" + tournName + num.str() + ".nn2";
       evolve.saveToFile(fileName);
     }
 

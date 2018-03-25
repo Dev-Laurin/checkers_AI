@@ -69,7 +69,7 @@ public:
     int montyK = 1; // (w-l)/(w+l+k)
     int generation = 0; //Starts out as parent
     string familyName = "";
-    unsigned int searchDepth = 6;
+    unsigned int searchDepth = 4;
     time_t timeStart;
     time_t timeLimit;
     bool timeExceeded = false;
@@ -172,9 +172,9 @@ public:
 	//Blanck constructor
 	NN();
 	//Given a board, calculate the output of the NN
-	double calculateBoard(stdBoard & board);
+	virtual double calculateBoard(stdBoard & board);
 	//Puts board input into nodes vector in user specified index
-	void getBoardInput(stdBoard & board);
+	virtual void getBoardInput(stdBoard & board);
 	double boardCount(stdBoard & board);
 
   int saveToFile(string filename);
@@ -209,7 +209,9 @@ class NN2: public NN
 {
 public:
   NN2(std::vector<int>& nS, string familyname) : NN(nS, familyname){}
+  NN2() : NN() {}
   void getBoardInput(stdBoard & board);
+
 };
 
 bool operator!=(const NN2 & lhs, const NN2 & rhs);
@@ -224,6 +226,12 @@ int saveToFile(const NN & nn, string filename);
 // //EX:  Blondie24/GEN100/NNpp
 // int loadFromFile(NN & nn, string filename);
 int loadFromFile(NN& nn, string filename);
+
+class montyMem {
+  int wins;
+  int losses;
+
+};
 
 #endif /* NEURAL_NETWORK_H */
 

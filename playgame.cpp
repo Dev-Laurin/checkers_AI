@@ -20,19 +20,19 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
 
     //200 moves max
     int i = 0;
-    gameBoards[i] = b;
+    gameBoards.push_back(b);
 //    b.draw();
     b = RPlayer.getMove(b,false);
-    gameBoards[++i] = b;
+    gameBoards.push_back(b);
 //    b.draw();
     b = RPlayer.getMove(b,true);
-    gameBoards[++i] = b;
+    gameBoards.push_back(b);
 //    b.draw();
     b = RPlayer.getMove(b,false);
-    gameBoards[++i] = b;
+    gameBoards.push_back(b);
     cout << "The starting random board: " << endl;
     b.draw();
-
+    i += 3;
     //To tell who lost, and if the game is over
     stdBoard loser(0,0,0,0);
 
@@ -50,7 +50,7 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
         }
         tStop = std::chrono::high_resolution_clock::now();
         elapsed = tStop - tStart;
-        cout << "CPlayer 2 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
+        cout << "Red Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
         if (player2.timeExceeded) {
           cout << "Move search was time limited" << endl;
         }
@@ -62,7 +62,8 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
           cout << "Cycle Detected, draw!" << endl;
           break; //cycle detected, tie!
         }
-        gameBoards[++i] = b;
+        gameBoards.push_back(b);
+        ++i;
         playerMoves[0].push_back(b);
 
         tStart = std::chrono::high_resolution_clock::now();
@@ -75,7 +76,7 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
         tStop = std::chrono::high_resolution_clock::now();
         elapsed = tStop - tStart;
 
-        cout << "CPlayer 1 Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
+        cout << "Black Move " << i << ", in " << int(elapsed.count()) << " seconds, board is:" << endl;
         player1.prntStats();
         if (player1.timeExceeded) {
           cout << "Move search was time limited" << endl;
@@ -86,7 +87,8 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
           cout << "Cycle Detected, draw!" << endl;
           break; //cycle detected, tie!
         }
-        gameBoards[++i] = b;
+        gameBoards.push_back(b);
+        ++i;
         playerMoves[1].push_back(b);
 
     }

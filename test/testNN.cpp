@@ -18,11 +18,11 @@ using std::endl;
 
 //Tells catch to provide a main (one file only)
 #define CATCH_CONFIG_MAIN
-#include "Catch2.hpp" //C++ Testing Framework
+#include "../Catch2.hpp" //C++ Testing Framework
 
 
-#include "board.h"
-#include "neuralNetwork.h"
+#include "../board.h"
+#include "../neuralNetwork.h"
 
 // #include <chrono> <- Doesn't work on Laurin's machine
 	//Issue with new 5.4.1 g++ version on Ubuntu 16.06?
@@ -670,6 +670,35 @@ TEST_CASE("Testing Boost Serialization") {
     ifs.close();
     //Make sure the tests are the same
     REQUIRE(test1==test2);
+}
+
+TEST_CASE("Testing NN2") {
+    vector<int> bigg{128, 128, 40, 10, 1};
+
+    NN2 test1(bigg, "bigg");
+    NN2 test2(bigg , "bigg");
+    REQUIRE (test1 != test2);
+
+    std::ofstream ofs("testGeneratedFiles/test.nn2", std::ios::binary);
+    boost::archive::binary_oarchive oa(ofs);
+    oa << test1;
+    ofs.close();
+    std::ifstream ifs("testGeneratedFiles/test.nn2", std::ios::binary);
+    boost::archive::binary_iarchive ia(ifs);
+    // read class state from archive
+    ia >> test2;
+    ifs.close();
+    //Make sure the tests are the same
+    REQUIRE(test1==test2);
+    stdBoard b;
+    b.pieces[3] = b.pieces[1];
+    b.draw();
+    test1.getBoardInput(b);
+    for(int i = 0; i < 128; ++i) {
+      cout << test1.nodes[0][i];
+      if(!((i+1) % 32))
+          cout << endl;
+    }
 }
 
 TEST_CASE("Test new NN saveToFile and loadFromFile." ,

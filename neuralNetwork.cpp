@@ -274,6 +274,7 @@ void NN::becomeOffspring(){
 
   //change generation #
   ++generation;
+  boardMem.clear(); //Becoming a new network, previous cached values invalid.
 
   //Randomize king, piececount, and monty values
   std::normal_distribution<double> kingDis(0.0,0.1);
@@ -316,7 +317,7 @@ void NN::becomeOffspring(){
         rand = nDis(gen);
       }
       //newWeight = oldWeight + newSig * random normal num
-      network[i][j] = network[i][j] + sigmas[i][j] * rand;
+      network[i][j] = clmp(network[i][j] + sigmas[i][j] * rand,-1,1);
     }
   }
 }
