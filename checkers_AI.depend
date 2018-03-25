@@ -4,10 +4,11 @@
 	"board.h"
 	"gui.h"
 
-1521938549 c:\cygwin64\home\firethorn\checkers_ai\board.h
+1521986295 c:\cygwin64\home\firethorn\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
+	<algorithm>
 	<array>
 	<bitset>
 	<boost/functional/hash.hpp>
@@ -64,10 +65,9 @@
 	<random>
 	<chrono>
 
-1521638665 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
+1521985169 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
 	<iostream>
 	"board.h"
-	"alphabeta.h"
 	"old_movegenerator.h"
 	"testboard.h"
 	<random>
@@ -90,7 +90,7 @@
 1517817836 source:c:\cygwin64\home\firethorn\checkers_ai\old_movegenerator.cpp
 	"old_movegenerator.h"
 
-1521400993 c:\cygwin64\home\firethorn\checkers_ai\alphabeta.h
+1521984032 c:\cygwin64\home\firethorn\checkers_ai\alphabeta.h
 	<bitset>
 	<random>
 	<algorithm>
@@ -127,7 +127,7 @@
 	"board.h"
 	"neuralNetwork.h"
 
-1521975411 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1521981689 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -179,7 +179,7 @@
 	<boost/archive/binary_oarchive.hpp>
 	"board.h"
 
-1521975456 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
+1521982328 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
 1521844116 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
@@ -3925,7 +3925,7 @@
 	"neuralNetwork.h"
 	"alphabeta.h"
 
-1521457587 source:c:\cygwin64\home\firethorn\checkers_ai\test\testboardeval.cpp
+1521983831 source:c:\cygwin64\home\firethorn\checkers_ai\test\testboardeval.cpp
 	<iostream>
 	<vector>
 	"../neuralNetwork.h"
@@ -9268,7 +9268,7 @@
 	<boost/filesystem.hpp>
 	"playgame.h"
 
-1521979195 source:c:\cygwin64\home\firethorn\checkers_ai\tournament.cpp
+1521979266 source:c:\cygwin64\home\firethorn\checkers_ai\tournament.cpp
 	<queue>
 	<algorithm>
 	<iostream>
@@ -9328,7 +9328,7 @@
 	"../board.h"
 	"../neuralNetwork.h"
 
-1521977004 source:c:\cygwin64\home\firethorn\checkers_ai\tbigg2.cpp
+1521979625 source:c:\cygwin64\home\firethorn\checkers_ai\tbigg2.cpp
 	<queue>
 	<algorithm>
 	<iostream>

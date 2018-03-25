@@ -3,7 +3,6 @@
 using std::cout;
 using std::endl;
 #include "board.h"
-#include "alphabeta.h"
 #include "old_movegenerator.h"
 #include "testboard.h"
 #include <random>
@@ -166,6 +165,13 @@ int main() {
 	//Testing regular moves.
 	numOfTests = 0;
 	testsCorrect = 0;
+	//Test specific boards
+	{
+	  stdBoard b(" B       R       BR  r          ");
+	  testBoard(b, numOfTests, testsCorrect);
+	  b.updateBoard("          r        B    R Br  R ");
+	  testBoard(b, numOfTests, testsCorrect);
+  }
 
   //Test individual moves.
   {
@@ -306,10 +312,10 @@ int main() {
 	numOfTests++;
 	cout << "	If there are jumps available, return jumps moves only (priority).";
 	cout << endl;
-	stdBoard jumpPriority("rrrrrrrrrr r  r  b  bb bbbbbbbbb");
+	stdBoard jumpPriority("rrrrrrrrrr r  r  b  bb bbbbbbbbB");
 	stdBoard possibleMoves[30];
 	int moves = jumpPriority.genMoves(possibleMoves, 0);
-	if(possibleMoves[0].str()=="rrrrrrrrrrbr        bb bbbbbbbbb"){
+	if(possibleMoves[0].str()=="rrrrrrrrrrbr        bb bbbbbbbbB"){
 		testsCorrect++;
 		cout << "		Successful" << endl;
 	}
@@ -320,11 +326,11 @@ int main() {
 	//Jump Test 1
 	numOfTests++;
 	cout << "	Check if there is a 2-jump." << endl;
-	jumpPriority.updateBoard("rrrrr    r       r    b bbbbbbbb");
+	jumpPriority.updateBoard("Rrrrr    r       r    b bbbbbbbb");
 	stdBoard possibleMoves2[30];
 	moves = jumpPriority.genMoves(possibleMoves2, 0);
 	for(int i=0; i<moves; ++i){
-		if(possibleMoves2[i].str()=="rrrrr b                 bbbbbbbb"){
+		if(possibleMoves2[i].str()=="Rrrrr b                 bbbbbbbb"){
 			testsCorrect++;
 			cout << "		Successful" << endl;
 			break;

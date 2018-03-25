@@ -13,6 +13,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     timeLimit = mktime(timeInfo);
     timeExceeded = false;
     trimTotal = 0;
+    depthReached = 2; //start at 2.
     if(side) {
         board = board.flip();
     }
@@ -29,25 +30,35 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
             ++cacheMiss;
         }
       }
-      std::sort(moveList, moveList+moves,
-                [&](stdBoard a, stdBoard b) {
-                  return (boardMem.at(a) > boardMem.at(b));
-                });
+
+      //iterative deepening search
       selectMove = 0;
-      sNN moveVal = beta(moveList[0], 0, searchDepth, LOWEST, HIGHEST);
-      sNN tempMove;
-      for (int i = 1; i < moves; ++i) {
-          tempMove = beta(moveList[i], 0, searchDepth, LOWEST, HIGHEST);
-          //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
-          //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
-          if (tempMove > moveVal) {
-              //better move found
-              moveVal = tempMove;
-              selectMove = i;
-          }
+      while(time(0) < timeLimit) {
+        std::sort(moveList, moveList+moves,
+                  [&](stdBoard a, stdBoard b) {
+                    return (boardMem.at(a) > boardMem.at(b));
+                  });
+        int curMove = 0;
+        sNN moveVal = beta(moveList[0], 0, depthReached, LOWEST, HIGHEST);
+        sNN tempMove;
+        for (int i = 1; i < moves; ++i) {
+            tempMove = beta(moveList[i], 0, depthReached, LOWEST, HIGHEST);
+            //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
+            //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
+            if (tempMove > moveVal) {
+                //better move found
+                moveVal = tempMove;
+                curMove = i;
+            }
+        }
+        if(!timeExceeded) {
+          selectMove=curMove;
+          ++depthReached;
+        }
       }
     } else { // Only one move, no need to calc!
       selectMove = 0;
+      depthReached = -1;
     }
     if (side) {
         board = board.flip();
@@ -141,7 +152,7 @@ double AIPlayer::clmp(double x, double a, double b)
 void AIPlayer::prntStats() {
   cout << "Cache Effectiveness: " << cacheHit << "/" << cacheHit+cacheMiss;
   cout << " Cache size: " << boardMem.size() << endl;
-  cout << "Pruning Trims: " << trimTotal << endl;
+  cout << "Pruning Trims: " << trimTotal << " Depth Reached: " << depthReached << endl;
 }
 
 

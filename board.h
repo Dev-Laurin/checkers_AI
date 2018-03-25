@@ -7,6 +7,9 @@ using std::string;
 #include <iostream>
 using std::cout;
 using std::endl;
+#include <algorithm>
+using std::max;
+
 #include <array>
 #include <bitset>
 using std::bitset;
@@ -178,6 +181,7 @@ public:
 					//remove the jumped piece.
 					jmp.pieces[1 - side][j+i+1] = 0;
 					jmp.pieces[(1-side)|2][j+i+1] = 0;
+
 					//Move the piece
           jmp.pieces[side|2][i] = jmp.pieces[side|2][i+7];
 					jmp.pieces[side|2][i+7] = 0;
@@ -210,7 +214,8 @@ public:
 					stdBoard jmp = *this;
 					//remove the jumped piece.
 					jmp.pieces[1 - side][i-j-4] = 0;
-					jmp.pieces[(1-side) | 2][i-j-4] = 0;
+					jmp.pieces[(1 - side) | 2][i-j-4] = 0;
+
 
 					//move the jump piece
           jmp.pieces[side|2][i] = jmp.pieces[side|2][i-9];
@@ -241,7 +246,7 @@ public:
 					stdBoard jmp = *this;
 					//remove the jumped piece.
 					jmp.pieces[1 - side][i-j-1] = 0;
-					jmp.pieces[(1 - side) | 2] = 0;
+					jmp.pieces[(1 - side) | 2][i-j-1] = 0;
 					//move the jump piece
           jmp.pieces[side|2][i] = jmp.pieces[side|2][i-7];
 					jmp.pieces[side|2][i-7] = 0;

@@ -13,9 +13,15 @@ int main() {
   //NN player2(nodes, "Blondie1");
   PieceCount player1;
   stdBoard board;
-  stdBoard b;
+  stdBoard b(" B       R       BR  r          ");
+  stdBoard moveList[MAXMOVES];
 
-  b = player1.getMove(board);
+  b.draw();
+  int nMoves = b.genMoves(moveList,0);
+  for(int i = 0; i < nMoves; ++i) {
+    moveList[i].draw();
+  }
+  //b = player1.getMove(board);
 
 
 }
