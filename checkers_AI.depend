@@ -9268,7 +9268,7 @@
 	<boost/filesystem.hpp>
 	"playgame.h"
 
-1521972752 source:c:\cygwin64\home\firethorn\checkers_ai\tournament.cpp
+1521979195 source:c:\cygwin64\home\firethorn\checkers_ai\tournament.cpp
 	<queue>
 	<algorithm>
 	<iostream>
@@ -9299,7 +9299,7 @@
 	<boost/mpl/identity.hpp>
 	<boost/serialization/collection_traits.hpp>
 
-1521975188 source:c:\cygwin64\home\firethorn\checkers_ai\tbigg.cpp
+1521979756 source:c:\cygwin64\home\firethorn\checkers_ai\tbigg.cpp
 	<queue>
 	<algorithm>
 	<iostream>
@@ -9327,4 +9327,19 @@
 	"../Catch2.hpp"
 	"../board.h"
 	"../neuralNetwork.h"
+
+1521977004 source:c:\cygwin64\home\firethorn\checkers_ai\tbigg2.cpp
+	<queue>
+	<algorithm>
+	<iostream>
+	<iomanip>
+	<vector>
+	"neuralNetwork.h"
+	<boost/config.hpp>
+	<boost/filesystem.hpp>
+	<boost/serialization/base_object.hpp>
+	<boost/serialization/collection_traits.hpp>
+	<boost/serialization/deque.hpp>
+	<boost/serialization/queue.hpp>
+	"playgame.h"
 

@@ -92,6 +92,13 @@ public:
         ar & gameNum;
         ar & tournCount;
     }
+
+    void save(string path) {
+      std::ofstream ofs(path);
+      boost::archive::text_oarchive oa(ofs);
+      oa << *this;
+      ofs.close();
+    }
 };
 
 
@@ -104,6 +111,7 @@ int main(){
   gameList gL(population);
   std::uniform_int_distribution<int> distro(0, population-1);
   NN p1, p2;
+  string tPath;
 
   if (!is_directory(tournPath)) {
     cout << "directory doesn't exist!";
@@ -123,10 +131,7 @@ int main(){
       } while (p1==p2);
       gL.addGame(p1,p2);
     }
-    std::ofstream ofs(tournPath + "/gamelist.txt");
-    boost::archive::text_oarchive oa(ofs);
-    oa << gL;
-    ofs.close();
+    gL.save(tournPath + "/gamelist.txt");
   }
   for (int i = 0; i < population; ++i) {
     std::stringstream num;
@@ -172,7 +177,8 @@ int main(){
       ++gL.gameNum;
       num.str("");
       num << setfill('0') << setw(3) << gL.tournCount;
-      string tPath = tournPath + "/t" + num.str();
+      tPath = tournPath + "/t" + num.str();
+      cout << tPath << endl;
       create_directories(tPath);
       num.str("");
       num << setfill('0') << setw(3) << gL.gameNum;
@@ -222,10 +228,7 @@ int main(){
       }
       gL.pop(); //Knock off the game we just did.
       //save the state.
-      std::ofstream ofs(tournPath + "/gamelist.txt");
-      boost::archive::text_oarchive oa(ofs);
-      oa << gL;
-      ofs.close();
+      gL.save(tournPath + "/gamelist.txt");
     }
     //Playing games is over.  Evolve.
     vector<int> rankings;
@@ -235,11 +238,13 @@ int main(){
     std::sort(rankings.begin(),rankings.end(),[&](int a, int b) {
               return gL.scores[a] > gL.scores[b];
               });
+    std::ofstream results(tPath + "/results.txt");
     for(int i = 0;i < gL.population; ++i) {
-      cout << "NN " << rankings[i] << " with score " << gL.scores[rankings[i]]
+      results << "NN2 " << rankings[i] << " with score " << gL.scores[rankings[i]]
        << " Wins: " << gL.wins[rankings[i]] << " Losses: " << gL.losses[rankings[i]]
        << " Ties: " << gL.ties[rankings[i]] << endl;
     }
+    results.close();
     for (int i = 0; i < population/5; ++i) {
       NN evolve;
       stringstream num;
@@ -270,6 +275,7 @@ int main(){
         } while (p1==p2);
         gL.addGame(p1,p2);
       }
+      gL.save(tournPath + "/gamelist.txt");
   }
 
   return 0;

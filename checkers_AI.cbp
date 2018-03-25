@@ -114,6 +114,15 @@
 					<Add option="-std=c++1z" />
 				</Compiler>
 			</Target>
+			<Target title="tBigg2">
+				<Option output="bigg2tourn" prefix_auto="1" extension_auto="1" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-std=c++1z" />
+				</Compiler>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-O2" />
@@ -140,6 +149,9 @@
 		</Unit>
 		<Unit filename="Test/testBoardEval.cpp">
 			<Option target="playmove" />
+		</Unit>
+		<Unit filename="Test/testNN.cpp">
+			<Option target="testNN" />
 		</Unit>
 		<Unit filename="Test/testplaygame.cpp">
 			<Option target="playgame" />
@@ -177,6 +189,7 @@
 			<Option target="playmove" />
 			<Option target="tBlondie" />
 			<Option target="tBigg" />
+			<Option target="tBigg2" />
 		</Unit>
 		<Unit filename="neuralNetwork.h">
 			<Option target="&lt;{~None~}&gt;" />
@@ -194,9 +207,13 @@
 			<Option target="Bigg" />
 			<Option target="tBlondie" />
 			<Option target="tBigg" />
+			<Option target="tBigg2" />
 		</Unit>
 		<Unit filename="tBigg.cpp">
 			<Option target="tBigg" />
+		</Unit>
+		<Unit filename="tBigg2.cpp">
+			<Option target="tBigg2" />
 		</Unit>
 		<Unit filename="testBoard.cpp">
 			<Option target="Test" />
@@ -204,12 +221,8 @@
 		<Unit filename="testBoard.h">
 			<Option target="Test" />
 		</Unit>
-		<Unit filename="testNN.cpp">
-			<Option target="testNN" />
-		</Unit>
 		<Unit filename="tournament.cpp">
 			<Option target="tBlondie" />
-			<Option target="tBigg" />
 		</Unit>
 		<Extensions>
 			<code_completion />

@@ -103,8 +103,8 @@ public:
 
 int main(){
   const int population = 30;
-  string tournName = "bigg";
-  vector<int> nodes{128, 128, 40, 10, 1};
+  string tournName = "bigger";
+  vector<int> nodes{128, 128, 64, 32, 1};
   string tournPath = "tournaments/" + tournName;
   vector<stdBoard> gameBoards;
   gameList gL(population);
@@ -177,7 +177,6 @@ int main(){
       num.str("");
       num << setfill('0') << setw(3) << gL.tournCount;
       tPath = tournPath + "/t" + num.str();
-      cout << tPath << endl;
       create_directories(tPath);
       num.str("");
       num << setfill('0') << setw(3) << gL.gameNum;
@@ -279,48 +278,3 @@ int main(){
 
   return 0;
 }
-/*
-
-		//Tournament ended, choose the top 15 Neural Networks that
-			//will generate children
-		//Sort the vector by wins
-		std::sort(NeuralNets.begin(), NeuralNets.end(),
-			[](const NN & a, const NN & b) -> bool{
-				return a.wins < b.wins;
-			});
-
-		//Last 15 will generate children (higher wins)
-			//overtop the first 15
-		//for(int i=NeuralNets.size()-1; i>NeuralNets.size()/2; --i){
-		for(int i=NeuralNets.size()-1; i>5; --i){  //Only kill and replace 5.
-			//save parent to file
-			boost::filesystem::path totalPath = current_path;
-			string path = parentDirectory + NeuralNets[i].familyName +
-			"/" + "GEN" + to_string(NeuralNets[i].generation) +
-			"/";
-			string slash = "/" + path;
-			totalPath += slash.c_str();
-			boost::filesystem::path dir(totalPath);
-			boost::filesystem::create_directories(dir);
-
-			if(boost::filesystem::is_directory(dir)){
-				path += "NN" + i;
-				NeuralNets[i].saveToFile(path);
-			}
-			else{
-				cout << "Path making failed." << endl;
-				cout << path << endl;
-				return -1;
-			}
-
-			//make loser network a child of this parent
-			NeuralNets[i - NeuralNets.size()/2] = NeuralNets[i];
-			NeuralNets[i - NeuralNets.size()/2].becomeOffspring();
-
-		}
-
-	}
-
-	return 0;
-}
-*/
