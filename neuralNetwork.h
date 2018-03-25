@@ -53,8 +53,8 @@ typedef double sNN;
 
 unsigned const static int MAXMOVES = 32;
 
-constexpr sNN LOWEST = -10000;
-constexpr sNN HIGHEST = 10000;
+constexpr sNN LOWEST = -100000;
+constexpr sNN HIGHEST = 100000;
 #endif // CONSTS
 
 const static double MOVETIME = 14.0;  //Seconds.
@@ -99,7 +99,6 @@ public:
     sNN alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b);
     // Handles starting up the alpha-beta search
     // sNN alphabeta(stdBoard board, unsigned int side = 0);
-
     void prntStats();
 
     //iterative  deepening search, time limited.
@@ -170,6 +169,8 @@ class NN: public AIPlayer
 public:
 	//Constructor setting a new neural network to random weights
 	NN(std::vector<int>& nS, string familyname);
+	//Blanck constructor
+	NN();
 	//Given a board, calculate the output of the NN
 	double calculateBoard(stdBoard & board);
 	//Puts board input into nodes vector in user specified index

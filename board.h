@@ -31,7 +31,6 @@ class cmpBoard;
 class stdBoard {
 public:
     i32 pieces[4];
-    double score;
 	//Constructors
 	stdBoard() {
 	  pieces[0] = 0xFFF00000;//Initial regular board
@@ -378,10 +377,6 @@ inline bool operator==(const stdBoard & lhs, const stdBoard & rhs){ /* do actual
         lhs.pieces[3] == rhs.pieces[3];
 }
 
-//Used to enable sort.
-inline bool operator< (const stdBoard & lhs, const stdBoard & rhs){
-  return (lhs.score < rhs.score);
-}
 
 namespace std
 {

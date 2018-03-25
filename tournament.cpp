@@ -14,7 +14,13 @@ using std::vector;
 
 #include "neuralNetwork.h"
 
+#include <boost/config.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/serialization/base_object.hpp>
+#include <boost/serialization/collection_traits.hpp>
+#include <boost/serialization/deque.hpp>
+#include <boost/serialization/queue.hpp>
+
 using namespace boost::filesystem;
 
 #include "playgame.h"
@@ -22,8 +28,30 @@ using namespace boost::filesystem;
 
 class gameList {
 public:
+    int pop;
     std::queue<int> pl1;
     std::queue<int> pl2;
+    vector<int> scores;
+    vector<int> wins;
+    vector<int> losses;
+    vector<int> ties;
+
+//Constructor
+    gameList() {
+      pop = 30;
+      scores.resize(30,0);
+      wins.resize(30,0);
+      losses.resize(30,0);
+      ties.resize(30,0);
+    }
+    gameList(int s) {
+      pop = s;
+      scores.resize(s,0);
+      wins.resize(s,0);
+      losses.resize(s,0);
+      ties.resize(s,0);
+    }
+
 //Accessors
     int size() {
         return pl1.size();
@@ -44,25 +72,64 @@ public:
         pl1.pop();
         pl2.pop();
     }
+
 //Able to save
     template <typename Archive>
     void serialize(Archive &ar, const unsigned int version) {
+        ar & pop;
         ar & pl1;
         ar & pl2;
+        ar & scores;
+        ar & wins;
+        ar & losses;
+        ar & ties;
     }
 };
 
 
 int main(){
   const int population = 30;
-  string tournName = "Blondie";
+  string tournName = "blondie";
+  vector<int> nodes{32, 40, 10, 1};
   string tournPath = "tournaments/" + tournName;
+
+  gameList gL(population);
+  std::uniform_int_distribution<int> distro(0, population-1);
+  NN p1, p2;
+
   if (!is_directory(tournPath)) {
     cout << "directory doesn't exist!";
     create_directories(tournPath);
   }
-  if (exists(tournPath + "playList.txt")){
+  if (exists(tournPath + "/gamelist.txt")){  //gamelist exists, load it.
+    std::ifstream ifs(tournPath + "/gamelist.txt");
+    boost::archive::text_iarchive ia(ifs);
+    ia >> gL;
+    ifs.close();
+  } else { //Gamelist doesn't exist, populate
+    for (int i = 0; i < population; ++i ) {
+      int p1,p2;
+      do { //prevent games playing each other.
+        p1 = distro(gen);
+        p2 = distro(gen);
+      } while (p1==p2);
+      gL.addGame(p1,p2);
+    }
+    std::ofstream ofs(tournPath + "/gamelist.txt");
+    boost::archive::text_oarchive oa(ofs);
+    oa << gL;
+    ofs.close();
   }
+  for (int i = 0; i < population; ++i) {
+    if (!exists(tournPath + "/" + tournName + ".nn")) {
+      std::ofstream ofs(tournPath + "/" + tournName + ".nn");
+      boost::archive::binary_oarchive oa(ofs);
+      oa << NN(nodes, tournName);
+      ofs.close();
+    }
+  }
+
+
   return 0;
 }
 /*

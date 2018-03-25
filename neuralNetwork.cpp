@@ -3,46 +3,6 @@
 //declare random number generator
 std::mt19937_64 gen(time(0));
 
-
-//Searches until it runs out of time.
-stdBoard AIPlayer::IntDeepSearch(stdBoard & board, bool side) {
-  stdBoard moveList[MAXMOVES];
-  int selectMove = 0;
-  std::time(&timeStart);
-  if(side) {
-    board = board.flip();
-  }
-  //Work first layer.
-  int moves = board.genMoves(moveList,0);
-  if (moves == 0) {
-      return stdBoard(0,0,0,0);
-  }
-  //Score the list.
-  for(int i = 0; i < moves; ++i) {
-    moveList[i].score = calculateBoard(moveList[i]);
-  }
-  std::sort(moveList,moveList+moves);
-  selectMove = moves -1;  //It's sorted, the best move is the last one.
-  //Find opponent moves
-  stdBoard oppMoveList[moves][MAXMOVES];
-  for(int i = moves-1; i >= 0; --i) {
-    int moveCount = moveList[i].genMoves(oppMoveList[i],1);
-    if (moveCount == 0) { //Enemy has no moves, win.
-      selectMove = i;
-      i = -1;
-    }
-  }
-
-
-
-  if(side) {
-    board = board.flip();
-    moveList[selectMove] = moveList[selectMove].flip();
-  }
-  return moveList[selectMove];
-}
-
-
 stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     stdBoard moveList[MAXMOVES];
     int selectMove;
@@ -63,20 +23,21 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     if (moves > 1) {
       for(int i = 0; i < moves; ++i) {
         if (boardMem.count(moveList[i])) {
-          moveList[i].score = boardMem.at(moveList[i]);
-          ++cacheHit;
+            ++cacheHit;
         } else {
-          moveList[i].score = calculateBoard(moveList[i]);
-          boardMem.insert({moveList[i],moveList[i].score});
-          ++cacheMiss;
+            boardMem.emplace(moveList[i],calculateBoard(moveList[i]));
+            ++cacheMiss;
         }
       }
-      std::sort(moveList,moveList+moves);
-      selectMove = moves - 1;
-      sNN moveVal = beta(moveList[moves-1], 0, searchDepth, LOWEST*2, HIGHEST*2);
+      std::sort(moveList, moveList+moves,
+                [&](stdBoard a, stdBoard b) {
+                  return (boardMem.at(a) > boardMem.at(b));
+                });
+      selectMove = 0;
+      sNN moveVal = beta(moveList[0], 0, searchDepth, LOWEST, HIGHEST);
       sNN tempMove;
-      for (int i = moves-2; i >= 0; --i) {
-          tempMove = beta(moveList[i], 0, searchDepth, LOWEST * 2, HIGHEST * 2);
+      for (int i = 1; i < moves; ++i) {
+          tempMove = beta(moveList[i], 0, searchDepth, LOWEST, HIGHEST);
           //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
           //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
           if (tempMove > moveVal) {
@@ -114,24 +75,25 @@ sNN AIPlayer::alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
   if (moves) {
     for(int i = 0; i < moves; ++i) {
       if (boardMem.count(moveList[i])) {
-          moveList[i].score = boardMem.at(moveList[i]);
           ++cacheHit;
       } else {
-          moveList[i].score = calculateBoard(moveList[i]);
-          boardMem.insert({moveList[i],moveList[i].score});
+          boardMem.emplace(moveList[i],calculateBoard(moveList[i]));
           ++cacheMiss;
       }
     }
-    std::sort(moveList,moveList+moves);
+    std::sort(moveList, moveList+moves,
+          [&](stdBoard a, stdBoard b) {
+            return (boardMem.at(a) > boardMem.at(b));
+          });
     if (time(nullptr) > timeLimit) {
       timeExceeded = true;
-      return moveList[moves-1].score;
+      return boardMem.at(moveList[0]);
     }
     if (depth >= maxDepth) { //Out of depth, return!)
-      return moveList[moves-1].score;
+      return boardMem.at(moveList[0]);
     }
-    sNN rVal = beta(moveList[moves-1],depth+1, maxDepth, a, b);
-    for (int i = moves - 2;i >= 0; --i) {
+    sNN rVal = beta(moveList[0],depth+1, maxDepth, a, b);
+    for (int i = 1;i < moves ; ++i) {
       a = std::max(rVal, a);
       if (b <= a) {  //I can force a better move than the worse the opponent can, so he won't pick this.
         ++trimTotal;
@@ -144,7 +106,7 @@ sNN AIPlayer::alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
   } else {
     //No moves available.  We lose!
     //We don't like this, obviously.
-    return LOWEST + depth; //more depth means we are losing quicker, avoid.
+    return LOWEST + depth; //less depth means we are losing quicker, avoid.
   }
 
 }
@@ -244,6 +206,11 @@ NN::NN(std::vector<int>& nS, string familyname)
   for(size_t i=0; i<network.size(); ++i){
     sigmas[i].resize(network[i].size(), sigma);
   }
+}
+
+NN::NN() {
+  std::uniform_real_distribution<double> dis(-0.2,0.2);
+  std::uniform_real_distribution<double> kingDis(0.0, 1.0);
 }
 
 //Given a board, calculate the output of the NN
@@ -465,7 +432,7 @@ stdBoard RandomPlayer::getMove(stdBoard & board, bool side) {
       board = board.flip();
       possibleBoards[moveSelect] = possibleBoards[moveSelect].flip();
     }
-    cout << "Hehe, I'm Random!" << endl;
+    //cout << "Hehe, I'm Random!" << endl;
     return possibleBoards[moveSelect];
   }
 
@@ -474,85 +441,85 @@ stdBoard RandomPlayer::getMove(stdBoard & board, bool side) {
 // int saveToFile(const NN & nn, string filename){
 
 //   //Boost file saving
-//   std::ofstream ofs(filename); 
+//   std::ofstream ofs(filename);
 //   if(!ofs){
 //     cout << "Error opening file for NN saving: " << filename;
-//     cout << endl;  
-//     return -1; 
+//     cout << endl;
+//     return -1;
 //   }
-//   boost::archive::text_oarchive oa(ofs);  
-//   oa << nn; 
-//   ofs.close(); 
+//   boost::archive::text_oarchive oa(ofs);
+//   oa << nn;
+//   ofs.close();
 
 //   return 0; //successful
 // }
 
 // int loadFromFile(NN & nn, string filename){
 
-//   ifstream file(filename); 
+//   ifstream file(filename);
 //   if(!file){
 //     cout << "Error opening NN file: " << filename << endl;
-//     return -1; 
+//     return -1;
 //   }
 //   boost::archive::text_iarchive ia(file);
-//   ia >> nn; 
-//   file.close(); 
+//   ia >> nn;
+//   file.close();
 
 //   return 0;
 // }
 
 int NN::saveToFile(string filename){
   //Boost file saving
-  std::ofstream ofs(filename); 
+  std::ofstream ofs(filename);
   if(!ofs){
     cout << "Error opening file for NN saving: " << filename;
-    cout << endl;  
-    return -1; 
+    cout << endl;
+    return -1;
   }
-  boost::archive::text_oarchive oa(ofs);  
-  oa << *this; 
-  ofs.close(); 
+  boost::archive::text_oarchive oa(ofs);
+  oa << *this;
+  ofs.close();
 
   return 0; //successful
 }
 
 int NN::loadFromFile(string filename){
-  ifstream file(filename); 
+  ifstream file(filename);
   if(!file){
     cout << "Error opening NN file: " << filename << endl;
-    return -1; 
+    return -1;
   }
   boost::archive::text_iarchive ia(file);
-  ia >> *this; 
-  file.close(); 
+  ia >> *this;
+  file.close();
 
-  return 0; 
+  return 0;
 }
 
 int saveToFile(const NN & nn, string filename){
     //Boost file saving
-  std::ofstream ofs(filename); 
+  std::ofstream ofs(filename);
   if(!ofs){
     cout << "Error opening file for NN saving: " << filename;
-    cout << endl;  
-    return -1; 
+    cout << endl;
+    return -1;
   }
-  boost::archive::text_oarchive oa(ofs);  
-  oa << nn; 
-  ofs.close(); 
+  boost::archive::text_oarchive oa(ofs);
+  oa << nn;
+  ofs.close();
 
   return 0; //successful
 }
 
 int loadFromFile(NN& nn, string filename){
-  ifstream file(filename); 
+  ifstream file(filename);
   if(!file){
     cout << "Error opening NN file: " << filename << endl;
-    return -1; 
+    return -1;
   }
   boost::archive::text_iarchive ia(file);
-  ia >> nn; 
-  file.close(); 
+  ia >> nn;
+  file.close();
 
-  return 0; 
+  return 0;
 }
