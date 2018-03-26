@@ -269,8 +269,8 @@ void NN2::getBoardInput(stdBoard & board) {
 double NN::boardCount(stdBoard & board) {
   double count =
     (double)board.pieces[0].count() - (double)board.pieces[1].count() +
-    ((double)board.pieces[2].count() - (double)board.pieces[3].count()) *
-    kingVal;
+    ((double)(board.pieces[0] & board.pieces[2]).count() -
+     (double)(board.pieces[1] & board.pieces[2]).count()) * kingVal;
   return count;
 }
 

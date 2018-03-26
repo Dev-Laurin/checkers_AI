@@ -424,7 +424,7 @@ namespace std
       typedef std::size_t result_type;
       result_type operator()(argument_type const& b) const noexcept
       {
-        return boost::hash_range((uint32_t*)b.pieces, (uint32_t*)b.pieces+4);
+        return boost::hash_range((uint32_t*)b.pieces, (uint32_t*)b.pieces+3);
       }
     };
 }

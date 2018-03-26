@@ -422,50 +422,55 @@ int main() {
         numMoves[0] = iBoard.genMoves(Br[0],0);
         boardsGenerated[0] += numMoves[0];
         maxBranch = max(maxBranch,numMoves[0]);
-        for(i[0] = 0;i[0] < numMoves[0];++i[0]) {
-            numMoves[1] = Br[0][i[0]].genMoves(Br[1],1);
-            boardsGenerated[1] += numMoves[1];
-            maxBranch = max(maxBranch,numMoves[1]);
-            for(i[1]=0;i[1] < numMoves[1];++i[1]) {
-                numMoves[2] = Br[1][i[1]].genMoves(Br[2],0);
-                boardsGenerated[2] += numMoves[2];
-                maxBranch = max(maxBranch,numMoves[2]);
-                for(i[2]=0;i[2] < numMoves[2];++i[2]) {
-                    numMoves[3] = Br[2][i[2]].genMoves(Br[2],1);
-                    boardsGenerated[3] += numMoves[3];
-                    maxBranch = max(maxBranch,numMoves[3]);
-                    for(i[3]=0;i[3] < numMoves[3];++i[3]) {
-                        numMoves[4] = Br[3][i[3]].genMoves(Br[3],0);
-                        boardsGenerated[4] += numMoves[4];
-                        maxBranch = max(maxBranch,numMoves[4]);
-                        for(i[4]=0;i[4] < numMoves[4];++i[4]) {
-                            numMoves[5] = Br[4][i[4]].genMoves(Br[4],1);
-                            boardsGenerated[5] += numMoves[5];
-                            maxBranch = max(maxBranch,numMoves[5]);
-                            for(i[5]=0;i[5] < numMoves[5];++i[5]) {
-                                numMoves[6] = Br[5][i[5]].genMoves(Br[5],0);
-                                boardsGenerated[6] += numMoves[6];
-                                maxBranch = max(maxBranch,numMoves[6]);
-                                for(i[6]=0;i[6] < numMoves[6];++i[6]) {
-                                    numMoves[7] = Br[6][i[6]].genMoves(Br[6],1);
-                                    boardsGenerated[7] += numMoves[7];
-                                    maxBranch = max(maxBranch,numMoves[7]);
-                                    for(i[7]=0;i[7] < numMoves[7];++i[7]) {
-                                        numMoves[8] = Br[7][i[7]].genMoves(Br[7],0);
-                                        boardsGenerated[8] += numMoves[8];
-                                        maxBranch = max(maxBranch,numMoves[8]);
-                                        for(i[8]=0;i[8] < numMoves[8];++i[8]) {
-                                            numMoves[9] = Br[8][i[8]].genMoves(Br[8],0);
-                                            boardsGenerated[9] += numMoves[9];
-                                            maxBranch = max(maxBranch,numMoves[9]);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        for(int j = 0; j < 100; ++j) {
+          numMoves[0] = iBoard.genMoves(Br[0],0);
+          boardsGenerated[0] += numMoves[0];
+          maxBranch = max(maxBranch,numMoves[0]);
+          for(i[0] = 0;i[0] < numMoves[0];++i[0]) {
+              numMoves[1] = Br[0][i[0]].genMoves(Br[1],1);
+              boardsGenerated[1] += numMoves[1];
+              maxBranch = max(maxBranch,numMoves[1]);
+              for(i[1]=0;i[1] < numMoves[1];++i[1]) {
+                  numMoves[2] = Br[1][i[1]].genMoves(Br[2],0);
+                  boardsGenerated[2] += numMoves[2];
+                  maxBranch = max(maxBranch,numMoves[2]);
+                  for(i[2]=0;i[2] < numMoves[2];++i[2]) {
+                      numMoves[3] = Br[2][i[2]].genMoves(Br[2],1);
+                      boardsGenerated[3] += numMoves[3];
+                      maxBranch = max(maxBranch,numMoves[3]);
+                      for(i[3]=0;i[3] < numMoves[3];++i[3]) {
+                          numMoves[4] = Br[3][i[3]].genMoves(Br[3],0);
+                          boardsGenerated[4] += numMoves[4];
+                          maxBranch = max(maxBranch,numMoves[4]);
+                          for(i[4]=0;i[4] < numMoves[4];++i[4]) {
+                              numMoves[5] = Br[4][i[4]].genMoves(Br[4],1);
+                              boardsGenerated[5] += numMoves[5];
+                              maxBranch = max(maxBranch,numMoves[5]);
+                              for(i[5]=0;i[5] < numMoves[5];++i[5]) {
+                                  numMoves[6] = Br[5][i[5]].genMoves(Br[5],0);
+                                  boardsGenerated[6] += numMoves[6];
+                                  maxBranch = max(maxBranch,numMoves[6]);
+                                  for(i[6]=0;i[6] < numMoves[6];++i[6]) {
+                                      numMoves[7] = Br[6][i[6]].genMoves(Br[6],1);
+                                      boardsGenerated[7] += numMoves[7];
+                                      maxBranch = max(maxBranch,numMoves[7]);
+                                      for(i[7]=0;i[7] < numMoves[7];++i[7]) {
+                                          numMoves[8] = Br[7][i[7]].genMoves(Br[7],0);
+                                          boardsGenerated[8] += numMoves[8];
+                                          maxBranch = max(maxBranch,numMoves[8]);
+                                          for(i[8]=0;i[8] < numMoves[8];++i[8]) {
+                                              numMoves[9] = Br[8][i[8]].genMoves(Br[8],0);
+                                              boardsGenerated[9] += numMoves[9];
+                                              maxBranch = max(maxBranch,numMoves[9]);
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
         }
         auto tStop = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsed = tStop - tStart;
