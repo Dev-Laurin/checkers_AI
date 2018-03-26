@@ -251,8 +251,8 @@ sNN NN::calculateBoard(stdBoard & board){
 void NN::getBoardInput(stdBoard & board){
   for(int i=0; i<32; ++i){
           nodes[0][i] =
-              (double)board.pieces[0][i] - (double)board.pieces[1][i] +
-              ((double)board.pieces[2][i] - (double)board.pieces[3][i]) * kingVal;
+              ((double)board.pieces[0][i] - (double)board.pieces[1][i]) *
+              (1 + kingVal*((double)board.pieces[2][i]));
   }
 }
 
@@ -261,8 +261,8 @@ void NN2::getBoardInput(stdBoard & board) {
   for(int i=0; i<32; ++i){
           nodes[0][i] = board.pieces[0][i];
           nodes[0][i+32] = board.pieces[1][i];
-          nodes[0][i+64] = board.pieces[2][i];
-          nodes[0][i+96] = board.pieces[3][i];
+          nodes[0][i+64] = board.pieces[2][i] && board.pieces[0][i];
+          nodes[0][i+96] = board.pieces[2][i] && board.pieces[1][i];
   }
 }
 

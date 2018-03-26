@@ -4,7 +4,7 @@
 	"board.h"
 	"gui.h"
 
-1521986295 c:\cygwin64\home\firethorn\checkers_ai\board.h
+1522062505 c:\cygwin64\home\firethorn\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -65,7 +65,7 @@
 	<random>
 	<chrono>
 
-1521985169 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
+1522062131 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
 	<iostream>
 	"board.h"
 	"old_movegenerator.h"
@@ -179,7 +179,7 @@
 	<boost/archive/binary_oarchive.hpp>
 	"board.h"
 
-1521982328 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
+1522062886 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
 1521844116 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
@@ -3925,7 +3925,7 @@
 	"neuralNetwork.h"
 	"alphabeta.h"
 
-1521983831 source:c:\cygwin64\home\firethorn\checkers_ai\test\testboardeval.cpp
+1522059272 source:c:\cygwin64\home\firethorn\checkers_ai\test\testboardeval.cpp
 	<iostream>
 	<vector>
 	"../neuralNetwork.h"

@@ -53,6 +53,7 @@ bool testBoard(stdBoard &board, int side) {
     //Check that move counts match.  If not, failure.
     if (numMoves1 != numMoves2) {
         cout << "Test failed; Number of moves do not match" << endl;
+        cout << "Board: " << numMoves1 << " OldGen: " << numMoves2 << endl;
         return false;
     }
     //Convert char arrays to strings
@@ -170,6 +171,10 @@ int main() {
 	  stdBoard b(" B       R       BR  r          ");
 	  testBoard(b, numOfTests, testsCorrect);
 	  b.updateBoard("          r        B    R Br  R ");
+	  testBoard(b, numOfTests, testsCorrect);
+    b.str(" R       B       RB  b          ");
+	  testBoard(b, numOfTests, testsCorrect);
+	  b.str("          b        R    B Rb  B ");
 	  testBoard(b, numOfTests, testsCorrect);
   }
 
@@ -449,6 +454,11 @@ int main() {
                                         numMoves[8] = Br[7][i[7]].genMoves(Br[7],0);
                                         boardsGenerated[8] += numMoves[8];
                                         maxBranch = max(maxBranch,numMoves[8]);
+                                        for(i[8]=0;i[8] < numMoves[8];++i[8]) {
+                                            numMoves[9] = Br[8][i[8]].genMoves(Br[8],0);
+                                            boardsGenerated[9] += numMoves[9];
+                                            maxBranch = max(maxBranch,numMoves[9]);
+                                        }
                                     }
                                 }
                             }
@@ -462,12 +472,12 @@ int main() {
 
         cout << "boards generated: ";
         int totalBoards = 0;
-        for(int j = 0; j < 9; ++j) {
+        for(int j = 0; j < 10; ++j) {
                 cout << boardsGenerated[j] << " ";
                 totalBoards += boardsGenerated[j];
         }
         cout << endl;
-        cout << "In " << elapsed.count() << " seconds, ";
+        cout << totalBoards << " boards in " << elapsed.count() << " seconds, ";
         cout << "boards per second: " << int(totalBoards / elapsed.count()) << endl;
         cout << "Max branch factor: " << maxBranch << endl;
     }
