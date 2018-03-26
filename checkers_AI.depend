@@ -4,7 +4,7 @@
 	"board.h"
 	"gui.h"
 
-1521986295 c:\cygwin64\home\firethorn\checkers_ai\board.h
+1522063436 c:\cygwin64\home\firethorn\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -179,7 +179,7 @@
 	<boost/archive/binary_oarchive.hpp>
 	"board.h"
 
-1521982328 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
+1522063436 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
 1521844116 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
