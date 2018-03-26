@@ -78,7 +78,7 @@
 #define BBACKR  0x80808080
 
 /* Column masks */
-#define  ODD_COLUMN     0x0f0f0f0f
+#sdefine  ODD_COLUMN     0x0f0f0f0f
 #define EVEN_COLUMN     0xf0f0f0f0
 #define WHITE_HALF      0x33333333
 #define BLACK_HALF      0xcccccccc

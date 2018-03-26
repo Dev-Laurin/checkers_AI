@@ -53,6 +53,7 @@ bool testBoard(stdBoard &board, int side) {
     //Check that move counts match.  If not, failure.
     if (numMoves1 != numMoves2) {
         cout << "Test failed; Number of moves do not match" << endl;
+        cout << "Board: " << numMoves1 << " OldGen: " << numMoves2 << endl;
         return false;
     }
     //Convert char arrays to strings
@@ -170,6 +171,11 @@ int main() {
 	  stdBoard b(" B       R       BR  r          ");
 	  testBoard(b, numOfTests, testsCorrect);
 	  b.updateBoard("          r        B    R Br  R ");
+	  testBoard(b, numOfTests, testsCorrect);
+    b.str(" R       B       RB  b          ");
+	  testBoard(b, numOfTests, testsCorrect);
+	  b.str("          b        R    B Rb  B ");  template <typename Archive>
+
 	  testBoard(b, numOfTests, testsCorrect);
   }
 
@@ -414,6 +420,9 @@ int main() {
         int numMoves[10];
         int boardsGenerated[10] = {0};
         auto tStart = std::chrono::high_resolution_clock::now();
+        numMoves[0] = iBoard.genMoves(Br[0],0);
+        boardsGenerated[0] += numMoves[0];
+        maxBranch = max(maxBranch,numMoves[0]);
         for(int j = 0; j < 100; ++j) {
           numMoves[0] = iBoard.genMoves(Br[0],0);
           boardsGenerated[0] += numMoves[0];
@@ -474,7 +483,7 @@ int main() {
                 totalBoards += boardsGenerated[j];
         }
         cout << endl;
-        cout << "In " << elapsed.count() << " seconds, ";
+        cout << totalBoards << " boards in " << elapsed.count() << " seconds, ";
         cout << "boards per second: " << int(totalBoards / elapsed.count()) << endl;
         cout << "Max branch factor: " << maxBranch << endl;
     }
