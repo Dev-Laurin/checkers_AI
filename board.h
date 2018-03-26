@@ -378,8 +378,7 @@ public:
 inline bool operator==(const stdBoard & lhs, const stdBoard & rhs){ /* do actual comparison */
     return lhs.pieces[0] == rhs.pieces[0] &&
         lhs.pieces[1] == rhs.pieces[1] &&
-        lhs.pieces[2] == rhs.pieces[2] &&
-        lhs.pieces[3] == rhs.pieces[3];
+        lhs.pieces[2] == rhs.pieces[2];
 }
 
 
