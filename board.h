@@ -7,6 +7,9 @@ using std::string;
 #include <iostream>
 using std::cout;
 using std::endl;
+#include <algorithm>
+using std::max;
+
 #include <array>
 #include <bitset>
 using std::bitset;
@@ -30,20 +33,17 @@ class cmpBoard;
 
 class stdBoard {
 public:
-    i32 pieces[4];
-    double score;
+    i32 pieces[3];
 	//Constructors
 	stdBoard() {
 	  pieces[0] = 0xFFF00000;//Initial regular board
 		pieces[1] = 0x00000FFF;
 		pieces[2] = 0x00000000;
-		pieces[3] = 0x00000000;
 	}
 	stdBoard(string board) {
 	  pieces[0] = 0x00000000;//Initial regular board
 		pieces[1] = 0x00000000;
 		pieces[2] = 0x00000000;
-		pieces[3] = 0x00000000;
 		for (int i = 0; i < 32; ++i) {
 			if (board[i] == 'r') {
 				//using bitshifting rather than power.
@@ -51,7 +51,7 @@ public:
 			}
 			if (board[i] == 'R') {
 				pieces[1][i] = 1;
-				pieces[3][i] = 1;
+				pieces[2][i] = 1;
 			}
 			if (board[i] == 'b') {
 				//using bitshifting rather than power.
@@ -66,17 +66,16 @@ public:
 	stdBoard(i32 b, i32 r, i32 bK, i32 rK) {
 		pieces[0] = b;
 		pieces[1] = r;
-		pieces[2] = bK;
-		pieces[3] = rK;
+		pieces[2] = bK | rK;
 	}
 
 	//returns string representation of a board.
 	string str(){
 		string board;
 		for (int i = 0;i<32;++i) {
-			if (pieces[3][i]) {
+			if (pieces[2][i] & pieces[1][i]) {
 				board.append("R");
-			} else if (pieces[2][i]) {
+			} else if (pieces[2][i] & pieces[0][i]) {
 				board.append("B");
 			} else if (pieces[1][i]) {
 				board.append("r");
@@ -84,6 +83,31 @@ public:
 				board.append("b");
 			} else {
 				board.append(" ");
+			}
+		}
+		return board;
+	}
+
+	string str(string board) {
+		for (int i = 0;i<3;++i) {
+			pieces[i] = 0;
+		}
+		for (int i = 0; i < 32; ++i) {
+			if (board[i] == 'r') {
+				//using bitshifting rather than power.
+				pieces[1][i] = 1;
+			}
+			if (board[i] == 'R') {
+        pieces[1][i] = 1;
+        pieces[2][i] = 1;
+			}
+			if (board[i] == 'b') {
+				//using bitshifting rather than power.
+				pieces[0][i] = 1;
+			}
+			if (board[i] == 'B') {
+        pieces[0][i] = 1;
+        pieces[2][i] = 1;
 			}
 		}
 		return board;
@@ -100,7 +124,7 @@ public:
 			}
 			if (board[i] == 'R') {
         pieces[1][i] = 1;
-        pieces[3][i] = 1;
+        pieces[2][i] = 1;
 			}
 			if (board[i] == 'b') {
 				//using bitshifting rather than power.
@@ -118,7 +142,7 @@ public:
 		i32 rowBlack = 0x0000000F;
 		i32 rowred_p = 0xF0000000;
 		pieces[2] = pieces[2] | (pieces[0] & rowBlack);
-		pieces[3] = pieces[3] | (pieces[1] & rowred_p);
+		pieces[2] = pieces[2] | (pieces[1] & rowred_p);
 		return;
 	}
 
@@ -135,23 +159,27 @@ public:
 			{ 0x0E0E0E00,0xE0E0E000,0x07070700,0x70707000 } };
 
 		i32 mOpen = ~(pieces[0] |pieces[1]); //open board spots marked with a 1
+    i32 sd = 0;
+		if(side)
+        sd = ~sd;
 		//Up&left,Up%right
 		i32 moves[4];
 		//Jumping UP
 		for (int j = 0; j < 2; ++j) {
 			// side | side << 1 leaves the value at 0 if zero, if 1 changes it to 11(king pieces)
-			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j + 4)) & ((maskP & pieces[side | side << 1]) >> 9); //up left
+			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j + 4)) &
+        ((maskP & ((pieces[0] & ~sd) | (pieces[1] & pieces[2] & sd))) >> 9); //up left
 			for (int i = 0; moves[j] != 0; ++i) {
 				if (moves[j][0]) {
 					stdBoard jmp = *this;
 					//remove the jumped piece.
 					jmp.pieces[1 - side][j+i+4] = 0;
 					//remove the king if necessary:
-					jmp.pieces[(1-side) | 2][j+i+4] = 0;
+					jmp.pieces[2][j+i+4] = 0;
 					//Move the jump piece
 					//move the king symbol first
-					jmp.pieces[side|2][i] = jmp.pieces[side|2][i+9];
-					jmp.pieces[side|2][i+9] = 0;
+					jmp.pieces[2][i] = jmp.pieces[2][i+9];
+					jmp.pieces[2][i+9] = 0;
 					jmp.pieces[side][i+9] = 0;
 					jmp.pieces[side][i] = 1;
 
@@ -172,16 +200,18 @@ public:
 			}
 		}
 		for (int j = 2; j < 4; ++j) {
-			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j + 1)) & ((maskP & pieces[side | side << 1]) >> 7);  //up right
+			moves[j] = maskM[0][j] & mOpen & (pieces[1 - side] >> (j + 1)) &
+			((maskP & ((pieces[0] & ~sd) | (pieces[1] & pieces[2] & sd))) >> 7);  //up right
 			for (int i = 0; moves[j] != 0; ++i) {
 				if (moves[j][0]) {
 					stdBoard jmp = *this;
 					//remove the jumped piece.
 					jmp.pieces[1 - side][j+i+1] = 0;
-					jmp.pieces[(1-side)|2][j+i+1] = 0;
+					jmp.pieces[2][j+i+1] = 0;
+
 					//Move the piece
-          jmp.pieces[side|2][i] = jmp.pieces[side|2][i+7];
-					jmp.pieces[side|2][i+7] = 0;
+          jmp.pieces[2][i] = jmp.pieces[2][i+7];
+					jmp.pieces[2][i+7] = 0;
 					jmp.pieces[side][i+7] = 0;
 					jmp.pieces[side][i] = 1;
 
@@ -205,17 +235,19 @@ public:
 		//Jumping DOWN
 		for (int j = 0; j < 2; ++j) {
 			// 2 >> side is to specificy king
-			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 4)) & ((maskP & pieces[2 >> side]) << 9); //down right
+			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 4)) &
+			 ((maskP & ((pieces[1] & sd) | (pieces[0] & pieces[2] & ~sd))) << 9); //down right
 			for (int i = 0; moves[j] != 0; ++i) {
 				if (moves[j][0]) {
 					stdBoard jmp = *this;
 					//remove the jumped piece.
 					jmp.pieces[1 - side][i-j-4] = 0;
-					jmp.pieces[(1-side) | 2][i-j-4] = 0;
+					jmp.pieces[2][i-j-4] = 0;
+
 
 					//move the jump piece
-          jmp.pieces[side|2][i] = jmp.pieces[side|2][i-9];
-					jmp.pieces[side|2][i-9] = 0;
+          jmp.pieces[2][i] = jmp.pieces[2][i-9];
+					jmp.pieces[2][i-9] = 0;
 					jmp.pieces[side][i-9] = 0;
 					jmp.pieces[side][i] = 1;
 
@@ -236,16 +268,17 @@ public:
 			}
 		}
 		for (int j = 2; j < 4; ++j) {
-			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 1)) & ((maskP & pieces[2 >> side]) << 7); //down left
+			moves[j] = maskM[1][j] & mOpen & (pieces[1 - side] << (j + 1)) &
+			((maskP & ((pieces[1] & sd) | (pieces[0] & pieces[2] & ~sd))) << 7); //down left
 			for (int i = 0; moves[j] != 0; ++i) {
 				if (moves[j][0]) {
 					stdBoard jmp = *this;
 					//remove the jumped piece.
 					jmp.pieces[1 - side][i-j-1] = 0;
-					jmp.pieces[(1 - side) | 2] = 0;
+					jmp.pieces[2][i-j-1] = 0;
 					//move the jump piece
-          jmp.pieces[side|2][i] = jmp.pieces[side|2][i-7];
-					jmp.pieces[side|2][i-7] = 0;
+          jmp.pieces[2][i] = jmp.pieces[2][i-7];
+					jmp.pieces[2][i-7] = 0;
 					jmp.pieces[side][i-7] = 0;
 					jmp.pieces[side][i] = 1;
 
@@ -281,10 +314,14 @@ public:
 			return moveCount;
 		}
 		i32 mOpen = ~(pieces[0] | pieces[1]);  //bitwise OR, then compliment.  Shows valid open positions.
+		i32 sd = 0;
+		if(side)
+        sd = ~sd;
 		//Black King Moves
 		//red_p Pawn Moves
 		for (int i = 0; i < 3; ++i) {
-			i32 moves = (pieces[2 >> side]) & ((mOpen & maskU[1][i]) >> (i + 3));
+      i32 moves = ((pieces[1] & sd) | (pieces[0] & pieces[2] & ~sd))  & ((mOpen & maskU[1][i]) >> (i + 3));
+			//i32 moves = (pieces[2 >> side]) & ((mOpen & maskU[1][i]) >> (i + 3));
 			i32 mask = maskM[i];
 			while (moves != 0) {
 				if (moves[0]) {
@@ -294,8 +331,8 @@ public:
 
 					//Move is noted on pawn board, need to move king as well.
 					//change is to allow use for red_p pawns.
-					i32 king = boardList[moveCount].pieces[side | 2] & (~boardList[moveCount].pieces[side]);
-					boardList[moveCount].pieces[side | 2] = (boardList[moveCount].pieces[side | 2] ^ king) ^ (king << (i + 3));
+					i32 king = boardList[moveCount].pieces[2] & ~(boardList[moveCount].pieces[0] | boardList[moveCount].pieces[1]);
+					boardList[moveCount].pieces[2] = (boardList[moveCount].pieces[2] ^ king) ^ (king << (i + 3));
 					boardList[moveCount].kingMaker();
 					++moveCount;
 				}
@@ -306,17 +343,19 @@ public:
 		//Black Pawn Moves.
 		//red_p King Moves
 		for (int i = 0; i < 3; ++i) {
-			i32 moves = (pieces[side | side << 1] >> (i+3)) & (mOpen & maskU[0][i]);
+      i32 moves = (((pieces[0] & ~sd) | (pieces[1] & pieces[2] & sd)) >> (i+3)) & (mOpen & maskU[0][i]);
+			//i32 moves = (pieces[side | side << 1] >> (i+3)) & (mOpen & maskU[0][i]);
 			i32 mask = maskM[i];
 			while (moves != 0) {
 				if (moves[0]) {
 					boardList[moveCount] = *this;
 					boardList[moveCount].pieces[side] = pieces[side] ^ mask;
+
 					//Need to move the king as well, if it is one.
 					//Take the complement of the black list and 'AND' with king list.
 					//should be all zero.  Otherwise, king to move.
-					i32 king = boardList[moveCount].pieces[side | 2] & (~boardList[moveCount].pieces[side]);
-					boardList[moveCount].pieces[side | 2] = (boardList[moveCount].pieces[side | 2] ^ king) ^ (king >> (i + 3));
+					i32 king = boardList[moveCount].pieces[2] & ~(boardList[moveCount].pieces[0] | boardList[moveCount].pieces[1]);
+					boardList[moveCount].pieces[2] = (boardList[moveCount].pieces[2] ^ king) ^ (king >> (i + 3));
 
 					//i32 king = boardList[moveCount].blackK & (~boardList[moveCount].black);
 					//move the king.  Note: No if statements!
@@ -340,8 +379,7 @@ public:
         for(int i = 0;i<32;++i) {
             temp.pieces[0][i] = pieces[1][31-i];
             temp.pieces[1][i] = pieces[0][31-i];
-            temp.pieces[2][i] = pieces[3][31-i];
-            temp.pieces[3][i] = pieces[2][31-i];
+            temp.pieces[2][i] = pieces[2][31-i];
         }
         return temp;
 	}
@@ -374,14 +412,9 @@ public:
 inline bool operator==(const stdBoard & lhs, const stdBoard & rhs){ /* do actual comparison */
     return lhs.pieces[0] == rhs.pieces[0] &&
         lhs.pieces[1] == rhs.pieces[1] &&
-        lhs.pieces[2] == rhs.pieces[2] &&
-        lhs.pieces[3] == rhs.pieces[3];
+        lhs.pieces[2] == rhs.pieces[2];
 }
 
-//Used to enable sort.
-inline bool operator< (const stdBoard & lhs, const stdBoard & rhs){
-  return (lhs.score < rhs.score);
-}
 
 namespace std
 {
@@ -391,7 +424,7 @@ namespace std
       typedef std::size_t result_type;
       result_type operator()(argument_type const& b) const noexcept
       {
-        return boost::hash_range((uint32_t*)b.pieces, (uint32_t*)b.pieces+4);
+        return boost::hash_range((uint32_t*)b.pieces, (uint32_t*)b.pieces+3);
       }
     };
 }

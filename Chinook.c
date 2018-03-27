@@ -78,7 +78,7 @@
 #define BBACKR  0x80808080
 
 /* Column masks */
-#define  ODD_COLUMN     0x0f0f0f0f
+#define ODD_COLUMN     0x0f0f0f0f
 #define EVEN_COLUMN     0xf0f0f0f0
 #define WHITE_HALF      0x33333333
 #define BLACK_HALF      0xcccccccc
@@ -401,7 +401,7 @@ int main()
         printf("Welcome to the Chinook Checkers Program\n");
 
         printf("\nWait for initialization...\n");
-	c = 0;
+        c = 0;
         NextBit[ 0 ] = 0;
         for( i = 1; i < ( 1<<16 ); i++ )
         {
@@ -1534,21 +1534,25 @@ unsigned long dbLocbvToSubIdx( DBENTRYPTR * dbentry )
 
 	/* Extract and sort the black pawns */
 	vec = RotateBoard(Blackbv & ~ Kingbv);
+	printf("HEX: %lx\n",vec);
 	EXTRACT_PIECES(vec, nbp, bppos);
 	SquishBP(nbp, bppos);
 
 	/* Extract and sort the white pawns */
 	vec = RotateBoard(Whitebv & ~ Kingbv);
+	printf("HEX: %lx\n",vec);
 	EXTRACT_PIECES(vec, nwp, wppos);
 	SquishWP(nwp, nbp, wppos, bppos);
 
 	/* Extract and sort the black kings */
 	vec = RotateBoard(Blackbv & Kingbv);
+	printf("HEX: %lx\n",vec);
 	EXTRACT_PIECES(vec, nbk, bkpos);
 	SquishBK(nbk, nwp, nbp, bkpos, wppos, bppos);
 
 	/* Extract and sort the white kings */
 	vec = RotateBoard(Whitebv & Kingbv);
+	printf("HEX: %lx\n",vec);
 	EXTRACT_PIECES(vec, nwk, wkpos);
 	SquishWK(nwk, nbk, nwp, nbp, wkpos, bkpos, wppos, bppos);
 

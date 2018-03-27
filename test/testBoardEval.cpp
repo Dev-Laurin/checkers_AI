@@ -13,9 +13,20 @@ int main() {
   //NN player2(nodes, "Blondie1");
   PieceCount player1;
   stdBoard board;
-  stdBoard b;
 
-  b = player1.getMove(board);
+  //stdBoard b(" B       R       BR  r          ");
+  stdBoard b("    BBBB                        ");
+  b.str("        BBBB                    ");
+  b.str("          r        B    R Br  R ");
+  stdBoard moveList[MAXMOVES];
+
+  b.draw();
+  int nMoves = b.genMoves(moveList,1);
+  for(int i = 0; i < nMoves; ++i) {
+    moveList[i].draw();
+  }
+  cout << "Moves: " << nMoves << endl;
+  //b = player1.getMove(board);
 
 
 }

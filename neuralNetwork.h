@@ -49,12 +49,12 @@ using std::min;
 
 #ifndef CONSTS
 #define CONSTS
-typedef double sNN;  template <typename Archive>
+typedef double sNN;
 
 unsigned const static int MAXMOVES = 32;
 
-constexpr sNN LOWEST = -10000;
-constexpr sNN HIGHEST = 10000;
+constexpr sNN LOWEST = -100000;
+constexpr sNN HIGHEST = 100000;
 #endif // CONSTS
 
 const static double MOVETIME = 14.0;  //Seconds.
@@ -69,12 +69,12 @@ public:
     int montyK = 1; // (w-l)/(w+l+k)
     int generation = 0; //Starts out as parent
     string familyName = "";
-    unsigned int searchDepth = 6;
+    unsigned int searchDepth = 3;
     time_t timeStart;
     time_t timeLimit;
     bool timeExceeded = false;
 
-    int depthReached = 0;
+    unsigned int depthReached = 0;
     std::unordered_map<stdBoard, double> boardMem;
     unsigned int cacheHit = 0;
     unsigned int cacheMiss = 0;
@@ -99,7 +99,6 @@ public:
     sNN alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b);
     // Handles starting up the alpha-beta search
     // sNN alphabeta(stdBoard board, unsigned int side = 0);
-
     void prntStats();
 
     //iterative  deepening search, time limited.
@@ -170,14 +169,16 @@ class NN: public AIPlayer
 public:
 	//Constructor setting a new neural network to random weights
 	NN(std::vector<int>& nS, string familyname);
+	//Blanck constructor
+	NN();
 	//Given a board, calculate the output of the NN
-	double calculateBoard(stdBoard & board);
+	virtual double calculateBoard(stdBoard & board);
 	//Puts board input into nodes vector in user specified index
-	void getBoardInput(stdBoard & board);
+	virtual void getBoardInput(stdBoard & board);
 	double boardCount(stdBoard & board);
 
-  int saveToFile(string filename); 
-  int loadFromFile(string filename); 
+  int saveToFile(string filename);
+  int loadFromFile(string filename);
 
 	//generate offspring, randomize this NN
 		//(assuming this is a copy of the original)
@@ -208,7 +209,9 @@ class NN2: public NN
 {
 public:
   NN2(std::vector<int>& nS, string familyname) : NN(nS, familyname){}
+  NN2() : NN() {}
   void getBoardInput(stdBoard & board);
+
 };
 
 bool operator!=(const NN2 & lhs, const NN2 & rhs);
@@ -222,7 +225,13 @@ int saveToFile(const NN & nn, string filename);
 // //Filename = FamilyName/GEN#
 // //EX:  Blondie24/GEN100/NNpp
 // int loadFromFile(NN & nn, string filename);
-int loadFromFile(NN& nn, string filename); 
+int loadFromFile(NN& nn, string filename);
+
+class montyMem {
+  int wins;
+  int losses;
+
+};
 
 #endif /* NEURAL_NETWORK_H */
 

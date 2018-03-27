@@ -3,7 +3,6 @@
 using std::cout;
 using std::endl;
 #include "board.h"
-#include "alphabeta.h"
 #include "old_movegenerator.h"
 #include "testboard.h"
 #include <random>
@@ -54,6 +53,7 @@ bool testBoard(stdBoard &board, int side) {
     //Check that move counts match.  If not, failure.
     if (numMoves1 != numMoves2) {
         cout << "Test failed; Number of moves do not match" << endl;
+        cout << "Board: " << numMoves1 << " OldGen: " << numMoves2 << endl;
         return false;
     }
     //Convert char arrays to strings
@@ -166,6 +166,18 @@ int main() {
 	//Testing regular moves.
 	numOfTests = 0;
 	testsCorrect = 0;
+	//Test specific boards
+	{
+	  stdBoard b(" B       R       BR  r          ");
+	  testBoard(b, numOfTests, testsCorrect);
+	  b.updateBoard("          r        B    R Br  R ");
+	  testBoard(b, numOfTests, testsCorrect);
+    b.str(" R       B       RB  b          ");
+	  testBoard(b, numOfTests, testsCorrect);
+	  b.str("          b        R    B Rb  B ");  template <typename Archive>
+
+	  testBoard(b, numOfTests, testsCorrect);
+  }
 
   //Test individual moves.
   {
@@ -306,10 +318,10 @@ int main() {
 	numOfTests++;
 	cout << "	If there are jumps available, return jumps moves only (priority).";
 	cout << endl;
-	stdBoard jumpPriority("rrrrrrrrrr r  r  b  bb bbbbbbbbb");
+	stdBoard jumpPriority("rrrrrrrrrr r  r  b  bb bbbbbbbbB");
 	stdBoard possibleMoves[30];
 	int moves = jumpPriority.genMoves(possibleMoves, 0);
-	if(possibleMoves[0].str()=="rrrrrrrrrrbr        bb bbbbbbbbb"){
+	if(possibleMoves[0].str()=="rrrrrrrrrrbr        bb bbbbbbbbB"){
 		testsCorrect++;
 		cout << "		Successful" << endl;
 	}
@@ -320,11 +332,11 @@ int main() {
 	//Jump Test 1
 	numOfTests++;
 	cout << "	Check if there is a 2-jump." << endl;
-	jumpPriority.updateBoard("rrrrr    r       r    b bbbbbbbb");
+	jumpPriority.updateBoard("Rrrrr    r       r    b bbbbbbbb");
 	stdBoard possibleMoves2[30];
 	moves = jumpPriority.genMoves(possibleMoves2, 0);
 	for(int i=0; i<moves; ++i){
-		if(possibleMoves2[i].str()=="rrrrr b                 bbbbbbbb"){
+		if(possibleMoves2[i].str()=="Rrrrr b                 bbbbbbbb"){
 			testsCorrect++;
 			cout << "		Successful" << endl;
 			break;
@@ -411,57 +423,67 @@ int main() {
         numMoves[0] = iBoard.genMoves(Br[0],0);
         boardsGenerated[0] += numMoves[0];
         maxBranch = max(maxBranch,numMoves[0]);
-        for(i[0] = 0;i[0] < numMoves[0];++i[0]) {
-            numMoves[1] = Br[0][i[0]].genMoves(Br[1],1);
-            boardsGenerated[1] += numMoves[1];
-            maxBranch = max(maxBranch,numMoves[1]);
-            for(i[1]=0;i[1] < numMoves[1];++i[1]) {
-                numMoves[2] = Br[1][i[1]].genMoves(Br[2],0);
-                boardsGenerated[2] += numMoves[2];
-                maxBranch = max(maxBranch,numMoves[2]);
-                for(i[2]=0;i[2] < numMoves[2];++i[2]) {
-                    numMoves[3] = Br[2][i[2]].genMoves(Br[2],1);
-                    boardsGenerated[3] += numMoves[3];
-                    maxBranch = max(maxBranch,numMoves[3]);
-                    for(i[3]=0;i[3] < numMoves[3];++i[3]) {
-                        numMoves[4] = Br[3][i[3]].genMoves(Br[3],0);
-                        boardsGenerated[4] += numMoves[4];
-                        maxBranch = max(maxBranch,numMoves[4]);
-                        for(i[4]=0;i[4] < numMoves[4];++i[4]) {
-                            numMoves[5] = Br[4][i[4]].genMoves(Br[4],1);
-                            boardsGenerated[5] += numMoves[5];
-                            maxBranch = max(maxBranch,numMoves[5]);
-                            for(i[5]=0;i[5] < numMoves[5];++i[5]) {
-                                numMoves[6] = Br[5][i[5]].genMoves(Br[5],0);
-                                boardsGenerated[6] += numMoves[6];
-                                maxBranch = max(maxBranch,numMoves[6]);
-                                for(i[6]=0;i[6] < numMoves[6];++i[6]) {
-                                    numMoves[7] = Br[6][i[6]].genMoves(Br[6],1);
-                                    boardsGenerated[7] += numMoves[7];
-                                    maxBranch = max(maxBranch,numMoves[7]);
-                                    for(i[7]=0;i[7] < numMoves[7];++i[7]) {
-                                        numMoves[8] = Br[7][i[7]].genMoves(Br[7],0);
-                                        boardsGenerated[8] += numMoves[8];
-                                        maxBranch = max(maxBranch,numMoves[8]);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        for(int j = 0; j < 100; ++j) {
+          numMoves[0] = iBoard.genMoves(Br[0],0);
+          boardsGenerated[0] += numMoves[0];
+          maxBranch = max(maxBranch,numMoves[0]);
+          for(i[0] = 0;i[0] < numMoves[0];++i[0]) {
+              numMoves[1] = Br[0][i[0]].genMoves(Br[1],1);
+              boardsGenerated[1] += numMoves[1];
+              maxBranch = max(maxBranch,numMoves[1]);
+              for(i[1]=0;i[1] < numMoves[1];++i[1]) {
+                  numMoves[2] = Br[1][i[1]].genMoves(Br[2],0);
+                  boardsGenerated[2] += numMoves[2];
+                  maxBranch = max(maxBranch,numMoves[2]);
+                  for(i[2]=0;i[2] < numMoves[2];++i[2]) {
+                      numMoves[3] = Br[2][i[2]].genMoves(Br[2],1);
+                      boardsGenerated[3] += numMoves[3];
+                      maxBranch = max(maxBranch,numMoves[3]);
+                      for(i[3]=0;i[3] < numMoves[3];++i[3]) {
+                          numMoves[4] = Br[3][i[3]].genMoves(Br[3],0);
+                          boardsGenerated[4] += numMoves[4];
+                          maxBranch = max(maxBranch,numMoves[4]);
+                          for(i[4]=0;i[4] < numMoves[4];++i[4]) {
+                              numMoves[5] = Br[4][i[4]].genMoves(Br[4],1);
+                              boardsGenerated[5] += numMoves[5];
+                              maxBranch = max(maxBranch,numMoves[5]);
+                              for(i[5]=0;i[5] < numMoves[5];++i[5]) {
+                                  numMoves[6] = Br[5][i[5]].genMoves(Br[5],0);
+                                  boardsGenerated[6] += numMoves[6];
+                                  maxBranch = max(maxBranch,numMoves[6]);
+                                  for(i[6]=0;i[6] < numMoves[6];++i[6]) {
+                                      numMoves[7] = Br[6][i[6]].genMoves(Br[6],1);
+                                      boardsGenerated[7] += numMoves[7];
+                                      maxBranch = max(maxBranch,numMoves[7]);
+                                      for(i[7]=0;i[7] < numMoves[7];++i[7]) {
+                                          numMoves[8] = Br[7][i[7]].genMoves(Br[7],0);
+                                          boardsGenerated[8] += numMoves[8];
+                                          maxBranch = max(maxBranch,numMoves[8]);
+                                          for(i[8]=0;i[8] < numMoves[8];++i[8]) {
+                                              numMoves[9] = Br[8][i[8]].genMoves(Br[8],0);
+                                              boardsGenerated[9] += numMoves[9];
+                                              maxBranch = max(maxBranch,numMoves[9]);
+                                          }
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
         }
         auto tStop = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsed = tStop - tStart;
 
         cout << "boards generated: ";
         int totalBoards = 0;
-        for(int j = 0; j < 9; ++j) {
+        for(int j = 0; j < 10; ++j) {
                 cout << boardsGenerated[j] << " ";
                 totalBoards += boardsGenerated[j];
         }
         cout << endl;
-        cout << "In " << elapsed.count() << " seconds, ";
+        cout << totalBoards << " boards in " << elapsed.count() << " seconds, ";
         cout << "boards per second: " << int(totalBoards / elapsed.count()) << endl;
         cout << "Max branch factor: " << maxBranch << endl;
     }
