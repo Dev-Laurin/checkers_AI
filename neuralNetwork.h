@@ -69,12 +69,12 @@ public:
     int montyK = 1; // (w-l)/(w+l+k)
     int generation = 0; //Starts out as parent
     string familyName = "";
-    unsigned int searchDepth = 4;
+    unsigned int searchDepth = 3;
     time_t timeStart;
     time_t timeLimit;
     bool timeExceeded = false;
 
-    int depthReached = 0;
+    unsigned int depthReached = 0;
     std::unordered_map<stdBoard, double> boardMem;
     unsigned int cacheHit = 0;
     unsigned int cacheMiss = 0;

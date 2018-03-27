@@ -33,7 +33,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
 
       //iterative deepening search
       selectMove = 0;
-      while(time(0) < timeLimit) {
+      while(time(0) < timeLimit && depthReached <= searchDepth) {
         std::sort(moveList, moveList+moves,
                   [&](stdBoard a, stdBoard b) {
                     return (boardMem.at(a) > boardMem.at(b));

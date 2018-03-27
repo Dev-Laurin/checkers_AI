@@ -123,6 +123,11 @@
 					<Add option="-std=c++1z" />
 				</Compiler>
 			</Target>
+			<Target title="endGame">
+				<Option output="endgame" prefix_auto="1" extension_auto="1" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-O2" />
@@ -166,6 +171,9 @@
 		<Unit filename="board.h">
 			<Option target="Debug" />
 			<Option target="Test" />
+		</Unit>
+		<Unit filename="endgame.cpp">
+			<Option target="endGame" />
 		</Unit>
 		<Unit filename="gui.cpp">
 			<Option target="Debug" />

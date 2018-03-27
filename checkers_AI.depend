@@ -4,8 +4,7 @@
 	"board.h"
 	"gui.h"
 
-
-1522065276 c:\cygwin64\home\firethorn\checkers_ai\board.h
+1522111782 c:\cygwin64\home\firethorn\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -128,7 +127,7 @@
 	"board.h"
 	"neuralNetwork.h"
 
-1521981689 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1522142958 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -180,11 +179,12 @@
 	<boost/archive/binary_oarchive.hpp>
 	"board.h"
 
-<<<<<<< HEAD
-1522063436 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
-=======
-1522064338 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
->>>>>>> origin/3bitstdboard
+1521843137 D
+
+1522142864 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
+	"neuralNetwork.h"
+
+1522064338 gin/3bitstdboard
 	"neuralNetwork.h"
 
 1521844116 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
@@ -9347,4 +9347,15 @@
 	<boost/serialization/deque.hpp>
 	<boost/serialization/queue.hpp>
 	"playgame.h"
+
+1522151847 source:c:\cygwin64\home\firethorn\checkers_ai\endgame.cpp
+	<iostream>
+	<algorithm>
+	<stdio.h>
+	<stdlib.h>
+	"board.h"
+	<fcntl.h>
+	<alloc.h>
+	<io.h>
+	<sys\stat.h>
 
