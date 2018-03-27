@@ -54,9 +54,13 @@ public:
 
 
 int main(){
+
+	//Population size 
   const int population = 30;
+  //Directory names 
   string tournName = "Blondie";
   string tournPath = "tournaments/" + tournName;
+  //Create the initial directory 
   if (!is_directory(tournPath)) {
     cout << "directory doesn't exist!";
     create_directories(tournPath);

@@ -16,3 +16,6 @@ playgame: playgame.cpp
 blondie: blondieExperiment1SpringBreak.cpp
 	g++ -std=c++17 blondieExperiment1SpringBreak.cpp neuralNetwork.cpp playgame.cpp -lboost_system -lboost_filesystem -o blondie.o
 	./blondie.o 
+tournament: tournament.cpp neuralNetwork.cpp
+	g++ -std=c++17 tournament.cpp neuralNetwork.cpp -O2 -lboost_system -lboost_filesystem -lboost_serialization -o tournament.o
+	./tournament.o 
