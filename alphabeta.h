@@ -19,7 +19,7 @@ typedef double sNN;
 constexpr sNN LOWEST = -10000;
 constexpr sNN HIGHEST = 10000;
 #endif
-std::mt19937 gen();
+
 std::uniform_real_distribution<sNN> distro(0.0,1.0);
 
 //A simple piececount AI

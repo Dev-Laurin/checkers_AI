@@ -1,3 +1,4 @@
+
 for (unsigned int i = 1; i<layer_.size();++i) {
 	for (unsigned int j = 0; j <layer_[i].size();++j) {
 		double temp=0.0;
