@@ -316,8 +316,7 @@ std::string checkerBoardGUI::run(){
 						}
 
 						//parameters
-						char opponentAIType = 'g';
-						std::string move;
+						stdBoard move;
 
 						//atomic flag to determine if thread is finished
 						std::atomic<bool> done(false);
@@ -325,9 +324,10 @@ std::string checkerBoardGUI::run(){
 						stdBoard bCopy = b;
 						//thread to compute enemy move while main draws
 						std::thread enemy([&done, &bCopy,
-							&move, &opponentAIType]{
+							&move]{
 
-							Opponent opp(opponentAIType);
+							//AI Player 
+							RandomPlayer opp; 
 							move = opp.getMove(bCopy);
 							done = true;
 						});
@@ -373,8 +373,8 @@ std::string checkerBoardGUI::run(){
 						highlightMoves(red_tiles, possibleBoards, moves,
 							b);
 
-						b.updateBoard(move);
-						reDrawBoard(move);
+						b.updateBoard(move.str());
+						reDrawBoard(move.str());
 
 						waitForOpponent=false;
 						turnNotificationText.setString("Turn: Player");

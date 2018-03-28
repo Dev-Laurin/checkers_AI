@@ -5,10 +5,10 @@
 #include "board.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "opponent_AI.h"
 #include <thread>
 #include <future>
 #include <chrono>
+#include "neuralNetwork.h"
 
 //helper functions
 int findCheckerMove(std::string newBoard, std::string oldBoard);

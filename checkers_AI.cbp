@@ -137,9 +137,9 @@
 			<Add directory="$(#boost)/include/boost-1_66" />
 		</Compiler>
 		<Linker>
-			<Add library="sfml-graphics" />
-			<Add library="sfml-window" />
-			<Add library="sfml-system" />
+			<Add library="libsfml-graphics" />
+			<Add library="libsfml-window" />
+			<Add library="libsfml-system" />
 			<Add library="libboost_system-mgw72-mt-s-x64-1_66" />
 			<Add library="libboost_filesystem-mgw72-mt-s-x64-1_66" />
 			<Add library="libboost_serialization-mgw72-mt-s-x64-1_66" />
@@ -151,15 +151,6 @@
 		</Unit>
 		<Unit filename="NN2Trainer.cpp">
 			<Option target="Bigg" />
-		</Unit>
-		<Unit filename="Test/testBoardEval.cpp">
-			<Option target="playmove" />
-		</Unit>
-		<Unit filename="Test/testNN.cpp">
-			<Option target="testNN" />
-		</Unit>
-		<Unit filename="Test/testplaygame.cpp">
-			<Option target="playgame" />
 		</Unit>
 		<Unit filename="alphabeta.h">
 			<Option target="Debug" />
@@ -228,6 +219,15 @@
 		</Unit>
 		<Unit filename="testBoard.h">
 			<Option target="Test" />
+		</Unit>
+		<Unit filename="test/testBoardEval.cpp">
+			<Option target="playmove" />
+		</Unit>
+		<Unit filename="test/testNN.cpp">
+			<Option target="testNN" />
+		</Unit>
+		<Unit filename="test/testplaygame.cpp">
+			<Option target="playgame" />
 		</Unit>
 		<Unit filename="tournament.cpp">
 			<Option target="tBlondie" />
