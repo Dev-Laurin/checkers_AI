@@ -1,8 +1,5 @@
 #include "gui.h"
-#include "opponent_AI.h"
-#include <thread>
-#include <future>
-#include <chrono>
+
 //using namespace std::chrono_literals;
 
 //used alot

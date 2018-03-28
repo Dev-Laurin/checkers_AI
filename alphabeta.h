@@ -19,7 +19,7 @@ typedef double sNN;
 constexpr sNN LOWEST = -10000;
 constexpr sNN HIGHEST = 10000;
 #endif
-std::mt19937 gen();
+std::mt19937 generator0();
 std::uniform_real_distribution<sNN> distro(0.0,1.0);
 
 //A simple piececount AI
@@ -30,7 +30,7 @@ sNN boardCount(stdBoard board) {
         board.pieces[2].count() -
         board.pieces[1].count() -
         board.pieces[3].count()) +
-        distro(gen);
+        distro(generator0);
   return count;
 }
 

@@ -1,11 +1,14 @@
 #ifndef GUI_INCLUDED_H
 #define GUI_INCLUDED_H
 
-#include <random>
 #include <string>
 #include "board.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "opponent_AI.h"
+#include <thread>
+#include <future>
+#include <chrono>
 
 //helper functions
 int findCheckerMove(std::string newBoard, std::string oldBoard);
