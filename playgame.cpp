@@ -31,6 +31,7 @@ int playGame(AIPlayer & player1, AIPlayer & player2, vector<stdBoard> & gameBoar
     b = RPlayer.getMove(b,false);
     gameBoards.push_back(b);
     cout << "The starting random board: " << endl;
+    b.str("           r   r bb               ");
     b.draw();
     i += 3;
     //To tell who lost, and if the game is over

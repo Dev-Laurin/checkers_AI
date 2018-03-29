@@ -224,6 +224,7 @@ NN::NN() {
   std::uniform_real_distribution<double> kingDis(0.0, 1.0);
 }
 
+
 //Given a board, calculate the output of the NN
 sNN NN::calculateBoard(stdBoard & board){
   for(size_t i = 0;i < nodes.size();++i) {
