@@ -66,11 +66,11 @@
 	<random>
 	<chrono>
 
-1522064064 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
+1522429847 source:c:\cygwin64\home\firethorn\checkers_ai\testboard.cpp
 	<iostream>
 	"board.h"
 	"old_movegenerator.h"
-	"testboard.h"
+	"testBoard.h"
 	<random>
 	<chrono>
 

@@ -178,10 +178,6 @@ int main() {
     //Move Gen test - error found during gameplay
     b.str("r B rr r      rrr  r bbbb b bbb ") ;
     testBoard(b, numOfTests, testsCorrect);
-
-    //template <typename Archive>
-
-	  testBoard(b, numOfTests, testsCorrect);
   }
 
   //Test individual moves.
