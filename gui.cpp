@@ -206,7 +206,7 @@ std::string checkerBoardGUI::run(){
 				if(mode=='g'){
 					//We are clicking through the game
 					//Left or right arrow clicked? 
-
+					
 					//Right Arrow Clicked
 					if(position.x <= 690 and position.x >= 650 and
 						position.y <= 140 and position.y >= 122){
@@ -219,8 +219,8 @@ std::string checkerBoardGUI::run(){
 							reDrawBoard(gameBoards[++gameBoardIndex]); 
 						}
 
-						rightArrowTriangle.setFillColor(sf::Color::Red);
-						rightArrowRect.setFillColor(sf::Color::Red); 
+						// rightArrowTriangle.setFillColor(sf::Color::Red);
+						// rightArrowRect.setFillColor(sf::Color::Red); 
 						 
 					}
 					else if(position.x >= 500 and position.x <= 550 and
@@ -234,8 +234,8 @@ std::string checkerBoardGUI::run(){
 							reDrawBoard(gameBoards[--gameBoardIndex]);
 						}
 						 
-						leftArrowRect.setFillColor(sf::Color::Red); 
-						leftArrowTriangle.setFillColor(sf::Color::Red); 
+						// leftArrowRect.setFillColor(sf::Color::Red); 
+						// leftArrowTriangle.setFillColor(sf::Color::Red); 
 					}
 
 
@@ -620,7 +620,7 @@ int checkerBoardGUI::readConfigFile(std::string filename){
 	getline(configFile, line); 
 	getline(configFile, line);
 	//reading a game
-	getline(configFile, line);
+	getline(configFile, line); 
 
 	if(line=="none"){
 		//we are not reading a game 
@@ -636,6 +636,7 @@ int checkerBoardGUI::readConfigFile(std::string filename){
 	}
 	else{
 		//We are reading in a game 
+		mode = 'g'; 
 		//Open the game file and store in a buffer 
 		ifstream gameFile(line); 
 
@@ -644,7 +645,6 @@ int checkerBoardGUI::readConfigFile(std::string filename){
 			cout << line << endl; 
 			return -1; 
 		}
-
 
 		//The winner or a tie 
 		string gameLine; 
@@ -661,7 +661,7 @@ int checkerBoardGUI::readConfigFile(std::string filename){
 		//ignore extra file contents until we find first game board 
 		stdBoard beginningBoard; 
 		while(getline(gameFile, gameLine)){
-			if(gameLine==beginningBoard.str()){
+			if(gameLine.find(beginningBoard.str())!=std::string::npos){
 				break; 
 			}
 		}

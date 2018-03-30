@@ -1,0 +1,98 @@
+Tie: blondie025 7 3
+Tie: blondie025 7 25
+rrrrrrrrrrrr        bbbbbbbbbbbb
+rrrrrrrrrrrr      b bb bbbbbbbbb
+rrrrrrrrr rr  r   b bb bbbbbbbbb
+rrrrrrrrrbrr        bb bbbbbbbbb
+rrrrr rrr rr  r     bb bbbbbbbbb
+rrrrr rrr rr  r b    b bbbbbbbbb
+ rrrrrrrr rr  r b    b bbbbbbbbb
+ rrrrrrrr rr  r b b  b  bbbbbbbb
+ rrrrrrrr rr    b    b rbbbbbbbb
+ rrrrrrrr rr    b b  b  bbb bbbb
+ rrrrrrrr  r   rb b  b  bbb bbbb
+ rrrrrrrr  r   rb b  bb bb  bbbb
+ rrrrr rrr r   rb b  bb bb  bbbb
+ rrrrr rrr r   rb b  bb bbb bbb 
+ rrrrr  rrrr   rb b  bb bbb bbb 
+ rrrrr  rrrr   rb b bbb  bb bbb 
+ rrrrr   rrr r rb b bbb  bb bbb 
+ rrrrr   rrr r rb b bbb bbb  bb 
+ rrrr   rrrr r rb b bbb bbb  bb 
+ rrrr   rrrr rbrb   bbb bbb  bb 
+ rrrr   r rr r rb r bbb bbb  bb 
+ rrrr   rbrr   r  r bbb bbb  bb 
+ rrrr   rb r  rr  r bbb bbb  bb 
+ rrrrb  r  r  rr  r bbb bbb  bb 
+ rr rb rr  r  rr  r bbb bbb  bb 
+Brr r  rr  r  rr  r bbb bbb  bb 
+Brr r  r   rr rr  r bbb bbb  bb 
+Brr r  r   rr rrb r  bb bbb  bb 
+Brr r  r   rr r b rr bb bbb  bb 
+Brr r  r   rr rbb  r b  bbb  bb 
+Brr r  r    r r b rr b  bbb  bb 
+Brr r  r    r r b rr bb b b  bb 
+Brr r  r    r r b  r b  brb  bb 
+Brr r  r    r r b  r bb b b   b 
+Brr r      rr r b  r bb b b   b 
+Brr r      rrbr    r bb b b   b 
+Brr r      rrb    rr bb b b   b 
+Brr r      rrb b   r b  b b   b 
+Brr r       rb    rr b  b b   b 
+Brr r       rb    rrbb    b   b 
+Br  r r     rb    rrbb    b   b 
+Br  r r     rb    rrbb   bb     
+Br  r r     rb     rbb r bb     
+Br  r r     rb     rbbbr b      
+Br  r r     rb     rbbb  br     
+Br  r r     rb    brbb   br     
+Br  r r     rb    b bb r br     
+Br  r r     rb   bb b  r br     
+Br  r r     rb   bb b  r b    R 
+Br  r r     rb   bb b br      R 
+Br  r r      b  rbb b br      R 
+Br  r r b       rbb b br      R 
+Br    r      r  rbb b br      R 
+Br    r b       r b b br      R 
+Br    r b       r b b br  R     
+Br    r b    b    b   br  R     
+Br    r b    b   Rb    r        
+ r   Br b    b   Rb    r        
+ r   Br b    b   Rb       r     
+ r   Br b    b b R        r     
+ r   Br b    b b     R    r     
+ r    r bB   b b     R    r     
+ r    r bB   b bR         r     
+ rB     b    b bR         r     
+ rB     bR     b          r     
+ rB b    R     b          r     
+ rB b        R b          r     
+ rB b      b R            r     
+ rB b      b R                R 
+BrB        b R                R 
+BrB        b R           R      
+BrB    b     R           R      
+BrB    b     R       R          
+BrBB         R       R          
+BrBB         R  R               
+BrB    B     R  R               
+B B   rB     R  R               
+B      B B   R  R               
+B     RB        R               
+B     R    B    R               
+B         RB    R               
+     B    RB    R               
+     B    RB         R          
+B         RB         R          
+B         RB     R              
+    B     RB     R              
+    B R    B     R              
+    B R        B R              
+    B R       RB                
+    B R    B  R                 
+    B R    B      R             
+      R B  B      R             
+      R B  B  R                 
+      R    B BR                 
+          RB BR                 
+        B RB  R                 

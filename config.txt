@@ -1,5 +1,5 @@
 //Config File for Checkers GUI
-//Put directory and name of game file we are clicking through or "none"
-none
+//Put directory and name of game file or "none"
+game001.txt
 //Put NN file directory we are playing against or "none"
-testGeneratedFiles/blondie/GEN0/NN0.txt
+none
