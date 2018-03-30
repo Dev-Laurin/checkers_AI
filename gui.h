@@ -8,7 +8,13 @@
 #include <thread>
 #include <future>
 #include <chrono>
+#include <iostream> 
+#include <fstream> 
 #include "neuralNetwork.h"
+using std::getline; 
+using std::cout; 
+using std::endl; 
+using std::string; 
 
 //helper functions
 int findCheckerMove(std::string newBoard, std::string oldBoard);
@@ -45,9 +51,13 @@ public:
 class checkerBoardGUI{
 public:
 	checkerBoardGUI();
+	//Runs the program 
 	std::string run();
 	//redraw checkers board based on string
 	void reDrawBoard(std::string newBoard);
+	//read in the config file
+	int readConfigFile(std::string filename); 
+
 
 	//variables
 	stdBoard b;
@@ -69,6 +79,30 @@ public:
 	sf::Text debugText;
 
 	sf::Font ubuntuFont;
+
+	//Arrows for looking through games
+	sf::RectangleShape rightArrowRect; 
+	sf::RectangleShape leftArrowRect; 
+
+	sf::CircleShape rightArrowTriangle; 
+	sf::CircleShape leftArrowTriangle; 
+
+	//Config file vars 
+	std::string inputFilename; 
+	char mode; //either 'g' or 'n' for game vs neural network play
+
+	//Reading in a game 
+	vector<string>gameBoards; 
+	string gameWinner; 
+	string gameLoser; 
+	bool isTie; 
+
+	//blondie005 3 20 
+	//005 : 5 generation
+	//3: evolved 3 times since original 
+	//20 : NN filename 
+
+	//Playing a NN 
 
 };
 

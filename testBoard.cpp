@@ -4,7 +4,7 @@ using std::cout;
 using std::endl;
 #include "board.h"
 #include "old_movegenerator.h"
-#include "testboard.h"
+#include "testBoard.h"
 #include <random>
 #include <chrono>
 
@@ -174,7 +174,9 @@ int main() {
 	  testBoard(b, numOfTests, testsCorrect);
     b.str(" R       B       RB  b          ");
 	  testBoard(b, numOfTests, testsCorrect);
-	  b.str("          b        R    B Rb  B ");  template <typename Archive>
+	  b.str("          b        R    B Rb  B ");  
+
+    //template <typename Archive>
 
 	  testBoard(b, numOfTests, testsCorrect);
   }
@@ -402,6 +404,28 @@ int main() {
 		cout << possibleMoves[0].str() << endl;
 		cout << "Moves: " << moves << endl;
 	}
+
+  //Move Gen test - error found during gameplay
+  numOfTests++; 
+  stdBoard genTestBoard; 
+  genTestBoard.updateBoard("r B rr r      rrr  r bbbb b bbb ");
+  moves = genTestBoard.genMoves(possibleMoves, 0); 
+  if(moves==2 and possibleMoves[0].str()=="r B rr r    b rr   r  bbb b bbb " and
+    possibleMoves[1].str()=="r   rr        r r Br bbbb b bbb "){
+    cout << "Possible Moves = 2" << endl; 
+    cout << possibleMoves[0].str() << endl; 
+    cout << possibleMoves[1].str() << endl; 
+    testsCorrect++; 
+  }
+  else{
+    cout << "Failed move gen test" << endl; 
+    cout << "Got: " << possibleMoves[0].str() << endl;  
+    cout << " vs " << endl;  
+    cout << "Answer: " << "r B rr r    b rr   r  bbb b bbb " << endl; 
+    cout << "Got: " << possibleMoves[1].str() << endl; 
+    cout << " vs " << endl; 
+    cout << "Answer: " << "r   rr        r r Br bbbb b bbb " << endl; 
+  }
 
 
 

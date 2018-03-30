@@ -14,6 +14,7 @@ int main(){
 		if(firstTime){
 			cout << "Press p to play again or e to exit." << endl;
 			checkerBoardGUI gui;
+			gui.readConfigFile("config.txt"); 
 			results = gui.run(); 
 			cout << "Game ended. Results: " << results << endl;
 			firstTime = false; 
@@ -23,6 +24,7 @@ int main(){
 			switch(input){
 				case 'p': { //Play another game
 					checkerBoardGUI gui;
+					gui.readConfigFile("config.txt");
 					results = gui.run(); 
 					cout << "Game ended. Results: " << results << endl;
 				}

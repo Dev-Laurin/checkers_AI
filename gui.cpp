@@ -99,6 +99,7 @@ checkerBoardGUI::checkerBoardGUI(){
 	debugWindow.setFillColor(sf::Color::White);
 	debugWindow.setPosition(505,5);
 
+
 	bool row = true; //1 = odd, 0 = even
 	float x_pos = 0;
 	float y_pos = 0;
@@ -155,11 +156,40 @@ checkerBoardGUI::checkerBoardGUI(){
 
 	piece_selected = 0;
 	waitForOpponent = false; //player goes first
+
+	//Setup arrows for looking through games  
+	rightArrowRect.setSize(sf::Vector2f(20, 5));  
+	rightArrowRect.setFillColor(sf::Color::Red); 
+	rightArrowRect.setPosition(650, 130); 
+
+
+	leftArrowRect.setSize(sf::Vector2f(20, 5)); 
+	leftArrowRect.setFillColor(sf::Color::Red); 
+	leftArrowRect.setPosition(530, 130);  
+
+ 
+	rightArrowTriangle.setRadius(10);
+	rightArrowTriangle.setPointCount(3);
+	rightArrowTriangle.setFillColor(sf::Color::Red); 
+	rightArrowTriangle.setRotation(90); 
+	rightArrowTriangle.setPosition(650 + 30, 122); 
+
+
+	leftArrowTriangle.setRadius(10); 
+	leftArrowTriangle.setPointCount(3); 
+	leftArrowTriangle.setFillColor(sf::Color::Red); 
+	leftArrowTriangle.setRotation(-90); 
+	leftArrowTriangle.setPosition(520, 142); 
+
+	gameWinner = "none"; 
+	gameLoser = "none"; 
+	isTie = false; 
 }
 
 std::string checkerBoardGUI::run(){
 
-		//Draw
+	//Draw
+	int gameBoardIndex = 0; 
 	while(window.isOpen())
 	{
 		sf::Event event;
@@ -173,92 +203,262 @@ std::string checkerBoardGUI::run(){
 				sf::Vector2i position = sf::Mouse::getPosition(window);
 				error.setString(""); //reset error message
 
+				if(mode=='g'){
+					//We are clicking through the game
+					//Left or right arrow clicked? 
 
+					//Right Arrow Clicked
+					if(position.x <= 690 and position.x >= 650 and
+						position.y <= 140 and position.y >= 122){
+						//Clicked right arrow
+						rightArrowTriangle.setFillColor(sf::Color::Magenta); 
+						rightArrowRect.setFillColor(sf::Color::Magenta);
 
-				//move checker?
-				if(piece_selected){
-
-					//unhighlight enemy postions
-					unhighlightMoves(red_tiles);
-
-					//find tile that user clicked
-					int clickedIndex = 9000;
-					for(unsigned int i=0; i<red_tiles.size(); ++i){
-						if(red_tiles[i].getPosition().x <= position.x and
-							position.x <= red_tiles[i].getPosition().x + tile_width and
-							red_tiles[i].getPosition().y <= position.y and
-							position.y <= red_tiles[i].getPosition().y + tile_width ){
-							//tile is found
-							clickedIndex = i;
-							break;
+						//make next game appear
+						if(gameBoardIndex + 1<gameBoards.size()){
+							reDrawBoard(gameBoards[++gameBoardIndex]); 
 						}
+
+						rightArrowTriangle.setFillColor(sf::Color::Red);
+						rightArrowRect.setFillColor(sf::Color::Red); 
+						 
+					}
+					else if(position.x >= 500 and position.x <= 550 and
+						position.y <= 150 and position.y >= 120){
+
+						leftArrowTriangle.setFillColor(sf::Color::Magenta);
+						leftArrowRect.setFillColor(sf::Color::Magenta);  
+
+						//make last game appear
+						if(gameBoardIndex - 1>=0){
+							reDrawBoard(gameBoards[--gameBoardIndex]);
+						}
+						 
+						leftArrowRect.setFillColor(sf::Color::Red); 
+						leftArrowTriangle.setFillColor(sf::Color::Red); 
 					}
 
-					//get valid moves from this board
-					//turn this board into std::string
-					stdBoard possibleBoards[30];
-					int movesFound = b.genMoves(possibleBoards, 0);//black
 
-					if(movesFound<=0){
-						std::string results;
-						//there are no moves, count pieces to see who won
-						if(black_pieces.size()>red_pieces.size()){
-							//red won
-							results = "GG you won!";
+				}
+				else{ //we are playing a neural network 
+	
+					//move checker?
+					if(piece_selected){
+
+						//unhighlight enemy postions
+						unhighlightMoves(red_tiles);
+
+						//find tile that user clicked
+						int clickedIndex = 9000;
+						for(unsigned int i=0; i<red_tiles.size(); ++i){
+							if(red_tiles[i].getPosition().x <= position.x and
+								position.x <= red_tiles[i].getPosition().x + tile_width and
+								red_tiles[i].getPosition().y <= position.y and
+								position.y <= red_tiles[i].getPosition().y + tile_width ){
+								//tile is found
+								clickedIndex = i;
+								break;
+							}
 						}
-						else if(black_pieces.size()<red_pieces.size()){
-							results = "You lost, GG.";
+
+						//get valid moves from this board
+						//turn this board into std::string
+						stdBoard possibleBoards[30];
+						int movesFound = b.genMoves(possibleBoards, 0);//black
+
+						if(movesFound<=0){
+							std::string results;
+							//there are no moves, count pieces to see who won
+							if(black_pieces.size()>red_pieces.size()){
+								//red won
+								results = "GG you won!";
+							}
+							else if(black_pieces.size()<red_pieces.size()){
+								results = "You lost, GG.";
+							}
+							else{
+								//same amount of pieces
+								results = "We tied.";
+
+							}
+							window.close();
+							return results;
 						}
-						else{
-							//same amount of pieces
-							results = "We tied.";
+						std::vector<int> validPositions;
+						std::vector<int> indices;
+						//loop through boards to find valid moves
+						for(int i=0; i<movesFound; ++i){
+						//	"rrrrrrrrrrrr        bbbbbbbbbbbb"
+							if(possibleBoards[i].str().at(selected_piece->positionOnBoard) == ' '){
+								//this board has our checker involved
+								validPositions.push_back(findCheckerMove(possibleBoards[i].str(),
+									b.str()));
+
+								indices.push_back(i); //keep track of position in possible boards for updating later
+							}
+						}
+
+						bool valid = false;
+						//see if user clicked a valid position
+						for(unsigned int i=0; i<validPositions.size(); ++i){
+							if(clickedIndex == validPositions[i]){
+								//is a valid position
+								valid=true;
+								//update board
+								b.updateBoard(possibleBoards[indices[i]].str());
+								reDrawBoard(b.str());
+								//we need to wait for our opponent now
+								waitForOpponent = true;
+								turnNotificationText.setString("Turn: Opponent");
+								break;
+							}
 
 						}
-						window.close();
-						return results;
+						if(!valid){ //print out to user
+							error.setString("Error: Invalid Move.");
+
+							highlightMoves(red_tiles, possibleBoards, movesFound, b);
+
+							if(piece_selected and selected_piece->isKing)
+								selected_piece->piece.setFillColor(sf::Color::Blue);
+							else if(piece_selected)
+								selected_piece->piece.setFillColor(sf::Color::Black);
+							piece_selected = false;
+
+							//check if it was another piece that was selected instead
+							//See which piece was selected
+							for(unsigned int i=0; i<black_pieces.size(); ++i){
+								int yArea = black_pieces[i].y +
+								black_pieces[i].radius*2;
+								int xArea = black_pieces[i].x +
+								black_pieces[i].radius*2;
+
+								if(black_pieces[i].y < position.y and
+									position.y < yArea and
+									black_pieces[i].x < position.x and
+									position.x < xArea){
+										//this piece was clicked change its color
+									selected_piece = &black_pieces[i];
+									black_pieces[i].piece.setFillColor(sf::Color::White);
+									piece_selected = true;
+									clickedBefore = true;
+									break;
+								}
+								piece_selected = false;
+							}
+						}
+
+						//Random opponent turn
+						if(waitForOpponent){
+							//unhighlight player moves
+							unhighlightMoves(red_tiles);
+
+							//turn last selected piece back to normal color
+							piece_selected = true;
+							if(piece_selected and selected_piece->isKing)
+								selected_piece->piece.setFillColor(sf::Color::Blue);
+							else if(piece_selected)
+								selected_piece->piece.setFillColor(sf::Color::Black);
+
+							//check if there are moves left
+							stdBoard possibleBoards[30];
+							int moves = b.genMoves(possibleBoards,1); //red
+							if(moves<=0){
+								std::string results;
+								//there are no moves, count pieces to see who won
+								if(black_pieces.size()>red_pieces.size()){
+									//red won
+									results = "GG you won!";
+								}
+								else if(black_pieces.size()<red_pieces.size()){
+									results = "You lost, GG.";
+								}
+								else{
+									//same amount of pieces
+									results = "We tied.";
+
+								}
+								window.close();
+								return results;
+							}
+
+							//parameters
+							stdBoard move;
+
+							//atomic flag to determine if thread is finished
+							std::atomic<bool> done(false);
+
+							stdBoard bCopy = b;
+							//thread to compute enemy move while main draws
+							std::thread enemy([&done, &bCopy,
+								&move]{
+
+								//AI Player 
+								RandomPlayer opp; 
+								move = opp.getMove(bCopy, true);
+								done = true;
+							});
+
+							//if main thread, keep drawing until enemy thread joins
+							while(!done and window.isOpen()){
+								sf::Event event;
+								while (window.pollEvent(event) and !done){
+									if(event.type == sf::Event::Closed){
+										window.close();
+										return "Exited game.";
+									}
+									window.clear();
+									//draw background (black)
+									window.draw(board);
+
+
+									//draw red tile spaces
+									for(unsigned int i=0; i<red_tiles.size(); ++i){
+										window.draw(red_tiles[i]);
+									}
+
+									//draw pieces
+									for(unsigned int i=0; i<red_pieces.size(); ++i){
+										red_pieces[i].draw();
+									}
+
+									for(unsigned int i=0; i<black_pieces.size(); ++i){
+										black_pieces[i].draw();
+									}
+
+									window.draw(debugWindow);
+
+									window.draw(debugText);
+									window.draw(turnNotificationText);
+									window.draw(error);
+									window.display();
+								}
+							}
+							enemy.join();
+
+							//Show possible moves from gui
+							highlightMoves(red_tiles, possibleBoards, moves,
+								b);
+
+							b.updateBoard(move.str());
+							reDrawBoard(move.str());
+
+							waitForOpponent=false;
+							turnNotificationText.setString("Turn: Player");
+
+							piece_selected = false;
+						}
 					}
-					std::vector<int> validPositions;
-					std::vector<int> indices;
-					//loop through boards to find valid moves
-					for(int i=0; i<movesFound; ++i){
-					//	"rrrrrrrrrrrr        bbbbbbbbbbbb"
-						if(possibleBoards[i].str().at(selected_piece->positionOnBoard) == ' '){
-							//this board has our checker involved
-							validPositions.push_back(findCheckerMove(possibleBoards[i].str(),
-								b.str()));
+					else if(!waitForOpponent) {
+						//unhighlight enemy moves
+						unhighlightMoves(red_tiles);
 
-							indices.push_back(i); //keep track of position in possible boards for updating later
-						}
-					}
-
-					bool valid = false;
-					//see if user clicked a valid position
-					for(unsigned int i=0; i<validPositions.size(); ++i){
-						if(clickedIndex == validPositions[i]){
-							//is a valid position
-							valid=true;
-							//update board
-							b.updateBoard(possibleBoards[indices[i]].str());
-							reDrawBoard(b.str());
-							//we need to wait for our opponent now
-							waitForOpponent = true;
-							turnNotificationText.setString("Turn: Opponent");
-							break;
-						}
-
-					}
-					if(!valid){ //print out to user
-						error.setString("Error: Invalid Move.");
-
-						highlightMoves(red_tiles, possibleBoards, movesFound, b);
-
+						//turn last selected piece back to normal color
 						if(piece_selected and selected_piece->isKing)
 							selected_piece->piece.setFillColor(sf::Color::Blue);
 						else if(piece_selected)
 							selected_piece->piece.setFillColor(sf::Color::Black);
-						piece_selected = false;
 
-						//check if it was another piece that was selected instead
 						//See which piece was selected
 						for(unsigned int i=0; i<black_pieces.size(); ++i){
 							int yArea = black_pieces[i].y +
@@ -279,164 +479,35 @@ std::string checkerBoardGUI::run(){
 							}
 							piece_selected = false;
 						}
-					}
 
-					//Random opponent turn
-					if(waitForOpponent){
-						//unhighlight player moves
-						unhighlightMoves(red_tiles);
+							stdBoard possibleBoards[30];
+							int moves = b.genMoves(possibleBoards,0);
 
-						//turn last selected piece back to normal color
-						piece_selected = true;
-						if(piece_selected and selected_piece->isKing)
-							selected_piece->piece.setFillColor(sf::Color::Blue);
-						else if(piece_selected)
-							selected_piece->piece.setFillColor(sf::Color::Black);
-
-						//check if there are moves left
-						stdBoard possibleBoards[30];
-						int moves = b.genMoves(possibleBoards,1); //red
-						if(moves<=0){
-							std::string results;
-							//there are no moves, count pieces to see who won
-							if(black_pieces.size()>red_pieces.size()){
-								//red won
-								results = "GG you won!";
-							}
-							else if(black_pieces.size()<red_pieces.size()){
-								results = "You lost, GG.";
-							}
-							else{
-								//same amount of pieces
-								results = "We tied.";
-
-							}
-							window.close();
-							return results;
-						}
-
-						//parameters
-						stdBoard move;
-
-						//atomic flag to determine if thread is finished
-						std::atomic<bool> done(false);
-
-						stdBoard bCopy = b;
-						//thread to compute enemy move while main draws
-						std::thread enemy([&done, &bCopy,
-							&move]{
-
-							//AI Player 
-							RandomPlayer opp; 
-							move = opp.getMove(bCopy);
-							done = true;
-						});
-
-						//if main thread, keep drawing until enemy thread joins
-						while(!done and window.isOpen()){
-							sf::Event event;
-							while (window.pollEvent(event) and !done){
-								if(event.type == sf::Event::Closed){
-									window.close();
-									return "Exited game.";
+							if(moves<=0){
+								std::string results;
+								//there are no moves, count pieces to see who won
+								if(black_pieces.size()>red_pieces.size()){
+									//red won
+									results = "GG you won!";
 								}
-								window.clear();
-								//draw background (black)
-								window.draw(board);
-
-
-								//draw red tile spaces
-								for(unsigned int i=0; i<red_tiles.size(); ++i){
-									window.draw(red_tiles[i]);
+								else if(black_pieces.size()<red_pieces.size()){
+									results = "You lost, GG.";
 								}
+								else{
+									//same amount of pieces
+									results = "We tied.";
 
-								//draw pieces
-								for(unsigned int i=0; i<red_pieces.size(); ++i){
-									red_pieces[i].draw();
 								}
-
-								for(unsigned int i=0; i<black_pieces.size(); ++i){
-									black_pieces[i].draw();
-								}
-
-								window.draw(debugWindow);
-
-								window.draw(debugText);
-								window.draw(turnNotificationText);
-								window.draw(error);
-								window.display();
+								window.close();
+								return results;
 							}
-						}
-						enemy.join();
 
-						//Show possible moves from gui
-						highlightMoves(red_tiles, possibleBoards, moves,
-							b);
-
-						b.updateBoard(move.str());
-						reDrawBoard(move.str());
-
-						waitForOpponent=false;
-						turnNotificationText.setString("Turn: Player");
-
-						piece_selected = false;
-					}
+							//highlight possible player moves
+							highlightMoves(red_tiles, possibleBoards, moves, b);
 				}
-				else if(!waitForOpponent) {
-					//unhighlight enemy moves
-					unhighlightMoves(red_tiles);
 
-					//turn last selected piece back to normal color
-					if(piece_selected and selected_piece->isKing)
-						selected_piece->piece.setFillColor(sf::Color::Blue);
-					else if(piece_selected)
-						selected_piece->piece.setFillColor(sf::Color::Black);
 
-					//See which piece was selected
-					for(unsigned int i=0; i<black_pieces.size(); ++i){
-						int yArea = black_pieces[i].y +
-						black_pieces[i].radius*2;
-						int xArea = black_pieces[i].x +
-						black_pieces[i].radius*2;
-
-						if(black_pieces[i].y < position.y and
-							position.y < yArea and
-							black_pieces[i].x < position.x and
-							position.x < xArea){
-								//this piece was clicked change its color
-							selected_piece = &black_pieces[i];
-							black_pieces[i].piece.setFillColor(sf::Color::White);
-							piece_selected = true;
-							clickedBefore = true;
-							break;
-						}
-						piece_selected = false;
-					}
-
-						stdBoard possibleBoards[30];
-						int moves = b.genMoves(possibleBoards,0);
-
-						if(moves<=0){
-							std::string results;
-							//there are no moves, count pieces to see who won
-							if(black_pieces.size()>red_pieces.size()){
-								//red won
-								results = "GG you won!";
-							}
-							else if(black_pieces.size()<red_pieces.size()){
-								results = "You lost, GG.";
-							}
-							else{
-								//same amount of pieces
-								results = "We tied.";
-
-							}
-							window.close();
-							return results;
-						}
-
-						//highlight possible player moves
-						highlightMoves(red_tiles, possibleBoards, moves, b);
+				
 
 				}
 
@@ -468,6 +539,15 @@ std::string checkerBoardGUI::run(){
 		window.draw(debugText);
 		window.draw(turnNotificationText);
 		window.draw(error);
+
+		//If in game mode 
+		//if(mode=='g'){
+			window.draw(rightArrowRect); 
+			window.draw(rightArrowTriangle); 
+			window.draw(leftArrowTriangle); 
+			window.draw(leftArrowRect);			
+		//}
+ 
 		window.display();
 	}
 }
@@ -519,5 +599,77 @@ void checkerBoardGUI::reDrawBoard(std::string newBoard){
 	}
 	for(unsigned int i=blackIndex+1; i<=black_pieces.size(); ++i){
 		black_pieces.erase(black_pieces.end()-1);
+	}
+}
+
+//Read in the config file
+	//Are we watching a previous game? 
+	//Or which opponent NN are we playing? 
+int checkerBoardGUI::readConfigFile(std::string filename){
+	ifstream configFile(filename); 
+
+	if(!configFile){
+		cout << "Error opening configuration file: "; 
+		cout << filename << endl; 
+		return -1; 
+	}
+
+	string line; 
+
+	//comments
+	getline(configFile, line); 
+	getline(configFile, line);
+	//reading a game
+	getline(configFile, line);
+
+	if(line=="none"){
+		//we are not reading a game 
+		getline(configFile, line);
+		if(line=="none"){
+			cout << "Invalid configuration file. Neither "; 
+			cout << "reading a game nor playing a neural network "; 
+			cout << "is selected." << endl; 
+			return -1; 
+		}
+		//Read the NN in 
+
+	}
+	else{
+		//We are reading in a game 
+		//Open the game file and store in a buffer 
+		ifstream gameFile(line); 
+
+		if(!gameFile){
+			cout << "Error game file could not be opened: "; 
+			cout << line << endl; 
+			return -1; 
+		}
+
+
+		//The winner or a tie 
+		string gameLine; 
+		getline(gameFile, gameLine);
+		gameWinner = gameLine; 
+
+		//Loser or a tie 
+		getline(gameFile, gameLine);
+		gameLoser = gameLine; 
+
+		//Is it actually a tie? 
+		isTie = gameLine.find("Tie")!= std::string::npos; 
+
+		//ignore extra file contents until we find first game board 
+		stdBoard beginningBoard; 
+		while(getline(gameFile, gameLine)){
+			if(gameLine==beginningBoard.str()){
+				break; 
+			}
+		}
+
+		//start reading game boards
+		gameBoards.push_back(beginningBoard.str()); 
+		while(getline(gameFile, gameLine)){
+			gameBoards.push_back(gameLine); 
+		}
 	}
 }
