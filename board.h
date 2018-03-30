@@ -113,6 +113,12 @@ public:
 		return board;
 	}
 
+  //returns the number of pieces on the board.
+	int count(){
+    return pieces[0].count() + pieces[1].count();
+	}
+
+
 	void updateBoard(string board) {
 		for (int i = 0;i<4;++i) {
 			pieces[i] = 0;

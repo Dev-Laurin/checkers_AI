@@ -69,7 +69,7 @@ public:
     int montyK = 1; // (w-l)/(w+l+k)
     int generation = 0; //Starts out as parent
     string familyName = "";
-    unsigned int searchDepth = 3;
+    unsigned int searchDepth = 12;
     time_t timeStart;
     time_t timeLimit;
     bool timeExceeded = false;
