@@ -199,6 +199,16 @@ std::string checkerBoardGUI::run(){
 				return "Exited game.";
 			}
 
+			if(sf::Event::MouseButtonReleased){
+				//change back 
+				rightArrowTriangle.setFillColor(sf::Color::Red);
+				rightArrowRect.setFillColor(sf::Color::Red); 
+
+				leftArrowRect.setFillColor(sf::Color::Red); 
+				leftArrowTriangle.setFillColor(sf::Color::Red); 
+				
+			}
+
 			if(sf::Mouse::isButtonPressed(sf::Mouse::Left)){
 				sf::Vector2i position = sf::Mouse::getPosition(window);
 				error.setString(""); //reset error message
@@ -219,9 +229,6 @@ std::string checkerBoardGUI::run(){
 							reDrawBoard(gameBoards[++gameBoardIndex]); 
 						}
 
-						// rightArrowTriangle.setFillColor(sf::Color::Red);
-						// rightArrowRect.setFillColor(sf::Color::Red); 
-						 
 					}
 					else if(position.x >= 500 and position.x <= 550 and
 						position.y <= 150 and position.y >= 120){
@@ -234,8 +241,6 @@ std::string checkerBoardGUI::run(){
 							reDrawBoard(gameBoards[--gameBoardIndex]);
 						}
 						 
-						// leftArrowRect.setFillColor(sf::Color::Red); 
-						// leftArrowTriangle.setFillColor(sf::Color::Red); 
 					}
 
 
@@ -548,7 +553,7 @@ std::string checkerBoardGUI::run(){
 			window.draw(leftArrowRect);			
 		//}
  
-		window.display();
+		window.display();				 
 	}
 }
 
