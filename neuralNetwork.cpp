@@ -1,7 +1,10 @@
 #include "neuralNetwork.h"
 
+
 //declare random number generator
 std::mt19937_64 gen(time(0));
+//Initialize the database
+
 
 stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     stdBoard moveList[MAXMOVES];
@@ -28,6 +31,25 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
         } else {
             boardMem.emplace(moveList[i],calculateBoard(moveList[i]));
             ++cacheMiss;
+        }
+      }
+      //Find out how board scores.
+      bool endValid = board.endGameCheck();
+      if (endValid) {
+        cout << "Valid board for endgame" <<endl;
+        //TIE     0
+        //WIN     1
+        //LOSS    2
+        //UNKNOWN 3
+        int score = DBLookup(board);
+        if (score==1) {
+          cout << "Winning board" << endl;
+        } else if (score == 2) {
+          cout << "Losing board" << endl;
+        } else if (score == 0) {
+          cout << "Tie" << endl;
+        } else {
+        cout << "Not a valid board for endgame" << endl;
         }
       }
 
@@ -58,7 +80,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
       }
     } else { // Only one move, no need to calc!
       selectMove = 0;
-      depthReached = -1;
+      depthReached = 0;
     }
     if (side) {
         board = board.flip();

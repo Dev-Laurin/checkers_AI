@@ -60,6 +60,9 @@ constexpr sNN HIGHEST = 100000;
 const static double MOVETIME = 14.0;  //Seconds.
 extern std::mt19937_64 gen;
 
+int DBLookup(stdBoard b);
+void DBInit();  //Initialize database
+
 class AIPlayer{
 public:
     double kingVal = 0.4;  //Value of kings over pawns.
@@ -69,7 +72,7 @@ public:
     int montyK = 1; // (w-l)/(w+l+k)
     int generation = 0; //Starts out as parent
     string familyName = "";
-    unsigned int searchDepth = 12;
+    unsigned int searchDepth = 4;
     time_t timeStart;
     time_t timeLimit;
     bool timeExceeded = false;
