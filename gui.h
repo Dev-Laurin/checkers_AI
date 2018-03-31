@@ -70,6 +70,9 @@ public:
 	std::vector<Checker> black_pieces;
 	std::vector<Checker> red_pieces;
 
+	int redIndex; 
+	int blackIndex; 
+
 	sf::RenderWindow window;
 	sf::RectangleShape board;
 	sf::RectangleShape debugWindow;

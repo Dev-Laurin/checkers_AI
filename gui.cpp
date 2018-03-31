@@ -54,10 +54,20 @@ void Checker::updateBoardPosition(const int posBoard, sf::Color col,
 	isKing = king;
 	color = col;
 
-	positionOnBoard = posBoard;
-	convertBoardIndexIntoXYPositions(posBoard);
-	piece.setFillColor(color);
-	piece.setPosition(x,y);
+	if(posBoard>=0){
+		positionOnBoard = posBoard;
+		convertBoardIndexIntoXYPositions(posBoard);
+		piece.setFillColor(color);
+		piece.setPosition(x,y);		
+	}
+	else{
+		//position is negative, piece still exists but not in the game, hide it
+		positionOnBoard = posBoard; 
+		piece.setFillColor(color); 
+		piece.setPosition(-100 + -tile_width, -100 + -tile_width); 
+	}
+
+
 }
 
 void Checker::convertBoardIndexIntoXYPositions(const int positionOnBoard){
@@ -131,6 +141,9 @@ checkerBoardGUI::checkerBoardGUI(){
 		black_pieces.push_back(bl);
 	}
 
+	redIndex = red_pieces.size(); 
+	blackIndex = black_pieces.size(); 
+
 	//Debug Window font
 	if(!ubuntuFont.loadFromFile("NotoSansCJK-Medium.ttc"))
 		cout << "Error loading font file." << endl;
@@ -160,26 +173,26 @@ checkerBoardGUI::checkerBoardGUI(){
 	//Setup arrows for looking through games  
 	rightArrowRect.setSize(sf::Vector2f(20, 5));  
 	rightArrowRect.setFillColor(sf::Color::Red); 
-	rightArrowRect.setPosition(650, 130); 
+	rightArrowRect.setPosition(650, 300); 
 
 
 	leftArrowRect.setSize(sf::Vector2f(20, 5)); 
 	leftArrowRect.setFillColor(sf::Color::Red); 
-	leftArrowRect.setPosition(530, 130);  
+	leftArrowRect.setPosition(530, 300);  
 
  
 	rightArrowTriangle.setRadius(10);
 	rightArrowTriangle.setPointCount(3);
 	rightArrowTriangle.setFillColor(sf::Color::Red); 
 	rightArrowTriangle.setRotation(90); 
-	rightArrowTriangle.setPosition(650 + 30, 122); 
+	rightArrowTriangle.setPosition(650 + 30, 292); 
 
 
 	leftArrowTriangle.setRadius(10); 
 	leftArrowTriangle.setPointCount(3); 
 	leftArrowTriangle.setFillColor(sf::Color::Red); 
 	leftArrowTriangle.setRotation(-90); 
-	leftArrowTriangle.setPosition(520, 142); 
+	leftArrowTriangle.setPosition(520, 312); 
 
 	gameWinner = "none"; 
 	gameLoser = "none"; 
@@ -214,12 +227,13 @@ std::string checkerBoardGUI::run(){
 				error.setString(""); //reset error message
 
 				if(mode=='g'){
+
 					//We are clicking through the game
 					//Left or right arrow clicked? 
 					
 					//Right Arrow Clicked
 					if(position.x <= 690 and position.x >= 650 and
-						position.y <= 140 and position.y >= 122){
+						position.y <= 330 and position.y >= 295){
 						//Clicked right arrow
 						rightArrowTriangle.setFillColor(sf::Color::Magenta); 
 						rightArrowRect.setFillColor(sf::Color::Magenta);
@@ -231,7 +245,7 @@ std::string checkerBoardGUI::run(){
 
 					}
 					else if(position.x >= 500 and position.x <= 550 and
-						position.y <= 150 and position.y >= 120){
+						position.y <= 330 and position.y >= 280){
 
 						leftArrowTriangle.setFillColor(sf::Color::Magenta);
 						leftArrowRect.setFillColor(sf::Color::Magenta);  
@@ -245,8 +259,7 @@ std::string checkerBoardGUI::run(){
 
 
 				}
-				else{ //we are playing a neural network 
-	
+				else if(mode=='n'){ //we are playing a neural network 
 					//move checker?
 					if(piece_selected){
 
@@ -531,11 +544,11 @@ std::string checkerBoardGUI::run(){
 		}
 
 		//draw pieces
-		for(unsigned int i=0; i<red_pieces.size(); ++i){
+		for(unsigned int i=0; i<redIndex; ++i){
 			red_pieces[i].draw();
 		}
 
-		for(unsigned int i=0; i<black_pieces.size(); ++i){
+		for(unsigned int i=0; i<blackIndex; ++i){
 			black_pieces[i].draw();
 		}
 
@@ -562,8 +575,9 @@ void checkerBoardGUI::reDrawBoard(std::string newBoard){
 	//start over
 	//black_pieces.clear();
 	//red_pieces.clear();
-	int blackIndex = 0;
-	int redIndex = 0;
+//	cout << "reDrawBoard" << endl; 
+	blackIndex = 0;
+	redIndex = 0;
 	for(unsigned int i=0; i<newBoard.size(); ++i){
 		if(newBoard[i]=='b'){
 			//draw a black checker there
@@ -598,14 +612,20 @@ void checkerBoardGUI::reDrawBoard(std::string newBoard){
 	}
 
 	//delete pieces
-	for(unsigned int i=redIndex+1; i<=red_pieces.size(); ++i){
-		red_pieces.erase(red_pieces.end()-1);
+	// for(unsigned int i=redIndex+1; i<=red_pieces.size(); ++i){
+	// 	//red_pieces[i].updateBoardPosition(-1, sf::Color(139,0,0,255), 
+	// 	//	false); 
+	// 	red_pieces.erase(red_pieces.end()-1);
 
-	}
-	for(unsigned int i=blackIndex+1; i<=black_pieces.size(); ++i){
-		black_pieces.erase(black_pieces.end()-1);
-	}
+	// }
+	// for(unsigned int i=blackIndex+1; i<=black_pieces.size(); ++i){
+	// 	//black_pieces[i].updateBoardPosition(-1, sf::Color::Black, true); 
+	// 	black_pieces.erase(black_pieces.end()-1);
+	// }
+
+	//cout << "reDrawBoard End" << endl; 
 }
+
 
 //Read in the config file
 	//Are we watching a previous game? 
@@ -629,6 +649,7 @@ int checkerBoardGUI::readConfigFile(std::string filename){
 
 	if(line=="none"){
 		//we are not reading a game 
+		mode = 'n'; 
 		getline(configFile, line);
 		if(line=="none"){
 			cout << "Invalid configuration file. Neither "; 
