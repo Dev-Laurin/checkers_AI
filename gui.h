@@ -80,6 +80,10 @@ public:
 	sf::Text error;
 	sf::Text turnNotificationText;
 	sf::Text debugText;
+	sf::Text gameWinnerText; 
+	sf::Text gameLoserText; 
+	sf::Text gameName; 
+	sf::Text gameBoardText; 
 
 	sf::Font ubuntuFont;
 

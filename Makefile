@@ -1,5 +1,5 @@
 all: guiMain.cpp neuralNetwork.cpp playgame.cpp gui.cpp
-	g++ -std=c++17 guiMain.cpp neuralNetwork.cpp playgame.cpp gui.cpp -lsfml-graphics -lsfml-window -lsfml-system -lboost_system -lboost_filesystem -lboost_serialization -pthread -o gui.o
+	g++ -std=c++17 guiMain.cpp neuralNetwork.cpp playgame.cpp endgame.cpp gui.cpp -lsfml-graphics -lsfml-window -lsfml-system -lboost_system -lboost_filesystem -lboost_serialization -pthread -o gui.o
 	./gui.o 
 testBoard: testBoard.cpp old_movegenerator.cpp
 	g++ -std=c++17 testBoard.cpp old_movegenerator.cpp

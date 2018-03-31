@@ -156,7 +156,9 @@ checkerBoardGUI::checkerBoardGUI(){
 	debugText.setPosition(520,20);
 
 	turnNotificationText.setFont(ubuntuFont);
+
 	turnNotificationText.setString("Turn: player.");
+	
 	turnNotificationText.setCharacterSize(15);
 	turnNotificationText.setColor(sf::Color::Green);
 	turnNotificationText.setPosition(520, 50);
@@ -166,6 +168,27 @@ checkerBoardGUI::checkerBoardGUI(){
 	error.setCharacterSize(15);
 	error.setColor(sf::Color::Red);
 	error.setPosition(520, 100);
+
+	//Show game results 
+	gameName.setFont(ubuntuFont); 
+	gameName.setCharacterSize(15); 
+	gameName.setColor(sf::Color::Black); 
+	gameName.setPosition(520, 180); 
+
+	gameWinnerText.setFont(ubuntuFont); 
+	gameWinnerText.setCharacterSize(15); 
+	gameWinnerText.setColor(sf::Color::Black); 
+	gameWinnerText.setPosition(520, 200); 
+
+	gameLoserText.setFont(ubuntuFont); 
+	gameLoserText.setCharacterSize(15); 
+	gameLoserText.setColor(sf::Color::Black); 
+	gameLoserText.setPosition(520, 220); 
+
+	gameBoardText.setFont(ubuntuFont); 
+	gameBoardText.setCharacterSize(15); 
+	gameBoardText.setColor(sf::Color::Black); 
+	gameBoardText.setPosition(520, 240); 
 
 	piece_selected = 0;
 	waitForOpponent = false; //player goes first
@@ -256,7 +279,7 @@ std::string checkerBoardGUI::run(){
 						}
 						 
 					}
-
+					gameBoardText.setString("Board: " + to_string(gameBoardIndex)); 
 
 				}
 				else if(mode=='n'){ //we are playing a neural network 
@@ -559,12 +582,16 @@ std::string checkerBoardGUI::run(){
 		window.draw(error);
 
 		//If in game mode 
-		//if(mode=='g'){
+		//if(mode=='g'){ //removed due to performance
 			window.draw(rightArrowRect); 
 			window.draw(rightArrowTriangle); 
 			window.draw(leftArrowTriangle); 
 			window.draw(leftArrowRect);			
 		//}
+		window.draw(gameWinnerText); 
+		window.draw(gameLoserText); 
+		window.draw(gameName);
+		window.draw(gameBoardText); 
  
 		window.display();				 
 	}
@@ -573,9 +600,6 @@ std::string checkerBoardGUI::run(){
 //redraw checkers board based on std::string
 void checkerBoardGUI::reDrawBoard(std::string newBoard){
 	//start over
-	//black_pieces.clear();
-	//red_pieces.clear();
-//	cout << "reDrawBoard" << endl; 
 	blackIndex = 0;
 	redIndex = 0;
 	for(unsigned int i=0; i<newBoard.size(); ++i){
@@ -610,20 +634,6 @@ void checkerBoardGUI::reDrawBoard(std::string newBoard){
 			redIndex++;
 		}
 	}
-
-	//delete pieces
-	// for(unsigned int i=redIndex+1; i<=red_pieces.size(); ++i){
-	// 	//red_pieces[i].updateBoardPosition(-1, sf::Color(139,0,0,255), 
-	// 	//	false); 
-	// 	red_pieces.erase(red_pieces.end()-1);
-
-	// }
-	// for(unsigned int i=blackIndex+1; i<=black_pieces.size(); ++i){
-	// 	//black_pieces[i].updateBoardPosition(-1, sf::Color::Black, true); 
-	// 	black_pieces.erase(black_pieces.end()-1);
-	// }
-
-	//cout << "reDrawBoard End" << endl; 
 }
 
 
@@ -672,17 +682,22 @@ int checkerBoardGUI::readConfigFile(std::string filename){
 			return -1; 
 		}
 
+		gameName.setString("File: " + line); 
+
 		//The winner or a tie 
 		string gameLine; 
 		getline(gameFile, gameLine);
 		gameWinner = gameLine; 
+		gameWinnerText.setString(gameWinner); 
 
 		//Loser or a tie 
 		getline(gameFile, gameLine);
 		gameLoser = gameLine; 
+		gameLoserText.setString(gameLoser); 
 
 		//Is it actually a tie? 
 		isTie = gameLine.find("Tie")!= std::string::npos; 
+
 
 		//ignore extra file contents until we find first game board 
 		stdBoard beginningBoard; 
