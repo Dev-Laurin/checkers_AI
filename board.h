@@ -118,6 +118,20 @@ public:
     return pieces[0].count() + pieces[1].count();
 	}
 
+	bool endGameCheck() {
+	  stdBoard buff[32];
+	  if (count() > 6) {
+      return false;
+	  }
+	  if (genJumps(buff, 0) > 0) {
+      return false;
+	  }
+	  if (genJumps(buff, 1) > 0) {
+      return false;
+	  }
+	  return true;
+	}
+
 
 	void updateBoard(string board) {
 		for (int i = 0;i<4;++i) {

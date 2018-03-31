@@ -254,10 +254,6 @@ void SkipLine();
 void DBInit();
 long Nsq();
 
-/* Board vector */
-long Turn = BLACK;
-unsigned long Locbv[3];
-
 /* Each byte in the database contains either 5 values (3**5=243),       */
 /* accounting for values 0..242 in a byte.  The following table tells   */
 /* values 243..255.  These values the number of consecutive positions   */
@@ -420,6 +416,15 @@ void DBInit()
         short int * dbbufptr;
 
         /* Initialization */
+
+        unsigned int c = 0;
+        NextBit[ 0 ] = 0;
+        for( int i = 1; i < ( 1<<16 ); i++ )
+        {
+                if( ( i & ( 1<<c ) ) == 0 )
+                        c++;
+                NextBit[ i ] = c;
+        }
 
         /* ReverseByte contains the "reverse" of each byte 0..255. For  */
         /* example, entry 17 (binary 00010001) is a (10001000) - reverse*/
@@ -1241,10 +1246,10 @@ unsigned long dbLocbvToSubIdx( DBENTRYPTR * dbentry, stdBoard b )
 	unsigned char *	indexptr;
 	DB_REC_PTR_T	db;
 
-	/* If it's white to move, reverse the board & look up black to move. */
-	if (Turn == BLACK) {
+	/* Turn is always black */
+	//if (Turn == BLACK) {
     b = b.flip();
-	}
+	//}
 	//DB goes bottom up, left to right.
 	//stdBoard default is top down, left to right.
 	stdBoard DbBoard;
@@ -1261,25 +1266,25 @@ unsigned long dbLocbvToSubIdx( DBENTRYPTR * dbentry, stdBoard b )
 
 	/* Extract and sort the black pawns */
 	vec = (DbBoard.pieces[0] & ~ DbBoard.pieces[2]).to_ulong();
-  printf("HEX: %x\n",vec);
+  //printf("HEX: %x\n",vec);
 	EXTRACT_PIECES(vec, nbp, bppos);
 	SquishBP(nbp, bppos);
 
 	/* Extract and sort the white pawns */
 	vec = (DbBoard.pieces[1] & ~ DbBoard.pieces[2]).to_ulong();
-  printf("HEX: %x\n",vec);
+  //printf("HEX: %x\n",vec);
 	EXTRACT_PIECES(vec, nwp, wppos);
 	SquishWP(nwp, nbp, wppos, bppos);
 
 	/* Extract and sort the black kings */
 	vec = (DbBoard.pieces[0] & DbBoard.pieces[2]).to_ulong();
-  printf("HEX: %x\n",vec);
+  //printf("HEX: %x\n",vec);
 	EXTRACT_PIECES(vec, nbk, bkpos);
 	SquishBK(nbk, nwp, nbp, bkpos, wppos, bppos);
 
 	/* Extract and sort the white kings */
 	vec = (DbBoard.pieces[1] & DbBoard.pieces[2]).to_ulong();
-	printf("HEX: %x\n",vec);
+	//printf("HEX: %x\n",vec);
 	EXTRACT_PIECES(vec, nwk, wkpos);
 	SquishWK(nwk, nbk, nwp, nbp, wkpos, bkpos, wppos, bppos);
 
@@ -1676,37 +1681,5 @@ DBindex(int *pos, int k)
         return(offset);
 }
 
-int main() {
-  //initialize NextBit with needed values.
-  unsigned int c = 0;
-  NextBit[ 0 ] = 0;
-  for( int i = 1; i < ( 1<<16 ); i++ )
-  {
-          if( ( i & ( 1<<c ) ) == 0 )
-                  c++;
-          NextBit[ i ] = c;
-  }
-  DBInit();  //Initialize database
 
-  stdBoard b("            bR                 ");
-  b.str("     r      b                  ");
-  b.str("            b        r         ");
-  b.str("     b      r                  ");
-  b.str("    bb      r                  ");
-  b.str("    BB      R                  ");
-  b.draw();
-    cout << "Losing board" << endl;
-  } else if (score == TIE) {
-    cout << "Tie" << endl;
-  } else {
-    cout << "Unknown" << endl;
-  }
 
-}
-
-  Turn = WHITE;
-  int score = DBLookup(b);
-  cout << "turn: " << Turn << endl;
-  if (score==WIN) {
-    cout << "Winning board" << endl;
-  } else if (score == LOSS) {
