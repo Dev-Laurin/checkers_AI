@@ -253,6 +253,7 @@ std::string checkerBoardGUI::run(){
 
 					//We are clicking through the game
 					//Left or right arrow clicked? 
+					unhighlightMoves(red_tiles); 
 					
 					//Right Arrow Clicked
 					if(position.x <= 690 and position.x >= 650 and
@@ -279,6 +280,22 @@ std::string checkerBoardGUI::run(){
 						}
 						 
 					}
+					//highlight the possible moves from a board generator
+					stdBoard temp; 
+					temp.updateBoard(gameBoards[gameBoardIndex]); 
+					//Get the possible moves 
+					stdBoard pBoards[30]; 
+					// 0 1 2 3 4 
+					// B R B R B
+					int side = gameBoardIndex%2; 
+					if(gameBoardIndex%2!=0){
+						side = 1; 
+					}
+					int moves = temp.genMoves(pBoards, side); 
+					stdBoard thisBoard; 
+					thisBoard.updateBoard(gameBoards[gameBoardIndex]); 
+					highlightMoves(red_tiles, pBoards, moves, thisBoard); 
+
 					gameBoardText.setString("Board: " + to_string(gameBoardIndex)); 
 
 				}
@@ -668,7 +685,7 @@ int checkerBoardGUI::readConfigFile(std::string filename){
 			return -1; 
 		}
 		//Read the NN in 
-
+		loadFromFile(opponentNN, line); 
 	}
 	else{
 		//We are reading in a game 

@@ -15,6 +15,8 @@ using std::endl;
 #include <boost/filesystem.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/map.hpp> 
+#include <boost/filesystem/fstream.hpp> 
 
 //Tells catch to provide a main (one file only)
 #define CATCH_CONFIG_MAIN
@@ -308,6 +310,7 @@ TEST_CASE("Timing Blondie24.", "{32, 40, 10, 1}"){
 	//REQUIRE(boardHist.at(b) == blondie.calculateBoard(b));
 }
 
+/*
 TEST_CASE("Timing BIGG.", "{128, 128, 40, 10, 1}"){
 
   uint32_t max32 = 0;
@@ -370,7 +373,7 @@ TEST_CASE("Timing BIGG.", "{128, 128, 40, 10, 1}"){
 	//We should have at least 12,000 boards per second
 	//REQUIRE((1.0/timePerBoard) > 10000);
 	//REQUIRE(boardHist.at(b) == blondie.calculateBoard(b));
-}
+//} 
 
 TEST_CASE("Construction of Big Neural Network.",
 	"{32, 50, 50, 50, 100, 50, 1}"){

@@ -110,7 +110,7 @@ public:
 	//20 : NN filename 
 
 	//Playing a NN 
-
+	NN opponentNN; 
 };
 
 #endif /* GUI_INCLUDED_H */
