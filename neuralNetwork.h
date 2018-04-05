@@ -80,6 +80,7 @@ public:
     //stats
     int numBoards = 0;
     int numMoves = 0;
+    int numBoardEvals = 0; 
 
     unsigned int depthReached = 0;
     std::unordered_map<stdBoard, double> boardMem;
