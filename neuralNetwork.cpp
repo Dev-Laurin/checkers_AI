@@ -7,23 +7,36 @@ std::mt19937_64 gen(time(0));
 
 
 stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
+
+  //place to store the possible moves
     stdBoard moveList[MAXMOVES];
     int selectMove;
+
+  //For timing
     std::time(&timeStart);
     struct tm * timeInfo;
     timeInfo = localtime(&timeStart);
     timeInfo->tm_sec += MOVETIME;
     timeLimit = mktime(timeInfo);
     timeExceeded = false;
+
+  //For keeping track of trimming stat
     trimTotal = 0;
     depthReached = 2; //start at 2.
+
+  //Flip the board if needed (red vs black)
     if(side) {
         board = board.flip();
     }
+  //Get the possible board moves
     int moves = board.genMoves(moveList,0);
+    numMoves = moves; //save for printing stats
+    numBoards = 0;
     if (moves == 0) {
         return stdBoard(0,0,0,0);
     }
+  //If there is more than one move, check cache and place in
+    //cache if there is a miss (speeds up most used boards)
     if (moves > 1) {
       for(int i = 0; i < moves; ++i) {
         if (boardMem.count(moveList[i])) {
@@ -34,6 +47,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
         }
       }
       //Find out how board scores.
+      //Based on Chinook's database
       bool endValid = board.endGameCheck();
       if (endValid) {
         cout << "Valid board for endgame" <<endl;
@@ -56,10 +70,13 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
       //iterative deepening search
       selectMove = 0;
       while(time(0) < timeLimit && depthReached <= searchDepth) {
+        //Sort the boards so we expand the best ones first
         std::sort(moveList, moveList+moves,
                   [&](stdBoard a, stdBoard b) {
                     return (boardMem.at(a) > boardMem.at(b));
                   });
+
+        //expand the first move
         int curMove = 0;
         sNN moveVal = beta(moveList[0], 0, depthReached, LOWEST, HIGHEST);
         sNN tempMove;
@@ -150,17 +167,27 @@ sNN AIPlayer::alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
 
 
 sNN AIPlayer::beta(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
+
+ //Get possible moves with current board
   stdBoard moveList[MAXMOVES];
   int moveCount;
   moveCount = board.genMoves(moveList,1);
+
+  //if there are not 0 moves
   if (moveCount) {
+
+      //get the maximum value of this board (alpha)
+    numBoards++;
       sNN rVal = alpha(moveList[0],depth, maxDepth, a, b);
+      //get the minimum of alpha's board value and the highest possible value
       for (int i = 1;i<moveCount;++i) {
         b = std::min(rVal, b);
         if (b <= a) { //I can force a worse move than the best found, stop looking.
           ++trimTotal;
           return rVal;
         }
+        numBoards++;
+        //set the value to the minimum between last value and next alpha value
         rVal = min(rVal,alpha(moveList[i],depth, maxDepth, a, b));
       }
       return rVal;
@@ -179,6 +206,10 @@ void AIPlayer::prntStats() {
   cout << "Cache Effectiveness: " << cacheHit << "/" << cacheHit+cacheMiss;
   cout << " Cache size: " << boardMem.size() << endl;
   cout << "Pruning Trims: " << trimTotal << " Depth Reached: " << depthReached << endl;
+
+
+  cout << "Boards expanded per move: " << numBoards/numMoves << endl;
+//  cout << "Board Evaluation Functions called: " << numBoardEvals << endl;
 }
 
 
@@ -271,7 +302,6 @@ sNN NN::calculateBoard(stdBoard & board){
   }
   //Add other modifiers
   return nodes[nodes.size()-1][0] + boardCount(board)* pieceWeight;
-  //nodes[nodes.size()-1][0] + boardCount(board)* pieceWeight;
 }
 
 //Puts board input into nodes vector in user specified index
@@ -516,6 +546,21 @@ int NN::saveToFile(string filename){
     return -1;
   }
   boost::archive::binary_oarchive oa(ofs);
+  oa << *this;
+  ofs.close();
+
+  return 0; //successful
+}
+
+int NN::saveToTextFile(string filename){
+  //Boost file saving
+  std::ofstream ofs(filename, std::ios::binary);
+  if(!ofs){
+    cout << "Error opening file for NN saving: " << filename;
+    cout << endl;
+    return -1;
+  }
+  boost::archive::text_oarchive oa(ofs);
   oa << *this;
   ofs.close();
 

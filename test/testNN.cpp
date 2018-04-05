@@ -15,6 +15,8 @@ using std::endl;
 #include <boost/filesystem.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/filesystem/fstream.hpp>
 
 //Tells catch to provide a main (one file only)
 #define CATCH_CONFIG_MAIN
@@ -308,6 +310,7 @@ TEST_CASE("Timing Blondie24.", "{32, 40, 10, 1}"){
 	//REQUIRE(boardHist.at(b) == blondie.calculateBoard(b));
 }
 
+
 TEST_CASE("Timing BIGG.", "{128, 128, 40, 10, 1}"){
 
   uint32_t max32 = 0;
@@ -369,7 +372,7 @@ TEST_CASE("Timing BIGG.", "{128, 128, 40, 10, 1}"){
 
 
 	//We should have at least 12,000 boards per second
-	//REQUIRE((1.0/timePerBoard) > 10000);
+	REQUIRE((1.0/timePerBoard) > 10000);
 	//REQUIRE(boardHist.at(b) == blondie.calculateBoard(b));
 
 }
@@ -789,4 +792,19 @@ TEST_CASE("Testing clamp") {
     REQUIRE(test1.clmp(1.5, 0.0, 2.0)==1.5);
     REQUIRE(test1.clmp(0.5, 1.0, 2.0)==1.0);
     REQUIRE(test1.clmp(2.5, 1.0, 2.0)==2.0);
+}
+
+TEST_CASE("Generate small NN for report") {
+    vector<int> smallNN{3, 10, 1};
+
+    NN test1(smallNN, "SmallNN");
+    NN test2(smallNN, "SmallNN");
+    REQUIRE (test1 != test2);
+    test2 = test1;
+    REQUIRE (test1 == test2);
+    test2.becomeOffspring();
+    REQUIRE (test1 != test2);
+
+    test1.saveToTextFile("testGeneratedFiles/small.txt");
+    test2.saveToTextFile("testGeneratedFiles/smallevolved.txt");
 }

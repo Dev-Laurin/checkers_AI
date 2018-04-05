@@ -1671,7 +1671,7 @@ int DBrevindex(int *pos, int k)
  * This function is similar to DBrevindex except it is used for computing
  * the index of the white checkers.
  */
-DBindex(int *pos, int k)
+int DBindex(int *pos, int k)
 {
         int offset = 0;
 

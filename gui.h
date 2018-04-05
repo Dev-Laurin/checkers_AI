@@ -70,6 +70,9 @@ public:
 	std::vector<Checker> black_pieces;
 	std::vector<Checker> red_pieces;
 
+	int redIndex; 
+	int blackIndex; 
+
 	sf::RenderWindow window;
 	sf::RectangleShape board;
 	sf::RectangleShape debugWindow;
@@ -77,6 +80,10 @@ public:
 	sf::Text error;
 	sf::Text turnNotificationText;
 	sf::Text debugText;
+	sf::Text gameWinnerText; 
+	sf::Text gameLoserText; 
+	sf::Text gameName; 
+	sf::Text gameBoardText; 
 
 	sf::Font ubuntuFont;
 
@@ -103,7 +110,7 @@ public:
 	//20 : NN filename 
 
 	//Playing a NN 
-
+	NN opponentNN; 
 };
 
 #endif /* GUI_INCLUDED_H */

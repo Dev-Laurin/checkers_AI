@@ -133,7 +133,7 @@
 	"board.h"
 	"neuralNetwork.h"
 
-1522484973 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1522925246 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -9327,7 +9327,7 @@
 	<boost/serialization/queue.hpp>
 	"playgame.h"
 
-1522909822 source:c:\cygwin64\home\firethorn\checkers_ai\test\testnn.cpp
+1522928137 source:c:\cygwin64\home\firethorn\checkers_ai\test\testnn.cpp
 	<iostream>
 	<fstream>
 	<vector>
@@ -9337,6 +9337,8 @@
 	<boost/filesystem.hpp>
 	<boost/archive/text_oarchive.hpp>
 	<boost/archive/text_iarchive.hpp>
+	<boost/serialization/map.hpp>
+	<boost/filesystem/fstream.hpp>
 	"../Catch2.hpp"
 	"../board.h"
 	"../neuralNetwork.h"
@@ -9356,7 +9358,7 @@
 	<boost/serialization/queue.hpp>
 	"playgame.h"
 
-1522538191 source:c:\cygwin64\home\firethorn\checkers_ai\endgame.cpp
+1522917856 source:c:\cygwin64\home\firethorn\checkers_ai\endgame.cpp
 	<iostream>
 	<algorithm>
 	<stdio.h>
@@ -9366,4 +9368,18 @@
 	<alloc.h>
 	<io.h>
 	<sys\stat.h>
+
+1521452694 c:\mingw-w64\boost\include\boost-1_66\boost\serialization\map.hpp
+	<map>
+	<boost/config.hpp>
+	<boost/archive/detail/basic_iarchive.hpp>
+	<boost/serialization/access.hpp>
+	<boost/serialization/nvp.hpp>
+	<boost/serialization/collection_size_type.hpp>
+	<boost/serialization/item_version_type.hpp>
+	<boost/serialization/detail/stack_constructor.hpp>
+	<boost/serialization/utility.hpp>
+	<boost/serialization/collections_save_imp.hpp>
+	<boost/serialization/split_free.hpp>
+	<boost/move/utility_core.hpp>
 
