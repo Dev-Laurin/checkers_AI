@@ -110,6 +110,10 @@ sNN AIPlayer::alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
       if (boardMem.count(moveList[i])) {
           ++cacheHit;
       } else {
+        /*
+          bool endValid = board.endGameCheck();
+          int v = DBLookup(board);
+          */
           boardMem.emplace(moveList[i],calculateBoard(moveList[i]));
           ++cacheMiss;
       }

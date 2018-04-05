@@ -935,7 +935,7 @@ int DBLookup(stdBoard b)
                         (dbentry->startaddr),
                         (dbentry->endaddr),
                         (dbentry->startbyte), middle);
-                exit(-1);
+                return(3);  //unknown
         }
 
         if (result == WIN)

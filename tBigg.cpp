@@ -102,6 +102,7 @@ public:
 
 
 int main(){
+  DBInit();
   const int population = 30;
   string tournName = "bigg";
   vector<int> nodes{128, 128, 40, 10, 1};
@@ -225,6 +226,72 @@ int main(){
         gameBoards.clear();
         file.close();
       }
+      gameResult = playGame(p2, p1, gameBoards);
+      if (gameResult==0) { //tie
+        ++gL.ties[gL.p1()];
+        ++gL.ties[gL.p2()];
+      } else if (gameResult==1) { //p1 wins
+        ++gL.wins[gL.p1()];
+        ++gL.losses[gL.p2()];
+      } else {
+        ++gL.losses[gL.p1()];
+        ++gL.wins[gL.p2()];
+      }
+      gL.scores[gL.p1()] += gameResult;
+      gL.scores[gL.p2()] -= gameResult;
+      //Game has been completed and tallied.
+      ++gL.gameNum;
+      num.str("");
+      num << setfill('0') << setw(3) << gL.tournCount;
+      tPath = tournPath + "/t" + num.str();
+      cout << tPath << endl;
+      create_directories(tPath);
+      num.str("");
+      num << setfill('0') << setw(3) << gL.gameNum;
+      file.open(tPath + "/game" + num.str() + ".txt");
+      if(!file){
+        cout << "Game File Error." << endl;
+        return -1;
+      }
+      if(boost::filesystem::is_directory(tPath)){
+        if(gameResult > 0){
+          //NeuralNets[i] won
+          file << "winner: " << p1.familyName;
+          file << " " << p1.generation;
+          file << " " << gL.p1() << endl;
+
+          file << "loser: " << p2.familyName;
+          file << " " << p2.generation;
+          file << " " << gL.p2() << endl;
+        }
+        else if(gameResult<0){
+          //NeuralNets[randIndex]
+          file << "winner: " << p2.familyName;
+          file << " " << p2.generation;
+          file << " " << gL.p2() << endl;
+
+          file << "loser: " << p1.familyName;
+          file << " " << p1.generation;
+          file << " " << gL.p1() << endl;
+        }
+        else{
+          //draw
+          file << "Tie: " << p1.familyName;
+          file << " " << p1.generation;
+          file << " " << gL.p1() << endl;
+
+          file << "Tie: " << p2.familyName;
+          file << " " << p2.generation;
+          file << " " << gL.p2() << endl;
+        }
+
+        //Save all the boards in the game into a file
+        for(unsigned int k=0; k<gameBoards.size(); ++k){
+          file << gameBoards[k].str() << endl;
+        }
+        gameBoards.clear();
+        file.close();
+      }
       gL.pop(); //Knock off the game we just did.
       //save the state.
       gL.save(tournPath + "/gamelist.txt");
@@ -245,7 +312,7 @@ int main(){
     }
     results.close();
     for (int i = 0; i < population/5; ++i) {
-      NN2 evolve;
+      NN evolve;
       stringstream num;
       num << setfill('0') << setw(3) << rankings[i];
       string fileName = tournPath + "/" + tournName + num.str() + ".nn2";

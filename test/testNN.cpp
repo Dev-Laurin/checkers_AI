@@ -313,6 +313,7 @@ TEST_CASE("Timing BIGG.", "{128, 128, 40, 10, 1}"){
   uint32_t max32 = 0;
   max32 = ~max32;
   std::uniform_int_distribution<uint32_t> dis32(0,~((uint32_t)0));
+
 	//Timing
 	stdBoard b; //Default
 	std::vector<stdBoard> boards{b};
@@ -321,7 +322,7 @@ TEST_CASE("Timing BIGG.", "{128, 128, 40, 10, 1}"){
 	}
 	std::uniform_int_distribution<int> dis(0,boards.size()-1);
 
-	std::vector<int> nodes{ 32, 40, 10, 1};
+	std::vector<int> nodes{ 128, 128, 40, 10, 1};
 
 
 	clock_t start;
@@ -349,7 +350,7 @@ TEST_CASE("Timing BIGG.", "{128, 128, 40, 10, 1}"){
 	cout << "Time per board: " << timePerBoard << endl;
 	cout << "Board Evals per second: " << runs/duration << endl;
 	cout << endl;
-/*
+
   start = clock();
   for (int i = 0; i < runs; ++i) {
 		boardHist.insert({boards[boardsel[i]],bigg.calculateBoard(boards[boardsel[i]])});
@@ -366,10 +367,11 @@ TEST_CASE("Timing BIGG.", "{128, 128, 40, 10, 1}"){
 	cout << "Recalling hashes: " << duration << endl << endl;
 	cout << "Recalling starting board:" << ~((uint32_t)0) << endl;
 
-*/
+
 	//We should have at least 12,000 boards per second
 	//REQUIRE((1.0/timePerBoard) > 10000);
 	//REQUIRE(boardHist.at(b) == blondie.calculateBoard(b));
+
 }
 
 TEST_CASE("Construction of Big Neural Network.",

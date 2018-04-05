@@ -189,7 +189,7 @@
 
 1521843137 D
 
-1522484973 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
+1522817385 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
 1522064338 gin/3bitstdboard
@@ -9312,7 +9312,7 @@
 	<boost/mpl/identity.hpp>
 	<boost/serialization/collection_traits.hpp>
 
-1521979756 source:c:\cygwin64\home\firethorn\checkers_ai\tbigg.cpp
+1522488214 source:c:\cygwin64\home\firethorn\checkers_ai\tbigg.cpp
 	<queue>
 	<algorithm>
 	<iostream>
@@ -9327,7 +9327,7 @@
 	<boost/serialization/queue.hpp>
 	"playgame.h"
 
-1521974898 source:c:\cygwin64\home\firethorn\checkers_ai\test\testnn.cpp
+1522909822 source:c:\cygwin64\home\firethorn\checkers_ai\test\testnn.cpp
 	<iostream>
 	<fstream>
 	<vector>
@@ -9341,7 +9341,7 @@
 	"../board.h"
 	"../neuralNetwork.h"
 
-1521979625 source:c:\cygwin64\home\firethorn\checkers_ai\tbigg2.cpp
+1522796912 source:c:\cygwin64\home\firethorn\checkers_ai\tbigg2.cpp
 	<queue>
 	<algorithm>
 	<iostream>
@@ -9356,7 +9356,7 @@
 	<boost/serialization/queue.hpp>
 	"playgame.h"
 
-1522485223 source:c:\cygwin64\home\firethorn\checkers_ai\endgame.cpp
+1522538191 source:c:\cygwin64\home\firethorn\checkers_ai\endgame.cpp
 	<iostream>
 	<algorithm>
 	<stdio.h>
