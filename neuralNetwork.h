@@ -33,7 +33,7 @@ using std::ifstream;
 using std::max;
 using std::min;
 
-#include<unordered_map>
+#include <unordered_map>
 
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/vector.hpp>
@@ -77,6 +77,10 @@ public:
     time_t timeLimit;
     bool timeExceeded = false;
 
+    //stats
+    int numBoards = 0; 
+    int numMoves = 0; 
+
     unsigned int depthReached = 0;
     std::unordered_map<stdBoard, double> boardMem;
     unsigned int cacheHit = 0;
@@ -112,8 +116,9 @@ public:
     void sigmoid(double & num);
     virtual ~AIPlayer()=default; //base class, needs to have virtual destructor.
 
+    friend class boost::serialization::access; 
     //serialization
-    template <typename Archive>
+    template <class Archive>
     void serialize(Archive &ar, const unsigned int version) {
         ar & kingVal;
         ar & sigma;
@@ -170,6 +175,7 @@ public:
 class NN: public AIPlayer
 {
 public:
+  friend class boost::serialization::access; 
 	//Constructor setting a new neural network to random weights
 	NN(std::vector<int>& nS, string familyname);
 	//Blanck constructor
