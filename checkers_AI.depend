@@ -133,7 +133,7 @@
 	"board.h"
 	"neuralNetwork.h"
 
-1522925246 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
+1522970297 c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -189,7 +189,7 @@
 
 1521843137 D
 
-1522817385 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
+1522972455 source:c:\cygwin64\home\firethorn\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
 1522064338 gin/3bitstdboard
@@ -3938,7 +3938,7 @@
 	"neuralNetwork.h"
 	"alphabeta.h"
 
-1522059272 source:c:\cygwin64\home\firethorn\checkers_ai\test\testboardeval.cpp
+1522971734 source:c:\cygwin64\home\firethorn\checkers_ai\test\testboardeval.cpp
 	<iostream>
 	<vector>
 	"../neuralNetwork.h"

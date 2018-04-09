@@ -57,8 +57,13 @@ constexpr sNN LOWEST = -100000;
 constexpr sNN HIGHEST = 100000;
 #endif // CONSTS
 
-const static double MOVETIME = 14.0;  //Seconds.
+const static double MOVETIME = 140.0;  //Seconds.
 extern std::mt19937_64 gen;
+
+extern int gameBoards;
+extern int boardEvals;
+extern int innerNodes;
+extern int leafNodes;
 
 int DBLookup(stdBoard b);
 void DBInit();  //Initialize database
@@ -162,6 +167,7 @@ public:
   std::uniform_real_distribution<double> distro;
 
   sNN calculateBoard(stdBoard & board) {
+    ++boardEvals;
     sNN count = (int)(
           board.pieces[0].count() +
           board.pieces[2].count() -

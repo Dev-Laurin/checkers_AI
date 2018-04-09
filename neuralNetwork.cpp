@@ -5,6 +5,11 @@
 std::mt19937_64 gen(time(0));
 //Initialize the database
 
+int gameBoards = 0;
+int boardEvals = 0;
+int innerNodes = 0;
+int leafNodes = 0;
+
 
 stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
 
@@ -34,6 +39,8 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     numBoards = 0;
     if (moves == 0) {
         return stdBoard(0,0,0,0);
+    } else { //For report.
+      ++innerNodes;
     }
   //If there is more than one move, check cache and place in
     //cache if there is a miss (speeds up most used boards)
@@ -49,7 +56,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
       //Find out how board scores.
       //Based on Chinook's database
       bool endValid = board.endGameCheck();
-      if (endValid) {
+      if (endValid && false) {
         cout << "Valid board for endgame" <<endl;
         //TIE     0
         //WIN     1
@@ -123,7 +130,9 @@ sNN AIPlayer::alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
   int moves;
   moves = board.genMoves(moveList,0);
   if (moves) {
+      ++innerNodes;
     for(int i = 0; i < moves; ++i) {
+      ++leafNodes;
       if (boardMem.count(moveList[i])) {
           ++cacheHit;
       } else {
@@ -158,6 +167,7 @@ sNN AIPlayer::alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
     //Take the highest value move.
     return rVal;
   } else {
+    ++leafNodes;
     //No moves available.  We lose!
     //We don't like this, obviously.
     return LOWEST + depth; //less depth means we are losing quicker, avoid.
@@ -175,6 +185,7 @@ sNN AIPlayer::beta(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
 
   //if there are not 0 moves
   if (moveCount) {
+      ++innerNodes;
 
       //get the maximum value of this board (alpha)
     numBoards++;
@@ -183,7 +194,7 @@ sNN AIPlayer::beta(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
       for (int i = 1;i<moveCount;++i) {
         b = std::min(rVal, b);
         if (b <= a) { //I can force a worse move than the best found, stop looking.
-          ++trimTotal;
+        ++trimTotal;
           return rVal;
         }
         numBoards++;
@@ -192,6 +203,7 @@ sNN AIPlayer::beta(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
       }
       return rVal;
   } else {
+    ++leafNodes;
     //No moves available.  We win!
     //We like this, obviously.
     return HIGHEST-depth; //less depth means it is losing quicker, prefer.
@@ -284,6 +296,7 @@ NN::NN() {
 
 //Given a board, calculate the output of the NN
 sNN NN::calculateBoard(stdBoard & board){
+  ++boardEvals;
   for(size_t i = 0;i < nodes.size();++i) {
           std::fill(nodes[i].begin(),nodes[i].end(),0.0);
   }
