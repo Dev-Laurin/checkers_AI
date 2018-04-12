@@ -113,7 +113,8 @@ public:
 
     // A virtual function to be implemented by the specific AI.
     virtual sNN calculateBoard(stdBoard & board) = 0 ;
-
+    virtual int saveToFile(string filename) {return 0;} //nothing to save, just return a 0
+    virtual int loadFromFile(string filename) {return 0;}
 
     // Returns a move given a board and a side.
     virtual stdBoard getMove(stdBoard & board, bool side=false);

@@ -166,7 +166,7 @@
 	"board.h"
 	"neuralNetwork.h"
 
-1523543236 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
+1523575675 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -194,7 +194,7 @@
 1522064338 gin/3bitstdboard
 	"neuralNetwork.h"
 
-1523443837 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
+1523543783 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
 1519174994 c:\cygwin64\home\jason\checkers_ai\catch2.hpp

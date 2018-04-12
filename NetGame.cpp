@@ -53,12 +53,10 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
 int main(int argc, char * argv[]) {
 
 // Initial variables
-	int NumMoves;
-	char BoardReturns[MAXMOVES][BOARDSIZE];
-	stdBoard bdReturns[MAXMOVES];
-	int curPlayer = 0;
-	int round = 0;
-	bool gamelost = false;
+//	int NumMoves;
+//	int curPlayer = 0;
+//	int round = 0;
+//	bool gamelost = false;
 	std::string srvAddr = "http://skynet.cs.uaf.edu";
 	std::string strRequest;
 	std::string gameName;
@@ -66,11 +64,19 @@ int main(int argc, char * argv[]) {
 	std::string sendMoveInfo;
 	std::string getGameInfo;
 	CURLcode curlR;
-	NN Brain;
+	AIPlayer * Brain;
 	stdBoard board;
 
 // Set variables.
-  Brain.loadFromFile(argv[1]);
+  std::string AI = argv[1];
+  if (AI=="piececount") {
+      Brain = new PieceCount;
+  } else {
+      Brain = new NN;
+      Brain->loadFromFile(argv[1]);
+  }
+
+
 //	Brain.depth = atoi(argv[2]);
 	gameName = argv[3];
 	int side = atoi(argv[4]); // 1 = red
@@ -128,7 +134,7 @@ int main(int argc, char * argv[]) {
 		time_t time_end1;
 		time(&time_start1);
 		//end timing code
-		board = Brain.getMove(board, side);
+		board = Brain->getMove(board, side);
 //		PlayMove(Brain, board, depth);
 		time(&time_end1);
 		std::cout << "It took " << difftime(time_end1,time_start1) << " seconds for the move" << endl;
