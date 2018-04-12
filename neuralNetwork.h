@@ -57,7 +57,7 @@ constexpr sNN LOWEST = -100000;
 constexpr sNN HIGHEST = 100000;
 #endif // CONSTS
 
-const static double MOVETIME = 140.0;  //Seconds.
+const static double MOVETIME = 14.0;  //Seconds.
 extern std::mt19937_64 gen;
 
 extern int gameBoards;
@@ -70,6 +70,17 @@ void DBInit();  //Initialize database
 
 class AIPlayer{
 public:
+    struct MontyBoard {
+      public:
+        stdBoard board;
+        int wins;
+        int losses;
+        int plays;
+
+        double score() {
+          return double((wins-losses)/(plays+1));
+        }
+    };
     double kingVal = 0.4;  //Value of kings over pawns.
     double sigma = 0.05; //How much we vary from the parent weights
     double pieceWeight = 1.0; //Value of piece counter input
@@ -77,7 +88,7 @@ public:
     int montyK = 1; // (w-l)/(w+l+k)
     int generation = 0; //Starts out as parent
     string familyName = "";
-    unsigned int searchDepth = 4;
+    unsigned int searchDepth = 10;
     time_t timeStart;
     time_t timeLimit;
     bool timeExceeded = false;
@@ -85,7 +96,7 @@ public:
     //stats
     int numBoards = 0;
     int numMoves = 0;
-    int numBoardEvals = 0; 
+    int numBoardEvals = 0;
 
     unsigned int depthReached = 0;
     std::unordered_map<stdBoard, double> boardMem;
@@ -106,6 +117,8 @@ public:
 
     // Returns a move given a board and a side.
     virtual stdBoard getMove(stdBoard & board, bool side=false);
+    stdBoard getMontyMove(stdBoard & board, bool side=false);
+
     // Beta side of the board
     sNN beta(stdBoard & board, int depth, int maxDepth, sNN a, sNN b);
     //  Alpha side of the board

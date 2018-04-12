@@ -11,6 +11,19 @@ int innerNodes = 0;
 int leafNodes = 0;
 
 
+
+//Quick and dirty monty carlo calc.
+stdBoard AIPlayer::getMontyMove(stdBoard & board, bool side) {
+  //0: Initial, 1: Red, 2: Black
+  stdBoard moveList[MAXMOVES];
+  int numMoves;
+  vector<MontyBoard> moves;
+  numMoves = board.genMoves(moveList,side);
+return board;
+}
+
+
+
 stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
 
   //place to store the possible moves

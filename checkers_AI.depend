@@ -166,7 +166,7 @@
 	"board.h"
 	"neuralNetwork.h"
 
-1523319039 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
+1523543236 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -197,7 +197,7 @@
 1523443837 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
-1519177737 c:\cygwin64\home\jason\checkers_ai\catch2.hpp
+1519174994 c:\cygwin64\home\jason\checkers_ai\catch2.hpp
 	<TargetConditionals.h>
 	<iosfwd>
 	<string>
@@ -9402,4 +9402,20 @@
 	<curl/curl.h>
 	<thread>
 	<chrono>
+
+1522928137 source:c:\cygwin64\home\jason\checkers_ai\test\testnn.cpp
+	<iostream>
+	<fstream>
+	<vector>
+	<unordered_map>
+	<ctime>
+	<random>
+	<boost/filesystem.hpp>
+	<boost/archive/text_oarchive.hpp>
+	<boost/archive/text_iarchive.hpp>
+	<boost/serialization/map.hpp>
+	<boost/filesystem/fstream.hpp>
+	"../Catch2.hpp"
+	"../board.h"
+	"../neuralNetwork.h"
 
