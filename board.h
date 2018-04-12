@@ -88,6 +88,24 @@ public:
 		return board;
 	}
 
+string strNet(){
+		string board;
+		for (int i = 0;i<32;++i) {
+			if (pieces[2][i] & pieces[1][i]) {
+				board.append("R");
+			} else if (pieces[2][i] & pieces[0][i]) {
+				board.append("B");
+			} else if (pieces[1][i]) {
+				board.append("r");
+			} else if (pieces[0][i]) {
+				board.append("b");
+			} else {
+				board.append("_");
+			}
+		}
+		return board;
+	}
+
 	string str(string board) {
 		for (int i = 0;i<3;++i) {
 			pieces[i] = 0;
@@ -96,16 +114,13 @@ public:
 			if (board[i] == 'r') {
 				//using bitshifting rather than power.
 				pieces[1][i] = 1;
-			}
-			if (board[i] == 'R') {
+			} else if (board[i] == 'R') {
         pieces[1][i] = 1;
         pieces[2][i] = 1;
-			}
-			if (board[i] == 'b') {
+			} else if (board[i] == 'b') {
 				//using bitshifting rather than power.
 				pieces[0][i] = 1;
-			}
-			if (board[i] == 'B') {
+			} else if (board[i] == 'B') {
         pieces[0][i] = 1;
         pieces[2][i] = 1;
 			}

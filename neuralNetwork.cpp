@@ -39,7 +39,6 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     numMoves = moves; //save for printing stats
     numBoards = 0;
     numBoardEvals = 0;
-    numInnerNodes = 1;
     if (moves == 0) {
         return stdBoard(0,0,0,0);
     } else { //For report.
@@ -132,7 +131,6 @@ sNN AIPlayer::alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
   stdBoard moveList[MAXMOVES];
   int moves;
   moves = board.genMoves(moveList,0);
-  numInnerNodes++;
   if (moves) {
       ++innerNodes;
     for(int i = 0; i < moves; ++i) {
@@ -186,7 +184,6 @@ sNN AIPlayer::beta(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
   stdBoard moveList[MAXMOVES];
   int moveCount;
   moveCount = board.genMoves(moveList,1);
-  numInnerNodes++;
 
   //if there are not 0 moves
   if (moveCount) {
@@ -227,7 +224,7 @@ void AIPlayer::prntStats() {
 
   cout << "Boards expanded per move: " << (numBoardEvals-numMoves)/numMoves << endl;
   cout << "Board Evaluation Functions called: " << numBoardEvals << endl;
-  cout << "Inner nodes: " << numInnerNodes << endl;
+  cout << "Inner nodes: " << innerNodes << endl;
   cout << "Leaf nodes: " << numBoardEvals << endl;
 }
 

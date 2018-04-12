@@ -28,7 +28,7 @@
 	"board.h"
 	"gui.h"
 
-1522100200 c:\cygwin64\home\jason\checkers_ai\board.h
+1523534973 c:\cygwin64\home\jason\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -47,22 +47,21 @@
 	<SFML/Graphics.hpp>
 	<vector>
 
-1517864416 source:c:\cygwin64\home\jason\checkers_ai\old_movegenerator.cpp
+1517817836 source:c:\cygwin64\home\jason\checkers_ai\old_movegenerator.cpp
 	"old_movegenerator.h"
 
-1517801715 c:\cygwin64\home\jason\checkers_ai\old_movegenerator.h
+1517806496 c:\cygwin64\home\jason\checkers_ai\old_movegenerator.h
 	<string>
 	<vector>
 	<iostream>
 	<cstring>
 	<algorithm>
 
-1519348921 source:c:\cygwin64\home\jason\checkers_ai\testboard.cpp
+1522432083 source:c:\cygwin64\home\jason\checkers_ai\testboard.cpp
 	<iostream>
 	"board.h"
-	"alphabeta.h"
 	"old_movegenerator.h"
-	"testboard.h"
+	"testBoard.h"
 	<random>
 	<chrono>
 
@@ -167,7 +166,7 @@
 	"board.h"
 	"neuralNetwork.h"
 
-1522197581 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
+1523319039 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -195,7 +194,7 @@
 1522064338 gin/3bitstdboard
 	"neuralNetwork.h"
 
-1522197581 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
+1523443837 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
 1519177737 c:\cygwin64\home\jason\checkers_ai\catch2.hpp
@@ -390,7 +389,7 @@
 	<ctime>
 	<algorithm>
 
-1517801715 c:\cygwin64\home\jason\checkers_ai\testboard.h
+1517820573 c:\cygwin64\home\jason\checkers_ai\testboard.h
 	<string>
 	<vector>
 	<iostream>
@@ -595,7 +594,7 @@
 	"board.h"
 	"neuralNetwork.h"
 
-1522099093 source:c:\cygwin64\home\jason\checkers_ai\playgame.cpp
+1522481567 source:c:\cygwin64\home\jason\checkers_ai\playgame.cpp
 	<iostream>
 	<vector>
 	"board.h"
@@ -9382,4 +9381,25 @@
 	<boost/serialization/collections_save_imp.hpp>
 	<boost/serialization/split_free.hpp>
 	<boost/move/utility_core.hpp>
+
+1522917856 source:c:\cygwin64\home\jason\checkers_ai\endgame.cpp
+	<iostream>
+	<algorithm>
+	<stdio.h>
+	<stdlib.h>
+	"board.h"
+	<fcntl.h>
+	<alloc.h>
+	<io.h>
+	<sys\stat.h>
+
+1523535007 source:c:\cygwin64\home\jason\checkers_ai\netgame.cpp
+	<ctime>
+	<sstream>
+	"neuralNetwork.h"
+	"board.h"
+	<json/json.hpp>
+	<curl/curl.h>
+	<thread>
+	<chrono>
 
