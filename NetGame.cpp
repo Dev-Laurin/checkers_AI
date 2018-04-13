@@ -71,9 +71,12 @@ int main(int argc, char * argv[]) {
   std::string AI = argv[1];
   if (AI=="piececount") {
       Brain = new PieceCount;
-  } else {
+  } else if (true) {
       Brain = new NN;
-      Brain->loadFromFile(argv[1]);
+      Brain->loadFromFile(AI);
+  } else {
+      Brain = new NN2;
+      Brain->loadFromFile(AI);
   }
 
 
@@ -135,6 +138,7 @@ int main(int argc, char * argv[]) {
 		time(&time_start1);
 		//end timing code
 		board = Brain->getMove(board, side);
+		Brain->prntStats();
 //		PlayMove(Brain, board, depth);
 		time(&time_end1);
 		std::cout << "It took " << difftime(time_end1,time_start1) << " seconds for the move" << endl;

@@ -70,7 +70,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
       }
       //Find out how board scores.
       //Based on Chinook's database
-      bool endValid = board.endGameCheck();
+/*      bool endValid = board.endGameCheck();
       if (endValid && false) {
         cout << "Valid board for endgame" <<endl;
         //TIE     0
@@ -88,7 +88,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
         cout << "Not a valid board for endgame" << endl;
         }
       }
-
+*/
       //iterative deepening search
       selectMove = 0;
       while(time(0) < timeLimit && depthReached <= searchDepth) {
