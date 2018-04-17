@@ -34,6 +34,7 @@ using std::max;
 using std::min;
 
 #include <unordered_map>
+#include <thread>
 
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/vector.hpp>

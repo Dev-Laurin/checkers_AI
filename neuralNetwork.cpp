@@ -29,6 +29,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
   //place to store the possible moves
     stdBoard moveList[MAXMOVES];
     int selectMove;
+    std::vector<std::thread> threads;
 
   //For timing
     std::time(&timeStart);
@@ -55,17 +56,17 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     if (moves == 0) {
         return stdBoard(0,0,0,0);
     } else { //For report.
-      ++innerNodes;
+//      ++innerNodes;
     }
   //If there is more than one move, check cache and place in
     //cache if there is a miss (speeds up most used boards)
     if (moves > 1) {
       for(int i = 0; i < moves; ++i) {
         if (boardMem.count(moveList[i])) {
-            ++cacheHit;
+//            ++cacheHit;
         } else {
             boardMem.emplace(moveList[i],calculateBoard(moveList[i]));
-            ++cacheMiss;
+//            ++cacheMiss;
         }
       }
       //Find out how board scores.
@@ -91,6 +92,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
 */
       //iterative deepening search
       selectMove = 0;
+      sNN moveVal[MAXMOVES];
       while(time(0) < timeLimit && depthReached <= searchDepth) {
         //Sort the boards so we expand the best ones first
         std::sort(moveList, moveList+moves,
@@ -99,23 +101,19 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
                   });
 
         //expand the first move
-        int curMove = 0;
-        sNN moveVal = beta(moveList[0], 0, depthReached, LOWEST, HIGHEST);
-        sNN tempMove;
-        for (int i = 1; i < moves; ++i) {
-            tempMove = beta(moveList[i], 0, depthReached, LOWEST, HIGHEST);
+        for (int i = 0; i < moves; ++i) {
+            moveVal[i] = beta(moveList[i], 0, depthReached, LOWEST, HIGHEST);
             //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
             //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
-            if (tempMove > moveVal) {
-                //better move found
-                moveVal = tempMove;
-                curMove = i;
-            }
         }
         if(!timeExceeded) {
-          selectMove=curMove;
           ++depthReached;
         }
+      }
+      for(int i = 1; i < moves; ++i) {
+          if(moveVal[i] > moveVal[selectMove]) {
+            selectMove = i;
+          }
       }
     } else { // Only one move, no need to calc!
       selectMove = 0;
@@ -145,18 +143,18 @@ sNN AIPlayer::alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
   int moves;
   moves = board.genMoves(moveList,0);
   if (moves) {
-      ++innerNodes;
+//      ++innerNodes;
     for(int i = 0; i < moves; ++i) {
-      ++leafNodes;
+//      ++leafNodes;
       if (boardMem.count(moveList[i])) {
-          ++cacheHit;
+//          ++cacheHit;
       } else {
         /*
           bool endValid = board.endGameCheck();
           int v = DBLookup(board);
           */
           boardMem.emplace(moveList[i],calculateBoard(moveList[i]));
-          ++cacheMiss;
+//          ++cacheMiss;
       }
     }
     std::sort(moveList, moveList+moves,
@@ -174,7 +172,7 @@ sNN AIPlayer::alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
     for (int i = 1;i < moves ; ++i) {
       a = std::max(rVal, a);
       if (b <= a) {  //I can force a better move than the worse the opponent can, so he won't pick this.
-        ++trimTotal;
+//        ++trimTotal;
         return rVal;
       }
       rVal = max(rVal,beta(moveList[i],depth+1, maxDepth, a, b));
@@ -182,7 +180,7 @@ sNN AIPlayer::alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
     //Take the highest value move.
     return rVal;
   } else {
-    ++leafNodes;
+//    ++leafNodes;
     //No moves available.  We lose!
     //We don't like this, obviously.
     return LOWEST + depth; //less depth means we are losing quicker, avoid.
@@ -200,25 +198,25 @@ sNN AIPlayer::beta(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
 
   //if there are not 0 moves
   if (moveCount) {
-      ++innerNodes;
+//      ++innerNodes;
 
       //get the maximum value of this board (alpha)
-    numBoards++;
+//    numBoards++;
       sNN rVal = alpha(moveList[0],depth, maxDepth, a, b);
       //get the minimum of alpha's board value and the highest possible value
       for (int i = 1;i<moveCount;++i) {
         b = std::min(rVal, b);
         if (b <= a) { //I can force a worse move than the best found, stop looking.
-        ++trimTotal;
+//        ++trimTotal;
           return rVal;
         }
-        numBoards++;
+//        numBoards++;
         //set the value to the minimum between last value and next alpha value
         rVal = min(rVal,alpha(moveList[i],depth, maxDepth, a, b));
       }
       return rVal;
   } else {
-    ++leafNodes;
+//    ++leafNodes;
     //No moves available.  We win!
     //We like this, obviously.
     return HIGHEST-depth; //less depth means it is losing quicker, prefer.

@@ -69,14 +69,20 @@ int main(int argc, char * argv[]) {
 
 // Set variables.
   std::string AI = argv[1];
+  cout << "ending: " << AI.substr(AI.size()-3);
   if (AI=="piececount") {
       Brain = new PieceCount;
-  } else if (true) {
+  } else if (AI.substr(AI.size()-3) == ".nn") {
+      cout << "Blondie style Neural Network" << endl;
       Brain = new NN;
       Brain->loadFromFile(AI);
-  } else {
+  } else if (AI.substr(AI.size()-3) == "nn2") {
+      cout << "Bigg style Neural Network" << endl;
       Brain = new NN2;
       Brain->loadFromFile(AI);
+  } else {
+      cout << "unrecognized Neural Net!" << endl;
+      return 0;
   }
 
 
@@ -108,18 +114,24 @@ int main(int argc, char * argv[]) {
 				return 1;
 			}
 			buffer << svrResponse;
-			buffer >> jGameInfo; // deserialize
-			cout << "Status: " << jGameInfo["status"] << endl;
-			board.str(jGameInfo["boards"].back());
+			try {
+        buffer >> jGameInfo; // deserialize
+        cout << "Status: " << jGameInfo["status"] << endl;
+        board.str(jGameInfo["boards"].back());
+			} catch(...) {
+			  cout << "Invalid JSON detected!" << endl;
+			  cout << "Was a proper game set up?" << endl;
+			  return -1;
+			}
 			cout << "board: " << board.strNet() << endl;
 			if(jGameInfo["status"] == "red_turn") {
-				cout << "Red Turn" << endl;
+//				cout << "Red Turn" << endl;
 				if(side == 0) {
 						std::this_thread::sleep_for(std::chrono::seconds(1));
 						continue;
 				}
 			} else if (jGameInfo["status"] == "black_turn") {
-				cout << "Black Turn" << endl;
+//				cout << "Black Turn" << endl;
 				if(side==1){
 					std::this_thread::sleep_for(std::chrono::seconds(1));
 					continue;
@@ -137,7 +149,9 @@ int main(int argc, char * argv[]) {
 		time_t time_end1;
 		time(&time_start1);
 		//end timing code
+		cout << "Calculating Move" << endl;
 		board = Brain->getMove(board, side);
+		cout << "Finished Calculating" << endl;
 		Brain->prntStats();
 //		PlayMove(Brain, board, depth);
 		time(&time_end1);
