@@ -92,6 +92,7 @@ public:
     unsigned int searchDepth = 10;
     time_t timeStart;
     time_t timeLimit;
+    time_t timeHalf;
     bool timeExceeded = false;
 
     //stats
@@ -177,18 +178,18 @@ class PieceCount: public AIPlayer
 {
 public:
   PieceCount() {
-    distro = std::uniform_real_distribution<double>(0.0,1.0);
+    distro = std::uniform_real_distribution<double>(0.0,0.1);
 
   }
   std::uniform_real_distribution<double> distro;
 
   sNN calculateBoard(stdBoard & board) {
     ++boardEvals;
-    sNN count = (int)(
-          board.pieces[0].count() +
-          board.pieces[2].count() -
-          board.pieces[1].count() -
-          board.pieces[3].count()) +
+    sNN count = (
+          (sNN)board.pieces[0].count() +
+          (0.4 * (sNN)board.pieces[2].count()) -
+          (sNN)board.pieces[1].count() -
+          (0.4 * (sNN)board.pieces[3].count()) +
           distro(gen);
     return count;
   }
