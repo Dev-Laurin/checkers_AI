@@ -185,7 +185,7 @@ public:
 
   sNN calculateBoard(stdBoard & board) {
     ++boardEvals;
-    sNN count = (
+    sNN count =
           (sNN)board.pieces[0].count() +
           (0.4 * (sNN)board.pieces[2].count()) -
           (sNN)board.pieces[1].count() -

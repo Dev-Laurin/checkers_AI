@@ -38,6 +38,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     timeInfo = localtime(&timeStart);
     timeInfo->tm_sec += MOVETIME;
     timeLimit = mktime(timeInfo);
+    timeInfoHalf = localtime(&timeStart);
     timeInfoHalf->tm_sec += MOVETIME/2;
     timeHalf = mktime(timeInfoHalf);
     timeExceeded = false;

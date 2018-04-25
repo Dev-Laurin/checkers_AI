@@ -166,7 +166,7 @@
 	"board.h"
 	"neuralNetwork.h"
 
-1524006244 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
+1524618456 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -9394,7 +9394,7 @@
 	<io.h>
 	<sys\stat.h>
 
-1524006160 source:c:\cygwin64\home\jason\checkers_ai\netgame.cpp
+1524012184 source:c:\cygwin64\home\jason\checkers_ai\netgame.cpp
 	<ctime>
 	<sstream>
 	"neuralNetwork.h"
