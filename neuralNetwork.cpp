@@ -311,8 +311,8 @@ NN::NN() {
 
 //Given a board, calculate the output of the NN
 sNN NN::calculateBoard(stdBoard & board){
-  ++boardEvals;
-  numBoardEvals++;
+//  ++boardEvals;
+//  numBoardEvals++;
   for(size_t i = 0;i < nodes.size();++i) {
           std::fill(nodes[i].begin(),nodes[i].end(),0.0);
   }

@@ -28,7 +28,7 @@
 	"board.h"
 	"gui.h"
 
-1523534973 c:\cygwin64\home\jason\checkers_ai\board.h
+1523544307 c:\cygwin64\home\jason\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -9383,7 +9383,7 @@
 	<boost/serialization/split_free.hpp>
 	<boost/move/utility_core.hpp>
 
-1522917856 source:c:\cygwin64\home\jason\checkers_ai\endgame.cpp
+1523408373 source:c:\cygwin64\home\jason\checkers_ai\endgame.cpp
 	<iostream>
 	<algorithm>
 	<stdio.h>
