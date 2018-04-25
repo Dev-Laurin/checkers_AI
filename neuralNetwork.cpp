@@ -34,9 +34,12 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
   //For timing
     std::time(&timeStart);
     struct tm * timeInfo;
+    struct tm * timeInfoHalf;
     timeInfo = localtime(&timeStart);
     timeInfo->tm_sec += MOVETIME;
     timeLimit = mktime(timeInfo);
+    timeInfoHalf->tm_sec += MOVETIME/2;
+    timeHalf = mktime(timeInfoHalf);
     timeExceeded = false;
 
   //For keeping track of trimming stat
@@ -93,7 +96,10 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
       //iterative deepening search
       selectMove = 0;
       sNN moveVal[MAXMOVES];
-      while(time(0) < timeLimit && depthReached <= searchDepth) {
+
+      //If more than half of the time has been consumed, don't try to go deeper.
+      while(time(0) < timeHalf && depthReached <= searchDepth) {
+//      while(time(0) < timeLimit && depthReached <= searchDepth) {
         //Sort the boards so we expand the best ones first
         std::sort(moveList, moveList+moves,
                   [&](stdBoard a, stdBoard b) {
@@ -376,7 +382,7 @@ void NN::becomeOffspring(){
   //Randomize king, piececount, and monty values
   std::normal_distribution<double> kingDis(0.0,0.1);
   kingVal = clmp(kingVal + kingDis(gen),0.0,1.0);
-  pieceWeight = clmp(pieceWeight + kingDis(gen),0.0,1.0);
+  pieceWeight = clmp(pieceWeight + kingDis(gen),0.0,2.0);
   montyWeight = clmp(montyWeight + kingDis(gen),0.0,1.0);
   //randomize the sigmas
   //(mean, standard deviation)
