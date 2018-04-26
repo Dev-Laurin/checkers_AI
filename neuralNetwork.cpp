@@ -23,7 +23,6 @@ return board;
 }
 
 
-
 stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
 
   //place to store the possible moves
@@ -97,24 +96,32 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
       //iterative deepening search
       selectMove = 0;
       sNN moveVal[MAXMOVES];
-
+      std::vector<std::thread> threads;
       //If more than half of the time has been consumed, don't try to go deeper.
       while(time(0) < timeHalf && depthReached <= searchDepth) {
 //      while(time(0) < timeLimit && depthReached <= searchDepth) {
         //Sort the boards so we expand the best ones first
-        std::sort(moveList, moveList+moves,
-                  [&](stdBoard a, stdBoard b) {
-                    return (boardMem.at(a) > boardMem.at(b));
-                  });
-
         //expand the first move
+        ++depthReached;
+        //s
         for (int i = 0; i < moves; ++i) {
-            moveVal[i] = beta(moveList[i], 0, depthReached, LOWEST, HIGHEST);
+            threads.push_back(std::thread(
+                  betaThread,
+                  std::ref(moveList[i]),
+                  0,
+                  depthReached,
+                  LOWEST,
+                  HIGHEST,
+                  moveVal[i]));
+
+
+            //moveVal[i] = beta(moveList[i], 0, depthReached, LOWEST, HIGHEST);
             //cout << "moveVal: " << moveVal << " tempMove: " << tempMove << endl;
             //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
         }
-        if(!timeExceeded) {
-          ++depthReached;
+        //rejoin the threads.
+        for (int i = 0; i < moves; ++i) {
+          threads[i].join();
         }
       }
       for(int i = 1; i < moves; ++i) {
@@ -193,6 +200,15 @@ sNN AIPlayer::alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
     return LOWEST + depth; //less depth means we are losing quicker, avoid.
   }
 
+}
+
+void AIPlayer::betaThread(stdBoard & board,
+                         int depth,
+                         int maxDepth,
+                         sNN a,
+                         sNN b,
+                         sNN & valReturn) {
+  valReturn = beta(board, depth, maxDepth, a, b);
 }
 
 

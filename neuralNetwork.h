@@ -120,10 +120,12 @@ public:
 
     // Returns a move given a board and a side.
     virtual stdBoard getMove(stdBoard & board, bool side=false);
+
     stdBoard getMontyMove(stdBoard & board, bool side=false);
 
     // Beta side of the board
     sNN beta(stdBoard & board, int depth, int maxDepth, sNN a, sNN b);
+    void betaThread(stdBoard & board, int depth, int maxDepth, sNN a, sNN b, sNN & valReturn);
     //  Alpha side of the board
     sNN alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b);
     // Handles starting up the alpha-beta search
