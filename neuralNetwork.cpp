@@ -106,13 +106,14 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
         //s
         for (int i = 0; i < moves; ++i) {
             threads.push_back(std::thread(
-                  betaThread,
+                  & AIPlayer::betaThread,
+                  this,
                   std::ref(moveList[i]),
                   0,
                   depthReached,
                   LOWEST,
                   HIGHEST,
-                  moveVal[i]));
+                  std::ref(moveVal[i])));
 
 
             //moveVal[i] = beta(moveList[i], 0, depthReached, LOWEST, HIGHEST);
