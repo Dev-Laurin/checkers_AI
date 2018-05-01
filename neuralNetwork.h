@@ -35,6 +35,7 @@ using std::min;
 
 #include <unordered_map>
 #include <thread>
+#include <future>
 
 #include <boost/serialization/base_object.hpp>
 #include <boost/serialization/vector.hpp>
@@ -60,6 +61,8 @@ constexpr sNN HIGHEST = 100000;
 
 const static double MOVETIME = 14.0;  //Seconds.
 extern std::mt19937_64 gen;
+extern std::unordered_map<stdBoard, int[3]> monteMem;
+
 
 extern int gameBoards;
 extern int boardEvals;
@@ -68,6 +71,17 @@ extern int leafNodes;
 
 int DBLookup(stdBoard b);
 void DBInit();  //Initialize database
+void monte(stdBoard & board, bool side);
+void monte(stdBoard & board);
+
+void doTheMonte(stdBoard board);
+
+double monteMemVal (const stdBoard & board);
+int saveMonty();
+int loadMonty();
+
+
+
 
 class AIPlayer{
 public:
@@ -121,16 +135,15 @@ public:
     // Returns a move given a board and a side.
     virtual stdBoard getMove(stdBoard & board, bool side=false);
 
-    stdBoard getMontyMove(stdBoard & board, bool side=false);
-
     // Beta side of the board
     sNN beta(stdBoard & board, int depth, int maxDepth, sNN a, sNN b);
-    void betaThread(stdBoard & board, int depth, int maxDepth, sNN a, sNN b, sNN & valReturn);
+//    std::thread betaThread(stdBoard board, int depth, int maxDepth, sNN a, sNN b, sNN valReturn);
+//    void betaT(stdBoard board, int depth, int maxDepth, sNN a, sNN b, sNN valReturn);
     //  Alpha side of the board
     sNN alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b);
     // Handles starting up the alpha-beta search
     // sNN alphabeta(stdBoard board, unsigned int side = 0);
-    void prntStats();
+    virtual void prntStats();
 
     //iterative  deepening search, time limited.
     stdBoard IntDeepSearch(stdBoard & board, bool side=false);
@@ -176,6 +189,21 @@ public:
   ~RandomPlayer()=default;
 };
 
+class MontyPlayer: public AIPlayer {
+public:
+  MontyPlayer() {
+    distro = std::uniform_real_distribution<double>(0.0,1.0);
+  }
+  std::uniform_real_distribution<double> distro;
+
+  sNN calculateBoard(stdBoard & board) { //not used
+    return 0;
+  }
+  virtual stdBoard getMove(stdBoard & board, bool side=false);
+  void prntStats();
+  ~MontyPlayer()=default;
+};
+
 class PieceCount: public AIPlayer
 {
 public:
@@ -186,7 +214,6 @@ public:
   std::uniform_real_distribution<double> distro;
 
   sNN calculateBoard(stdBoard & board) {
-    ++boardEvals;
     sNN count =
           (sNN)board.pieces[0].count() +
           (0.4 * (sNN)board.pieces[2].count()) -
@@ -196,6 +223,26 @@ public:
     return count;
   }
 };
+
+class PieceCountM: public AIPlayer
+{
+public:
+  PieceCountM() {
+    distro = std::uniform_real_distribution<double>(0.0,1.0);
+    loadMonty();
+  }
+  std::uniform_real_distribution<double> distro;
+
+  sNN calculateBoard(stdBoard & board) {
+    sNN count =
+          (sNN)board.pieces[0].count() +
+          (0.4 * (sNN)board.pieces[2].count()) -
+          (sNN)board.pieces[1].count() -
+          (0.4 * (sNN)board.pieces[3].count());
+    return count;
+  }
+};
+
 
 class NN: public AIPlayer
 {
@@ -262,12 +309,6 @@ int saveToFile(const NN & nn, string filename);
 // //EX:  Blondie24/GEN100/NNpp
 // int loadFromFile(NN & nn, string filename);
 int loadFromFile(NN& nn, string filename);
-
-class montyMem {
-  int wins;
-  int losses;
-
-};
 
 #endif /* NEURAL_NETWORK_H */
 

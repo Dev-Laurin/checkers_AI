@@ -69,19 +69,27 @@ int main(int argc, char * argv[]) {
 
 // Set variables.
   std::string AI = argv[1];
-  cout << "ending: " << AI.substr(AI.size()-3);
+
   if (AI=="piececount") {
       Brain = new PieceCount;
+  } else if (AI=="piececountm") {
+      Brain = new PieceCountM;
+  } else if (AI=="monty") {
+      Brain = new MontyPlayer;
   } else if (AI.substr(AI.size()-3) == ".nn") {
       cout << "Blondie style Neural Network" << endl;
       Brain = new NN;
       Brain->loadFromFile(AI);
+      cout << "KingVal: " << Brain->kingVal << endl;
+      cout << "PieceWeight: " << Brain->pieceWeight << endl;
   } else if (AI.substr(AI.size()-3) == "nn2") {
       cout << "Bigg style Neural Network" << endl;
       Brain = new NN2;
       Brain->loadFromFile(AI);
+      cout << "KingVal: " << Brain->kingVal << endl;
+      cout << "PieceWeight: " << Brain->pieceWeight << endl;
   } else {
-      cout << "unrecognized Neural Net!" << endl;
+      cout << " unrecognized Neural Net!" << endl;
       return 0;
   }
 
@@ -152,6 +160,10 @@ int main(int argc, char * argv[]) {
 		cout << "Calculating Move" << endl;
 		board = Brain->getMove(board, side);
 		cout << "Finished Calculating" << endl;
+		if (board == stdBoard(0,0,0,0)) {
+      cout << "We have lost!" << endl;
+      return 0;
+		}
 		Brain->prntStats();
 //		PlayMove(Brain, board, depth);
 		time(&time_end1);

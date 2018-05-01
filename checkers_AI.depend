@@ -28,7 +28,7 @@
 	"board.h"
 	"gui.h"
 
-1523544307 c:\cygwin64\home\jason\checkers_ai\board.h
+1523534973 c:\cygwin64\home\jason\checkers_ai\board.h
 	<stdint.h>
 	<string>
 	<iostream>
@@ -166,7 +166,7 @@
 	"board.h"
 	"neuralNetwork.h"
 
-1524792621 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
+1525212944 c:\cygwin64\home\jason\checkers_ai\neuralnetwork.h
 	<cmath>
 	<random>
 	<vector>
@@ -178,6 +178,7 @@
 	<algorithm>
 	<unordered_map>
 	<thread>
+	<future>
 	<boost/serialization/base_object.hpp>
 	<boost/serialization/vector.hpp>
 	<boost/serialization/unordered_map.hpp>
@@ -195,7 +196,7 @@
 1522064338 gin/3bitstdboard
 	"neuralNetwork.h"
 
-1523608202 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
+1525192158 source:c:\cygwin64\home\jason\checkers_ai\neuralnetwork.cpp
 	"neuralNetwork.h"
 
 1519174994 c:\cygwin64\home\jason\checkers_ai\catch2.hpp
@@ -9266,7 +9267,7 @@
 	"../neuralNetwork.h"
 	"../playgame.h"
 
-1521492576 c:\cygwin64\home\jason\checkers_ai\playgame.h
+1521282512 c:\cygwin64\home\jason\checkers_ai\playgame.h
 	<iostream>
 	<vector>
 	"board.h"
@@ -9383,7 +9384,7 @@
 	<boost/serialization/split_free.hpp>
 	<boost/move/utility_core.hpp>
 
-1523408373 source:c:\cygwin64\home\jason\checkers_ai\endgame.cpp
+1522917856 source:c:\cygwin64\home\jason\checkers_ai\endgame.cpp
 	<iostream>
 	<algorithm>
 	<stdio.h>
@@ -9394,7 +9395,7 @@
 	<io.h>
 	<sys\stat.h>
 
-1524012184 source:c:\cygwin64\home\jason\checkers_ai\netgame.cpp
+1525193728 source:c:\cygwin64\home\jason\checkers_ai\netgame.cpp
 	<ctime>
 	<sstream>
 	"neuralNetwork.h"
@@ -9419,4 +9420,17 @@
 	"../Catch2.hpp"
 	"../board.h"
 	"../neuralNetwork.h"
+
+1525191645 source:c:\cygwin64\home\jason\checkers_ai\test\testboardeval.cpp
+	<iostream>
+	<vector>
+	"../neuralNetwork.h"
+	"../playgame.h"
+
+1525186091 c:\cygwin64\home\jason\checkers_ai\tuple.h
+	<tuple>
+	<atlas/type_traits.h>
+
+1525186199 c:\cygwin64\home\jason\checkers_ai\serialize_tuple.h
+	<tuple>
 

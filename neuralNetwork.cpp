@@ -10,18 +10,210 @@ int boardEvals = 0;
 int innerNodes = 0;
 int leafNodes = 0;
 
+//Wins, losses, ties?
+std::unordered_map<stdBoard, int[3]> monteMem;
 
-
-//Quick and dirty monty carlo calc.
-stdBoard AIPlayer::getMontyMove(stdBoard & board, bool side) {
-  //0: Initial, 1: Red, 2: Black
-  stdBoard moveList[MAXMOVES];
-  int numMoves;
-  vector<MontyBoard> moves;
-  numMoves = board.genMoves(moveList,side);
-return board;
+double monteMemVal (const stdBoard & board) {
+  auto bV = monteMem[board];
+  return ((double)(bV[0] - bV[1])/
+          ((double)(bV[0]+bV[1]+bV[2]+1)));
 }
 
+//Quick and dirty monty carlo calc.
+void doTheMonte(stdBoard board) {
+  //For timing
+  cout << "Doing the Monty!" << endl;
+  time_t timeStart;
+  time_t timeLimit;
+  std::time(&timeStart);
+  struct tm * timeInfo;
+  timeInfo = localtime(&timeStart);
+  timeInfo->tm_sec += MOVETIME-3;
+  timeLimit = mktime(timeInfo);
+
+  stdBoard moveList[MAXMOVES];
+
+  int numMoves = board.genMoves(moveList, 0);
+  if (numMoves==0) {
+    return;
+  }
+  //If the board isn't in the unordered map, add it.
+  for(int i = 0; i < numMoves; ++i) {
+      if (!monteMem.count(moveList[i])) {
+        monteMem[moveList[i]][0] = 0;
+        monteMem[moveList[i]][1] = 0;
+        monteMem[moveList[i]][2] = 0;
+      }
+
+  }
+  while(time(0) < timeLimit) {
+    for(int j = 0; j <= numMoves; ++j) {
+      for (int i = 0; i < j; ++i) {
+        monte(moveList[i]);
+      }
+    }
+    std::sort(moveList, moveList+numMoves,
+      [&](stdBoard a, stdBoard b) {
+        return (monteMemVal(a) > monteMemVal(b));
+      });
+  }
+  for(int i = 0; i < numMoves; ++i) {
+    cout << "doTheMonte Wins: " << monteMem[moveList[i]][0] << " Losses: " << monteMem[moveList[i]][1] << " Ties: " << monteMem[moveList[i]][2] << endl;
+  }
+  return;
+}
+//Monte function.
+//Note, assumes itself to being given a move where the opposite side has the move!
+void monte(stdBoard & board) {
+  std::uniform_real_distribution<> dis(0, 1);
+  int moveCount;
+  int randMove;
+  stdBoard moveList[MAXMOVES];
+  stdBoard nBoard;
+//  cout << "test" << endl; //<< "Start Wins: " << std::get<0>(boardTup) << " Losses: " << std::get<1>(boardTup) << " Ties: " << std::get<2>(boardTup) << endl;
+  for(int j = 0; j < 50; ++j) {
+    nBoard = board;
+    int i;
+    for(i = 0; i < 75; ++i) { //search depth
+      moveCount = nBoard.genMoves(moveList,1);
+      //if there are not 0 moves
+      if (moveCount==0) { //They have no moves, we win.
+//        cout << "Win " << i << " moves" << endl;
+//        nBoard.draw();
+        monteMem[board][0] += 1;
+        break;
+      }
+      //Make the move
+      randMove = int(dis(gen) * moveCount);
+      nBoard = moveList[randMove];
+
+      //Our turn.
+      moveCount = nBoard.genMoves(moveList,0);
+      if (moveCount==0) { //We have no moves, we lose
+//        cout << "Loss " << i << " moves" << endl;
+//        nBoard.draw();
+        monteMem[board][1] += 1;
+        break;
+      }
+      //Make the move
+      randMove = int(dis(gen) * moveCount);
+      nBoard = moveList[randMove];
+    }
+    if (i == 75) {//Reached the end, tie
+      //cout << "Tie" << endl;
+        monteMem[board][2] += 1;
+    }
+  }
+  //cout << "Monte Wins: " << monteMem[board][0] << " Losses: " << monteMem[board][1] << " Ties: " << monteMem[board][2] << endl;
+}
+
+
+void monte(stdBoard & board, bool side) {
+  std::uniform_real_distribution<> dis(0, 1);
+  int moveCount;
+  int randMove;
+  stdBoard moveList[MAXMOVES];
+  if(side) { //always play black.
+    board = board.flip();
+  }
+  stdBoard nBoard = board;
+//  cout << "Start Wins: " << std::get<0>(boardTup) << " Losses: " << std::get<1>(boardTup) << " Ties: " << std::get<2>(boardTup) << endl;
+  for(int j = 0; j < 50; ++j) {
+    nBoard = board;
+    int i;
+    for(i = 0; i < 75; ++i) { //search depth
+      moveCount = nBoard.genMoves(moveList,1);
+      //if there are not 0 moves
+      if (moveCount==0) { //They have no moves, we win.
+//        cout << "Win " << i << " moves" << endl;
+//        nBoard.draw();
+        monteMem[board][0] += 1;
+        break;
+      }
+      //Make the move
+      randMove = int(dis(gen) * moveCount);
+      nBoard = moveList[randMove];
+
+      //Our turn.
+      moveCount = nBoard.genMoves(moveList,0);
+      if (moveCount==0) { //We have no moves, we lose
+//        cout << "Loss " << i << " moves" << endl;
+//        nBoard.draw();
+        monteMem[board][1] += 1;
+        break;
+      }
+      //Make the move
+      randMove = int(dis(gen) * moveCount);
+      nBoard = moveList[randMove];
+    }
+    if (i == 75) {//Reached the end, tie
+      //cout << "Tie" << endl;
+        monteMem[board][2] += 1;
+    }
+  }
+  if(side) {
+    board = board.flip();
+  }
+//  cout << "End Wins: " << monteMem[board][0] << " Losses: " << monteMem[board][1] << " Ties: " << monteMem[board][2] << endl;
+}
+
+stdBoard MontyPlayer::getMove(stdBoard & board, bool side) {
+  //For timing
+  std::time(&timeStart);
+  struct tm * timeInfo;
+  timeInfo = localtime(&timeStart);
+  timeInfo->tm_sec += MOVETIME-3;
+  timeLimit = mktime(timeInfo);
+  timeExceeded = false;
+
+  stdBoard moveList[MAXMOVES];
+  board.draw();
+  if (side) {
+    board = board.flip();
+  }
+  int numMoves = board.genMoves(moveList, 0);
+  cout << "Number of moves: " << numMoves << " Side: " << side << endl;
+  if (numMoves == 1) { //only 1 move, return.
+    if (side) {
+      board = board.flip();
+      moveList[0] = moveList[0].flip();
+    }
+    return moveList[0];
+  }
+  if (numMoves==0) {
+    return stdBoard(0,0,0,0);
+  }
+  //If the board isn't in the unordered map, add it.
+  for(int i = 0; i < numMoves; ++i) {
+      if (!monteMem.count(moveList[i])) {
+        monteMem[moveList[i]][0] = 0;
+        monteMem[moveList[i]][1] = 0;
+        monteMem[moveList[i]][2] = 0;
+      }
+
+  }
+
+  while(time(0) < timeLimit) {
+    for(int j = 0; j <= 75; ++j) {
+      for (int i = 0; i < j; ++i) {
+        monte(moveList[i], 0);
+      }
+    }
+    std::sort(moveList, moveList+numMoves,
+      [&](stdBoard a, stdBoard b) {
+        return (monteMemVal(a) > monteMemVal(b));
+      });
+  }
+  cout << "Move value: " << monteMemVal(moveList[0]) << endl << std::flush;
+  if (side) {
+    board = board.flip();
+    moveList[0] = moveList[0].flip();
+  }
+  return moveList[0];
+}
+void MontyPlayer::prntStats() {
+  cout << "Monty" << endl;
+}
 
 stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
 
@@ -52,6 +244,8 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
     }
   //Get the possible board moves
 
+
+
     int moves = board.genMoves(moveList,0);
     numMoves = moves; //save for printing stats
     numBoards = 0;
@@ -64,6 +258,7 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
   //If there is more than one move, check cache and place in
     //cache if there is a miss (speeds up most used boards)
     if (moves > 1) {
+      std::thread montyThread = std::thread(doTheMonte,board);
       for(int i = 0; i < moves; ++i) {
         if (boardMem.count(moveList[i])) {
 //            ++cacheHit;
@@ -96,7 +291,6 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
       //iterative deepening search
       selectMove = 0;
       sNN moveVal[MAXMOVES];
-      std::vector<std::thread> threads;
       //If more than half of the time has been consumed, don't try to go deeper.
       while(time(0) < timeHalf && depthReached <= searchDepth) {
 //      while(time(0) < timeLimit && depthReached <= searchDepth) {
@@ -105,15 +299,11 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
         ++depthReached;
         //s
         for (int i = 0; i < moves; ++i) {
-            threads.push_back(std::thread(
-                  & AIPlayer::betaThread,
-                  this,
-                  std::ref(moveList[i]),
+            moveVal[i] = beta(moveList[i],
                   0,
                   depthReached,
                   LOWEST,
-                  HIGHEST,
-                  std::ref(moveVal[i])));
+                  HIGHEST);
 
 
             //moveVal[i] = beta(moveList[i], 0, depthReached, LOWEST, HIGHEST);
@@ -121,15 +311,17 @@ stdBoard AIPlayer::getMove(stdBoard & board, bool side) {
             //cout << "Highest: " << HIGHEST << " Lowest: " << LOWEST << endl;
         }
         //rejoin the threads.
-        for (int i = 0; i < moves; ++i) {
-          threads[i].join();
-        }
       }
-      for(int i = 1; i < moves; ++i) {
+      montyThread.join();
+      for(int i = 0; i < moves; ++i) {
+          moveVal[i] += monteMemVal(moveList[i]) * 0.2;
+          cout << "moveVal " << i << ": " << moveVal[i] << endl;
           if(moveVal[i] > moveVal[selectMove]) {
             selectMove = i;
           }
+          cout << "Monte Stats: " << monteMemVal(moveList[i]) << " Wins: " << monteMem[moveList[i]][0] << " Losses: " << monteMem[moveList[i]][1] << " Ties: " << monteMem[moveList[i]][2] << endl;
       }
+      cout << "depth reached: " << depthReached << endl;
     } else { // Only one move, no need to calc!
       selectMove = 0;
       depthReached = 0;
@@ -202,15 +394,25 @@ sNN AIPlayer::alpha(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
   }
 
 }
-
-void AIPlayer::betaThread(stdBoard & board,
+/*
+std::thread AIPlayer::betaThread(stdBoard board,
                          int depth,
                          int maxDepth,
                          sNN a,
                          sNN b,
-                         sNN & valReturn) {
+                         sNN valReturn) {
+  return std::thread([=] {betaT(board, depth, maxDepth,a,b,valReturn);});
+}
+
+void AIPlayer::betaT(stdBoard board,
+                         int depth,
+                         int maxDepth,
+                         sNN a,
+                         sNN b,
+                         sNN valReturn) {
   valReturn = beta(board, depth, maxDepth, a, b);
 }
+*/
 
 
 sNN AIPlayer::beta(stdBoard & board, int depth, int maxDepth, sNN a, sNN b) {
@@ -252,15 +454,15 @@ double AIPlayer::clmp(double x, double a, double b)
     return x < a ? a : (x > b ? b : x);
 }
 void AIPlayer::prntStats() {
-  cout << "Cache Effectiveness: " << cacheHit << "/" << cacheHit+cacheMiss;
-  cout << " Cache size: " << boardMem.size() << endl;
-  cout << "Pruning Trims: " << trimTotal << " Depth Reached: " << depthReached << endl;
+//  cout << "Cache Effectiveness: " << cacheHit << "/" << cacheHit+cacheMiss;
+//  cout << " Cache size: " << boardMem.size() << endl;
+//  cout << "Pruning Trims: " << trimTotal << " Depth Reached: " << depthReached << endl;
 
 
-  cout << "Boards expanded per move: " << (numBoardEvals-numMoves)/numMoves << endl;
-  cout << "Board Evaluation Functions called: " << numBoardEvals << endl;
-  cout << "Inner nodes: " << innerNodes << endl;
-  cout << "Leaf nodes: " << numBoardEvals << endl;
+//  cout << "Boards expanded per move: " << (numBoardEvals-numMoves)/numMoves << endl;
+//  cout << "Board Evaluation Functions called: " << numBoardEvals << endl;
+//  cout << "Inner nodes: " << innerNodes << endl;
+//  cout << "Leaf nodes: " << numBoardEvals << endl;
 }
 
 
@@ -589,6 +791,34 @@ stdBoard RandomPlayer::getMove(stdBoard & board, bool side) {
 
 //   return 0;
 // }
+
+int saveMonty() {
+  //Boost file saving
+  std::ofstream ofs("monty.dat", std::ios::binary);
+  if(!ofs){
+    cout << "Error opening file for monty.dat saving ";
+    cout << endl;
+    return -1;
+  }
+  boost::archive::binary_oarchive oa(ofs);
+  oa << monteMem;
+  ofs.close();
+
+  return 0; //successful
+}
+
+int loadMonty(){
+  ifstream file("monty.dat", std::ios::binary);
+  if(!file){
+    cout << "Error opening monty file" << endl;
+    return -1;
+  }
+  boost::archive::binary_iarchive ia(file);
+  ia >> monteMem;
+  file.close();
+
+  return 0;
+}
 
 int NN::saveToFile(string filename){
   //Boost file saving
